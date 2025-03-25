@@ -15,10 +15,17 @@
 				<h2>Interactive and reusable UI components for Svelte</h2>
 			</a>
 			<a
+				href="https://orion.harville.dev"
+				class="flex hover:cursor-pointer items-start flex-col duration-200 hover:bg-neutral-800 rounded-md p-2 m-[-0.5rem]"
+			>
+				<h1 class="font-medium">Project ORION</h1>
+				<h2>Observation, Reconnaissance, Intelligence, and Operations Network</h2>
+			</a>
+			<a
 				href="https://github.com/aidan-neel/auth"
 				class="flex hover:cursor-pointer items-start flex-col duration-200 hover:bg-neutral-800 rounded-md p-2 m-[-0.5rem]"
 			>
-				<h1 class="font-medium">@aidan-neel/auth</h1>
+				<h1 class="font-medium">aidan-neel/auth</h1>
 				<h2>TypeScript authentication library</h2>
 			</a>
 			<a
