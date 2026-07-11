@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&family=Instrument+Serif:ital@0;1&display=swap');
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Geist', Arial, sans-serif;
+}
+
+html {
+	font-family: 'Geist', Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+* {
+	@apply text-pretty;
+}
