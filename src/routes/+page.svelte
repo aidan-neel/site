@@ -47,6 +47,8 @@
 		date: string;
 		image: string;
 		songUrl?: string;
+		audioFile?: string;
+		audioStart?: number;
 	};
 
 	// Add a songUrl to any design to show its View Song link.
@@ -68,7 +70,8 @@
 			description: 'Great song. I like the Tigers Jaw version more.',
 			date: '2026',
 			image: safeinyourskin,
-			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba'
+			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
+			audioFile: '/audio/safe-in-your-skin.mp3'
 		},
 		{
 			title: 'Need',
@@ -76,7 +79,8 @@
 				'Pinegrove is one of my favorite bands, and "Everything So Far" is one of my favorite albums. Need is my favorite song on the album.',
 			date: '2026',
 			image: need,
-			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a'
+			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a',
+			audioFile: '/audio/need.mp3'
 		},
 		{
 			title: 'NASA',
@@ -96,7 +100,9 @@
 				'One of my favorite songs ever. Background is modified Starry Night. Unfortunate song name, but thats okay.',
 			date: '2026',
 			image: marietta,
-			songUrl: 'https://open.spotify.com/track/2K4h2jMvqQ8VEKPP7F7MWg?si=e1a515f2485d4fd0'
+			songUrl: 'https://open.spotify.com/track/2K4h2jMvqQ8VEKPP7F7MWg?si=e1a515f2485d4fd0',
+			audioFile: '/audio/marietta.mp3',
+			audioStart: 217
 		},
 		{
 			title: 'Eagles',
@@ -111,7 +117,9 @@
 				'Another song that is one of my favorites of all time. Really has that 2012 feel.',
 			date: '2026',
 			image: reconstruction,
-			songUrl: 'https://open.spotify.com/track/29H6lyOfySXBLw5HAJpDFB?si=4ae97f7fef3b4cd1'
+			songUrl: 'https://open.spotify.com/track/29H6lyOfySXBLw5HAJpDFB?si=4ae97f7fef3b4cd1',
+			audioFile: '/audio/reconstruction-site.mp3',
+			audioStart: 71
 		},
 		{
 			title: 'American Football',
@@ -138,6 +146,11 @@
 	let panStartY = 0;
 	let panOriginX = 0;
 	let panOriginY = 0;
+	let designAudio: HTMLAudioElement | null = null;
+	let audioFade: ReturnType<typeof setInterval> | undefined;
+	const DESIGN_AUDIO_VOLUME = 0.25;
+	const DESIGN_AUDIO_DELAY = 100;
+	const DESIGN_AUDIO_FADE_IN = 600;
 
 	$effect(() => {
 		if (!activeDesign) return;
@@ -153,15 +166,63 @@
 		};
 	});
 
+	$effect(() => () => fadeOutAudio());
+
 	function openLightbox(design: (typeof designs)[number]) {
 		zoom = 1;
 		panX = 0;
 		panY = 0;
 		activeDesign = design;
+		void playDesignAudio(design);
 	}
 
 	function closeLightbox() {
 		activeDesign = null;
+		fadeOutAudio();
+	}
+
+	function fadeAudio(audio: HTMLAudioElement, target: number, duration = 180) {
+		if (audioFade) clearInterval(audioFade);
+		const from = audio.volume;
+		const started = performance.now();
+		audioFade = setInterval(() => {
+			const progress = Math.min(1, (performance.now() - started) / duration);
+			audio.volume = from + (target - from) * progress;
+			if (progress === 1 && audioFade) {
+				clearInterval(audioFade);
+				audioFade = undefined;
+			}
+		}, 16);
+	}
+
+	async function playDesignAudio(design: (typeof designs)[number]) {
+		fadeOutAudio();
+		if (!design.audioFile) return;
+
+		const audio = new Audio(design.audioFile);
+		designAudio = audio;
+		audio.loop = true;
+		audio.volume = 0;
+		audio.currentTime = design.audioStart ?? 0;
+		try {
+			await new Promise((resolve) => setTimeout(resolve, DESIGN_AUDIO_DELAY));
+			if (designAudio !== audio) return;
+			await audio.play();
+			if (designAudio === audio) fadeAudio(audio, DESIGN_AUDIO_VOLUME, DESIGN_AUDIO_FADE_IN);
+		} catch {
+			if (designAudio === audio) designAudio = null;
+		}
+	}
+
+	function fadeOutAudio() {
+		const audio = designAudio;
+		designAudio = null;
+		if (!audio) return;
+		fadeAudio(audio, 0);
+		setTimeout(() => {
+			audio.pause();
+			audio.src = '';
+		}, 190);
 	}
 
 	function setZoom(nextZoom: number) {
