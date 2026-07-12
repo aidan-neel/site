@@ -12,6 +12,9 @@
 	import reconstruction from '$lib/assets/designs/reconstruction.png';
 	import t1 from '$lib/assets/designs/t1.png';
 	import safeinyourskin from '$lib/assets/designs/safe-in-your-skin.png';
+	import need from '$lib/assets/designs/need.png';
+	import nasa from '$lib/assets/designs/nasa.png';
+	import modern from '$lib/assets/designs/modern.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -68,9 +71,29 @@
 			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba'
 		},
 		{
+			title: 'Need',
+			description:
+				'Pinegrove is one of my favorite bands, and "Everything So Far" is one of my favorite albums. Need is my favorite song on the album.',
+			date: '2026',
+			image: need,
+			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a'
+		},
+		{
+			title: 'NASA',
+			description: 'NASA!',
+			date: '2026',
+			image: nasa
+		},
+		{
+			title: 'Modern',
+			description: 'Not much to it. Tried to keep it simpler.',
+			date: '2026',
+			image: modern
+		},
+		{
 			title: 'Marietta',
 			description:
-				'One of my favorite songs ever. Background is modified Starry Night. I am aware of the song name.',
+				'One of my favorite songs ever. Background is modified Starry Night. Unfortunate song name, but thats okay.',
 			date: '2026',
 			image: marietta,
 			songUrl: 'https://open.spotify.com/track/2K4h2jMvqQ8VEKPP7F7MWg?si=e1a515f2485d4fd0'
