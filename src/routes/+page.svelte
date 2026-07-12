@@ -11,6 +11,7 @@
 	import openai from '$lib/assets/designs/openai.png';
 	import reconstruction from '$lib/assets/designs/reconstruction.png';
 	import t1 from '$lib/assets/designs/t1.png';
+	import safeinyourskin from '$lib/assets/designs/safe-in-your-skin.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -55,9 +56,16 @@
 		},
 		{
 			title: 'Figma',
-			description: 'Made a cool background, needed something to show off..',
+			description: 'Made a cool background, needed something to show off.',
 			date: '2026',
 			image: figma
+		},
+		{
+			title: 'Safe In Your Skin',
+			description: 'Great song. I like the Tigers Jaw version more.',
+			date: '2026',
+			image: safeinyourskin,
+			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba'
 		},
 		{
 			title: 'Marietta',
