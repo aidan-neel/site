@@ -168,7 +168,7 @@
 	let panOriginY = 0;
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
-	const DESIGN_AUDIO_VOLUME = 0.15;
+	const DESIGN_AUDIO_VOLUME = 0.1;
 	const DESIGN_AUDIO_DELAY = 120;
 	const DESIGN_AUDIO_FADE_IN = 1500;
 
