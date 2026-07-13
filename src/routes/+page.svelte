@@ -18,6 +18,7 @@
 	import allmyfriends from '$lib/assets/designs/all-my-friends.png';
 	import growingdying from '$lib/assets/designs/growing-dying.png';
 	import ungeneration from '$lib/assets/designs/ungeneration.png';
+	import growingdyingalt from '$lib/assets/designs/growing-dying-alt.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -68,6 +69,14 @@
 			description: 'Just enough to tell the forest from the fire',
 			date: '7/12/2026',
 			image: growingdying,
+			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
+			audioFile: '/audio/growing-dying.mp3'
+		},
+		{
+			title: 'Growing / Dying (alt)',
+			description: 'Alternate version of the original design',
+			date: '7/13/2026',
+			image: growingdyingalt,
 			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
 			audioFile: '/audio/growing-dying.mp3'
 		},
