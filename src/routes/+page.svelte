@@ -15,6 +15,8 @@
 	import need from '$lib/assets/designs/need.png';
 	import nasa from '$lib/assets/designs/nasa.png';
 	import modern from '$lib/assets/designs/modern.png';
+	import allmyfriends from '$lib/assets/designs/all-my-friends.png';
+	import growingdying from '$lib/assets/designs/growing-dying.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -54,21 +56,37 @@
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
 		{
+			title: 'Growing / Dying',
+			description: 'Just enough to tell the forest from the fire',
+			date: '7/12/2026',
+			image: growingdying,
+			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
+			audioFile: '/audio/growing-dying.mp3'
+		},
+		{
+			title: 'All My Friends',
+			description: 'And the next five years trying to be with your friends again!',
+			date: '7/12/2026',
+			image: allmyfriends,
+			songUrl: 'https://open.spotify.com/track/2Ud3deeqLAG988pfW0Kwcl?si=1e574fa6d8484db8',
+			audioFile: '/audio/all-my-friends.mp3'
+		},
+		{
 			title: 'Do That Again',
 			description: 'Big fan of Malcolm Todd and his new album "Do That Again."',
-			date: '2026',
+			date: '7/11/2026',
 			image: doThatAgain
 		},
 		{
 			title: 'Figma',
 			description: 'Made a cool background, needed something to show off.',
-			date: '2026',
+			date: '7/11/2026',
 			image: figma
 		},
 		{
 			title: 'Safe In Your Skin',
 			description: 'Great song. I like the Tigers Jaw version more.',
-			date: '2026',
+			date: '7/11/2026',
 			image: safeinyourskin,
 			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
 			audioFile: '/audio/safe-in-your-skin.mp3'
@@ -77,7 +95,7 @@
 			title: 'Need',
 			description:
 				'Pinegrove is one of my favorite bands, and "Everything So Far" is one of my favorite albums. Need is my favorite song on the album.',
-			date: '2026',
+			date: '7/11/2026',
 			image: need,
 			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a',
 			audioFile: '/audio/need.mp3'
@@ -85,37 +103,39 @@
 		{
 			title: 'NASA',
 			description: 'NASA!',
-			date: '2026',
+			date: '7/11/2026',
 			image: nasa
 		},
 		{
 			title: 'Modern',
 			description: 'Not much to it. Tried to keep it simpler.',
-			date: '2026',
+			date: '7/11/2026',
 			image: modern
 		},
-		{
+		/*
+	{
 			title: 'Marietta',
 			description:
 				'One of my favorite songs ever. Background is modified Starry Night. Unfortunate song name, but thats okay.',
-			date: '2026',
+			date: '7/11/2026',
 			image: marietta,
 			songUrl: 'https://open.spotify.com/track/2K4h2jMvqQ8VEKPP7F7MWg?si=e1a515f2485d4fd0',
 			audioFile: '/audio/marietta.mp3',
 			audioStart: 217
 		},
+		*/
 		{
 			title: 'Eagles',
 			description:
 				'Wanted to mess around with this green color. It fit the Kelly Green Eagles well.',
-			date: '2026',
+			date: '7/11/2026',
 			image: eagles
 		},
 		{
 			title: 'Reconstruction Site',
 			description:
 				'Another song that is one of my favorites of all time. Really has that 2012 feel.',
-			date: '2026',
+			date: '7/11/2026',
 			image: reconstruction,
 			songUrl: 'https://open.spotify.com/track/29H6lyOfySXBLw5HAJpDFB?si=4ae97f7fef3b4cd1',
 			audioFile: '/audio/reconstruction-site.mp3',
@@ -124,17 +144,17 @@
 		{
 			title: 'American Football',
 			description: 'Amazing band, amazing album. Background comes from a photo of a blue flower.',
-			date: '2026',
+			date: '7/11/2026',
 			image: americanFootball
 		},
-		{ title: 'T1', description: 'Faker.', date: '2026', image: t1 },
+		{ title: 'T1', description: 'Faker.', date: '7/11/2026', image: t1 },
 		{
 			title: 'OpenAI',
 			description: 'Cool futuristic backgrounds, wanted a use for them.',
-			date: '2026',
+			date: '7/11/2026',
 			image: openai
 		},
-		{ title: 'Chateau', description: 'Just like Rainbow Six.', date: '2026', image: chateau }
+		{ title: 'Chateau', description: 'Just like Rainbow Six.', date: '7/11/2026', image: chateau }
 	];
 
 	let activeDesign = $state<(typeof designs)[number] | null>(null);
@@ -148,9 +168,9 @@
 	let panOriginY = 0;
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
-	const DESIGN_AUDIO_VOLUME = 0.25;
-	const DESIGN_AUDIO_DELAY = 100;
-	const DESIGN_AUDIO_FADE_IN = 600;
+	const DESIGN_AUDIO_VOLUME = 0.15;
+	const DESIGN_AUDIO_DELAY = 120;
+	const DESIGN_AUDIO_FADE_IN = 1500;
 
 	$effect(() => {
 		if (!activeDesign) return;
