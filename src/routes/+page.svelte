@@ -17,6 +17,7 @@
 	import modern from '$lib/assets/designs/modern.png';
 	import allmyfriends from '$lib/assets/designs/all-my-friends.png';
 	import growingdying from '$lib/assets/designs/growing-dying.png';
+	import ungeneration from '$lib/assets/designs/ungeneration.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -55,6 +56,13 @@
 
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
+		{
+			title: 'Ungeneration',
+			description:
+				'"Unoriginal generation". I am not an anti-AI person, just thought it was an interesting concept.',
+			date: '7/13/2026',
+			image: ungeneration
+		},
 		{
 			title: 'Growing / Dying',
 			description: 'Just enough to tell the forest from the fire',
