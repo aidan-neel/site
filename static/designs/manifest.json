@@ -1,0 +1,217 @@
+{
+  "config": {
+    "cardWidths": [
+      480,
+      960
+    ],
+    "fullMaxWidth": 1800,
+    "cardQuality": 80,
+    "fullQuality": 86
+  },
+  "designs": {
+    "all-my-friends": {
+      "source": "all-my-friends.png",
+      "sourceSize": [
+        1480,
+        2072
+      ],
+      "outputs": {
+        "480": "/designs/all-my-friends-480.webp",
+        "960": "/designs/all-my-friends-960.webp",
+        "full": "/designs/all-my-friends-full.webp"
+      }
+    },
+    "americanfootball": {
+      "source": "americanfootball.png",
+      "sourceSize": [
+        2030,
+        2871
+      ],
+      "outputs": {
+        "480": "/designs/americanfootball-480.webp",
+        "960": "/designs/americanfootball-960.webp",
+        "full": "/designs/americanfootball-full.webp"
+      }
+    },
+    "chateau": {
+      "source": "chateau.png",
+      "sourceSize": [
+        1874,
+        2651
+      ],
+      "outputs": {
+        "480": "/designs/chateau-480.webp",
+        "960": "/designs/chateau-960.webp",
+        "full": "/designs/chateau-full.webp"
+      }
+    },
+    "dothatagain": {
+      "source": "dothatagain.png",
+      "sourceSize": [
+        1462,
+        2068
+      ],
+      "outputs": {
+        "480": "/designs/dothatagain-480.webp",
+        "960": "/designs/dothatagain-960.webp",
+        "full": "/designs/dothatagain-full.webp"
+      }
+    },
+    "eagles": {
+      "source": "eagles.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/eagles-480.webp",
+        "960": "/designs/eagles-960.webp",
+        "full": "/designs/eagles-full.webp"
+      }
+    },
+    "figma": {
+      "source": "figma.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/figma-480.webp",
+        "960": "/designs/figma-960.webp",
+        "full": "/designs/figma-full.webp"
+      }
+    },
+    "growing-dying-alt": {
+      "source": "growing-dying-alt.png",
+      "sourceSize": [
+        1397,
+        1956
+      ],
+      "outputs": {
+        "480": "/designs/growing-dying-alt-480.webp",
+        "960": "/designs/growing-dying-alt-960.webp",
+        "full": "/designs/growing-dying-alt-full.webp"
+      }
+    },
+    "growing-dying": {
+      "source": "growing-dying.png",
+      "sourceSize": [
+        1397,
+        1956
+      ],
+      "outputs": {
+        "480": "/designs/growing-dying-480.webp",
+        "960": "/designs/growing-dying-960.webp",
+        "full": "/designs/growing-dying-full.webp"
+      }
+    },
+    "marietta": {
+      "source": "marietta.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/marietta-480.webp",
+        "960": "/designs/marietta-960.webp",
+        "full": "/designs/marietta-full.webp"
+      }
+    },
+    "modern": {
+      "source": "modern.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/modern-480.webp",
+        "960": "/designs/modern-960.webp",
+        "full": "/designs/modern-full.webp"
+      }
+    },
+    "nasa": {
+      "source": "nasa.png",
+      "sourceSize": [
+        1395,
+        2062
+      ],
+      "outputs": {
+        "480": "/designs/nasa-480.webp",
+        "960": "/designs/nasa-960.webp",
+        "full": "/designs/nasa-full.webp"
+      }
+    },
+    "need": {
+      "source": "need.png",
+      "sourceSize": [
+        1480,
+        2073
+      ],
+      "outputs": {
+        "480": "/designs/need-480.webp",
+        "960": "/designs/need-960.webp",
+        "full": "/designs/need-full.webp"
+      }
+    },
+    "openai": {
+      "source": "openai.png",
+      "sourceSize": [
+        2020,
+        2792
+      ],
+      "outputs": {
+        "480": "/designs/openai-480.webp",
+        "960": "/designs/openai-960.webp",
+        "full": "/designs/openai-full.webp"
+      }
+    },
+    "reconstruction": {
+      "source": "reconstruction.png",
+      "sourceSize": [
+        1709,
+        2311
+      ],
+      "outputs": {
+        "480": "/designs/reconstruction-480.webp",
+        "960": "/designs/reconstruction-960.webp",
+        "full": "/designs/reconstruction-full.webp"
+      }
+    },
+    "safe-in-your-skin": {
+      "source": "safe-in-your-skin.png",
+      "sourceSize": [
+        1804,
+        2551
+      ],
+      "outputs": {
+        "480": "/designs/safe-in-your-skin-480.webp",
+        "960": "/designs/safe-in-your-skin-960.webp",
+        "full": "/designs/safe-in-your-skin-full.webp"
+      }
+    },
+    "t1": {
+      "source": "t1.png",
+      "sourceSize": [
+        3000,
+        1000
+      ],
+      "outputs": {
+        "480": "/designs/t1-480.webp",
+        "960": "/designs/t1-960.webp",
+        "full": "/designs/t1-full.webp"
+      }
+    },
+    "ungeneration": {
+      "source": "ungeneration.png",
+      "sourceSize": [
+        1682,
+        2379
+      ],
+      "outputs": {
+        "480": "/designs/ungeneration-480.webp",
+        "960": "/designs/ungeneration-960.webp",
+        "full": "/designs/ungeneration-full.webp"
+      }
+    }
+  }
+}

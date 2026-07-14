@@ -2,23 +2,6 @@
 	import { cubicOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
 	import { ArrowUpRight } from 'lucide-svelte';
-	import americanFootball from '$lib/assets/designs/americanfootball.png';
-	import chateau from '$lib/assets/designs/chateau.png';
-	import doThatAgain from '$lib/assets/designs/dothatagain.png';
-	import eagles from '$lib/assets/designs/eagles.png';
-	import figma from '$lib/assets/designs/figma.png';
-	import marietta from '$lib/assets/designs/marietta.png';
-	import openai from '$lib/assets/designs/openai.png';
-	import reconstruction from '$lib/assets/designs/reconstruction.png';
-	import t1 from '$lib/assets/designs/t1.png';
-	import safeinyourskin from '$lib/assets/designs/safe-in-your-skin.png';
-	import need from '$lib/assets/designs/need.png';
-	import nasa from '$lib/assets/designs/nasa.png';
-	import modern from '$lib/assets/designs/modern.png';
-	import allmyfriends from '$lib/assets/designs/all-my-friends.png';
-	import growingdying from '$lib/assets/designs/growing-dying.png';
-	import ungeneration from '$lib/assets/designs/ungeneration.png';
-	import growingdyingalt from '$lib/assets/designs/growing-dying-alt.png';
 	import ZoomText from '$lib/components/ZoomText.svelte';
 	import './+page.css';
 
@@ -55,6 +38,13 @@
 		audioStart?: number;
 	};
 
+	const CARD_IMAGE_SIZES =
+		'(max-width: 850px) calc(100vw - 40px), (max-width: 1924px) calc((100vw - 124px) / 3), 600px';
+	const cardImage = (image: string) => `/designs/${image}-480.webp`;
+	const cardImageSet = (image: string) =>
+		`/designs/${image}-480.webp 480w, /designs/${image}-960.webp 960w`;
+	const fullImage = (image: string) => `/designs/${image}-full.webp`;
+
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
 		{
@@ -62,13 +52,13 @@
 			description:
 				'"Unoriginal generation". I am not an anti-AI person, just thought it was an interesting concept.',
 			date: '7/13/2026',
-			image: ungeneration
+			image: 'ungeneration'
 		},
 		{
 			title: 'Growing / Dying',
 			description: 'Just enough to tell the forest from the fire',
 			date: '7/12/2026',
-			image: growingdying,
+			image: 'growing-dying',
 			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
 			audioFile: '/audio/growing-dying.mp3'
 		},
@@ -76,7 +66,7 @@
 			title: 'Growing / Dying (alt)',
 			description: 'Alternate version of the original design',
 			date: '7/13/2026',
-			image: growingdyingalt,
+			image: 'growing-dying-alt',
 			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
 			audioFile: '/audio/growing-dying.mp3'
 		},
@@ -84,7 +74,7 @@
 			title: 'All My Friends',
 			description: 'And the next five years trying to be with your friends again!',
 			date: '7/12/2026',
-			image: allmyfriends,
+			image: 'all-my-friends',
 			songUrl: 'https://open.spotify.com/track/2Ud3deeqLAG988pfW0Kwcl?si=1e574fa6d8484db8',
 			audioFile: '/audio/all-my-friends.mp3'
 		},
@@ -92,19 +82,19 @@
 			title: 'Do That Again',
 			description: 'Big fan of Malcolm Todd and his new album "Do That Again."',
 			date: '7/11/2026',
-			image: doThatAgain
+			image: 'dothatagain'
 		},
 		{
 			title: 'Figma',
 			description: 'Made a cool background, needed something to show off.',
 			date: '7/11/2026',
-			image: figma
+			image: 'figma'
 		},
 		{
 			title: 'Safe In Your Skin',
 			description: 'Great song. I like the Tigers Jaw version more.',
 			date: '7/11/2026',
-			image: safeinyourskin,
+			image: 'safe-in-your-skin',
 			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
 			audioFile: '/audio/safe-in-your-skin.mp3'
 		},
@@ -113,7 +103,7 @@
 			description:
 				'Pinegrove is one of my favorite bands, and "Everything So Far" is one of my favorite albums. Need is my favorite song on the album.',
 			date: '7/11/2026',
-			image: need,
+			image: 'need',
 			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a',
 			audioFile: '/audio/need.mp3'
 		},
@@ -121,13 +111,13 @@
 			title: 'NASA',
 			description: 'NASA!',
 			date: '7/11/2026',
-			image: nasa
+			image: 'nasa'
 		},
 		{
 			title: 'Modern',
 			description: 'Not much to it. Tried to keep it simpler.',
 			date: '7/11/2026',
-			image: modern
+			image: 'modern'
 		},
 		/*
 	{
@@ -135,7 +125,7 @@
 			description:
 				'One of my favorite songs ever. Background is modified Starry Night. Unfortunate song name, but thats okay.',
 			date: '7/11/2026',
-			image: marietta,
+			image: 'marietta',
 			songUrl: 'https://open.spotify.com/track/2K4h2jMvqQ8VEKPP7F7MWg?si=e1a515f2485d4fd0',
 			audioFile: '/audio/marietta.mp3',
 			audioStart: 217
@@ -146,14 +136,14 @@
 			description:
 				'Wanted to mess around with this green color. It fit the Kelly Green Eagles well.',
 			date: '7/11/2026',
-			image: eagles
+			image: 'eagles'
 		},
 		{
 			title: 'Reconstruction Site',
 			description:
 				'Another song that is one of my favorites of all time. Really has that 2012 feel.',
 			date: '7/11/2026',
-			image: reconstruction,
+			image: 'reconstruction',
 			songUrl: 'https://open.spotify.com/track/29H6lyOfySXBLw5HAJpDFB?si=4ae97f7fef3b4cd1',
 			audioFile: '/audio/reconstruction-site.mp3',
 			audioStart: 71
@@ -162,16 +152,21 @@
 			title: 'American Football',
 			description: 'Amazing band, amazing album. Background comes from a photo of a blue flower.',
 			date: '7/11/2026',
-			image: americanFootball
+			image: 'americanfootball'
 		},
-		{ title: 'T1', description: 'Faker.', date: '7/11/2026', image: t1 },
+		{ title: 'T1', description: 'Faker.', date: '7/11/2026', image: 't1' },
 		{
 			title: 'OpenAI',
 			description: 'Cool futuristic backgrounds, wanted a use for them.',
 			date: '7/11/2026',
-			image: openai
+			image: 'openai'
 		},
-		{ title: 'Chateau', description: 'Just like Rainbow Six.', date: '7/11/2026', image: chateau }
+		{
+			title: 'Chateau',
+			description: 'Just like Rainbow Six.',
+			date: '7/11/2026',
+			image: 'chateau'
+		}
 	];
 
 	let activeDesign = $state<(typeof designs)[number] | null>(null);
@@ -412,7 +407,17 @@
 					use:reveal
 				>
 					<button type="button" class="design-preview" onclick={() => openLightbox(design)}>
-						<img src={design.image} alt={`${design.title} design`} />
+						<img
+							src={cardImage(design.image)}
+							srcset={cardImageSet(design.image)}
+							sizes={CARD_IMAGE_SIZES}
+							alt={`${design.title} design`}
+							width="480"
+							height="640"
+							loading="lazy"
+							decoding="async"
+							fetchpriority="low"
+						/>
 						<span class="view-label"><ZoomText text="View" /></span>
 					</button>
 					<div class="design-meta">
@@ -461,8 +466,10 @@
 				ondblclick={toggleZoom}
 			>
 				<img
-					src={activeDesign.image}
+					src={fullImage(activeDesign.image)}
 					alt={`${activeDesign.title} design`}
+					decoding="async"
+					fetchpriority="high"
 					style:transform={`translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`}
 				/>
 			</div>
