@@ -415,20 +415,15 @@ h2 {
 .lightbox-content {
 	position: relative;
 	display: grid;
-	width: min(100%, 1100px);
-	min-width: 0;
+	max-width: min(100%, 1100px);
 	max-height: 100%;
 }
 
 .lightbox-content img {
 	display: block;
-	width: auto;
-	height: auto;
 	max-width: 100%;
 	max-height: calc(100vh - 126px);
-	max-height: calc(100dvh - 126px);
 	margin: auto;
-	object-fit: contain;
 	outline: 1px solid rgba(255, 255, 255, 0.1);
 	transform-origin: center;
 	transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
@@ -436,11 +431,8 @@ h2 {
 
 .lightbox-image-stage {
 	display: grid;
-	width: 100%;
-	min-width: 0;
 	max-width: 100%;
 	max-height: calc(100vh - 126px);
-	max-height: calc(100dvh - 126px);
 	overflow: hidden;
 	cursor: zoom-in;
 	touch-action: none;
@@ -477,11 +469,8 @@ h2 {
 	}
 
 	.design-preview img {
-		width: auto;
+		width: 100%;
 		height: auto;
-		max-width: 100%;
-		max-height: 72svh;
-		margin-inline: auto;
 		aspect-ratio: auto;
 		object-fit: contain;
 	}
@@ -517,9 +506,13 @@ h2 {
 	}
 
 	.archive-grid {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 34px;
 		margin-top: 46px;
+	}
+
+	.design-entry {
+		min-width: 0;
 	}
 
 	.projects {
@@ -537,6 +530,11 @@ h2 {
 
 	.lightbox-content img {
 		max-height: calc(100vh - 112px);
-		max-height: calc(100dvh - 112px);
+	}
+
+	.lightbox-caption {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
 	}
 }

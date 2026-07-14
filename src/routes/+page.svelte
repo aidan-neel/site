@@ -412,8 +412,6 @@
 							srcset={cardImageSet(design.image)}
 							sizes={CARD_IMAGE_SIZES}
 							alt={`${design.title} design`}
-							width="480"
-							height="640"
 							loading="lazy"
 							decoding="async"
 							fetchpriority="low"
