@@ -55,6 +55,14 @@
 			image: 'ungeneration'
 		},
 		{
+			title: 'Safe In Your Skin',
+			description: 'Great song. I like the Tigers Jaw version more.',
+			date: '7/11/2026',
+			image: 'safe-in-your-skin',
+			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
+			audioFile: '/audio/safe-in-your-skin.mp3'
+		},
+		{
 			title: 'Growing / Dying',
 			description: 'Just enough to tell the forest from the fire',
 			date: '7/12/2026',
@@ -89,14 +97,6 @@
 			description: 'Made a cool background, needed something to show off.',
 			date: '7/11/2026',
 			image: 'figma'
-		},
-		{
-			title: 'Safe In Your Skin',
-			description: 'Great song. I like the Tigers Jaw version more.',
-			date: '7/11/2026',
-			image: 'safe-in-your-skin',
-			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
-			audioFile: '/audio/safe-in-your-skin.mp3'
 		},
 		{
 			title: 'Need',
@@ -180,6 +180,7 @@
 	let panOriginY = 0;
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
+	let audioPlaybackId = 0;
 	const DESIGN_AUDIO_VOLUME = 0.1;
 	const DESIGN_AUDIO_DELAY = 120;
 	const DESIGN_AUDIO_FADE_IN = 1500;
@@ -198,7 +199,23 @@
 		};
 	});
 
-	$effect(() => () => fadeOutAudio());
+	$effect(() => {
+		const stopWhenHidden = () => {
+			if (document.hidden) stopDesignAudio();
+		};
+		const stopForPageExit = () => stopDesignAudio();
+
+		document.addEventListener('visibilitychange', stopWhenHidden);
+		window.addEventListener('blur', stopForPageExit);
+		window.addEventListener('pagehide', stopForPageExit);
+
+		return () => {
+			document.removeEventListener('visibilitychange', stopWhenHidden);
+			window.removeEventListener('blur', stopForPageExit);
+			window.removeEventListener('pagehide', stopForPageExit);
+			stopDesignAudio();
+		};
+	});
 
 	function openLightbox(design: (typeof designs)[number]) {
 		zoom = 1;
@@ -210,7 +227,7 @@
 
 	function closeLightbox() {
 		activeDesign = null;
-		fadeOutAudio();
+		stopDesignAudio();
 	}
 
 	function fadeAudio(audio: HTMLAudioElement, target: number, duration = 180) {
@@ -228,33 +245,51 @@
 	}
 
 	async function playDesignAudio(design: (typeof designs)[number]) {
-		fadeOutAudio();
-		if (!design.audioFile) return;
+		stopDesignAudio();
+		if (!design.audioFile || document.hidden) return;
 
 		const audio = new Audio(design.audioFile);
+		const playbackId = audioPlaybackId;
 		designAudio = audio;
 		audio.loop = true;
 		audio.volume = 0;
 		audio.currentTime = design.audioStart ?? 0;
 		try {
 			await new Promise((resolve) => setTimeout(resolve, DESIGN_AUDIO_DELAY));
-			if (designAudio !== audio) return;
+			if (playbackId !== audioPlaybackId || designAudio !== audio || document.hidden) {
+				disposeAudio(audio);
+				return;
+			}
 			await audio.play();
-			if (designAudio === audio) fadeAudio(audio, DESIGN_AUDIO_VOLUME, DESIGN_AUDIO_FADE_IN);
+			if (playbackId !== audioPlaybackId || designAudio !== audio || document.hidden) {
+				disposeAudio(audio);
+				return;
+			}
+			fadeAudio(audio, DESIGN_AUDIO_VOLUME, DESIGN_AUDIO_FADE_IN);
 		} catch {
 			if (designAudio === audio) designAudio = null;
+			disposeAudio(audio);
 		}
 	}
 
-	function fadeOutAudio() {
+	function disposeAudio(audio: HTMLAudioElement) {
+		if (designAudio === audio) designAudio = null;
+		audio.pause();
+		audio.removeAttribute('src');
+		audio.load();
+	}
+
+	function stopDesignAudio() {
+		audioPlaybackId += 1;
+		if (audioFade) {
+			clearInterval(audioFade);
+			audioFade = undefined;
+		}
+
 		const audio = designAudio;
 		designAudio = null;
 		if (!audio) return;
-		fadeAudio(audio, 0);
-		setTimeout(() => {
-			audio.pause();
-			audio.src = '';
-		}, 190);
+		disposeAudio(audio);
 	}
 
 	function setZoom(nextZoom: number) {
