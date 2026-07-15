@@ -48,6 +48,15 @@
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
 		{
+			title: 'Heaven Go Easy on Me',
+			description:
+				'Beautiful song on one of my favorite albums of all time. I love the repeated lyrics at the end.',
+			date: '7/14/2026',
+			image: 'heaven',
+			songUrl: 'https://open.spotify.com/track/22NnQwt4lNiky5m2l1u9EC?si=afbb01372677451c',
+			audioFile: '/audio/heaven.mp3'
+		},
+		{
 			title: 'Unexperience',
 			description:
 				'The inverse of "Ungeneration". From the perspective of the AI. The collage of photos represents human things.',
@@ -188,6 +197,7 @@
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
 	let audioPlaybackId = 0;
+	let audioSuspended = false;
 	const DESIGN_AUDIO_VOLUME = 0.1;
 	const DESIGN_AUDIO_DELAY = 120;
 	const DESIGN_AUDIO_FADE_IN = 1500;
@@ -207,18 +217,23 @@
 	});
 
 	$effect(() => {
-		const stopWhenHidden = () => {
-			if (document.hidden) stopDesignAudio();
+		const handleVisibilityChange = () => {
+			if (document.hidden) suspendDesignAudio();
+			else void resumeDesignAudio();
 		};
+		const handleBlur = () => suspendDesignAudio();
+		const handleFocus = () => void resumeDesignAudio();
 		const stopForPageExit = () => stopDesignAudio();
 
-		document.addEventListener('visibilitychange', stopWhenHidden);
-		window.addEventListener('blur', stopForPageExit);
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		window.addEventListener('blur', handleBlur);
+		window.addEventListener('focus', handleFocus);
 		window.addEventListener('pagehide', stopForPageExit);
 
 		return () => {
-			document.removeEventListener('visibilitychange', stopWhenHidden);
-			window.removeEventListener('blur', stopForPageExit);
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			window.removeEventListener('blur', handleBlur);
+			window.removeEventListener('focus', handleFocus);
 			window.removeEventListener('pagehide', stopForPageExit);
 			stopDesignAudio();
 		};
@@ -238,7 +253,7 @@
 	}
 
 	function fadeAudio(audio: HTMLAudioElement, target: number, duration = 180) {
-		if (audioFade) clearInterval(audioFade);
+		clearAudioFade();
 		const from = audio.volume;
 		const started = performance.now();
 		audioFade = setInterval(() => {
@@ -258,40 +273,81 @@
 		const audio = new Audio(design.audioFile);
 		const playbackId = audioPlaybackId;
 		designAudio = audio;
+		audioSuspended = false;
 		audio.loop = true;
 		audio.volume = 0;
 		audio.currentTime = design.audioStart ?? 0;
 		try {
 			await new Promise((resolve) => setTimeout(resolve, DESIGN_AUDIO_DELAY));
-			if (playbackId !== audioPlaybackId || designAudio !== audio || document.hidden) {
+			if (playbackId !== audioPlaybackId || designAudio !== audio) {
 				disposeAudio(audio);
 				return;
 			}
+			if (document.hidden || audioSuspended) return;
 			await audio.play();
-			if (playbackId !== audioPlaybackId || designAudio !== audio || document.hidden) {
+			if (playbackId !== audioPlaybackId || designAudio !== audio) {
 				disposeAudio(audio);
+				return;
+			}
+			if (document.hidden || audioSuspended) {
+				suspendDesignAudio();
 				return;
 			}
 			fadeAudio(audio, DESIGN_AUDIO_VOLUME, DESIGN_AUDIO_FADE_IN);
 		} catch {
-			if (designAudio === audio) designAudio = null;
 			disposeAudio(audio);
 		}
 	}
 
 	function disposeAudio(audio: HTMLAudioElement) {
-		if (designAudio === audio) designAudio = null;
+		if (designAudio === audio) {
+			designAudio = null;
+			audioSuspended = false;
+		}
 		audio.pause();
 		audio.removeAttribute('src');
 		audio.load();
 	}
 
+	function clearAudioFade() {
+		if (!audioFade) return;
+		clearInterval(audioFade);
+		audioFade = undefined;
+	}
+
+	function suspendDesignAudio() {
+		if (!designAudio) return;
+		audioSuspended = true;
+		clearAudioFade();
+		designAudio.pause();
+	}
+
+	async function resumeDesignAudio() {
+		const audio = designAudio;
+		if (!audio || !activeDesign || !audioSuspended || document.hidden) return;
+
+		const playbackId = audioPlaybackId;
+		audioSuspended = false;
+		try {
+			await audio.play();
+			if (playbackId !== audioPlaybackId || designAudio !== audio) {
+				disposeAudio(audio);
+				return;
+			}
+			if (document.hidden || audioSuspended) {
+				suspendDesignAudio();
+				return;
+			}
+			fadeAudio(audio, DESIGN_AUDIO_VOLUME, 300);
+		} catch {
+			if (designAudio === audio) audioSuspended = true;
+		}
+	}
+
 	function stopDesignAudio() {
 		audioPlaybackId += 1;
-		if (audioFade) {
-			clearInterval(audioFade);
-			audioFade = undefined;
-		}
+		audioSuspended = false;
+		clearAudioFade();
 
 		const audio = designAudio;
 		designAudio = null;

@@ -117,6 +117,18 @@
         "full": "/designs/growing-dying-full.webp"
       }
     },
+    "heaven": {
+      "source": "heaven.png",
+      "sourceSize": [
+        1421,
+        2011
+      ],
+      "outputs": {
+        "480": "/designs/heaven-480.webp",
+        "960": "/designs/heaven-960.webp",
+        "full": "/designs/heaven-full.webp"
+      }
+    },
     "marietta": {
       "source": "marietta.png",
       "sourceSize": [
