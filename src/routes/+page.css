@@ -459,7 +459,9 @@ h2 {
 }
 
 .lightbox-caption p + p {
+	max-width: 42ch;
 	color: rgb(255 241 174 / 0.68);
+	text-wrap: pretty;
 }
 
 @media (max-width: 850px) {

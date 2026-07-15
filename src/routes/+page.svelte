@@ -48,6 +48,14 @@
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
 		{
+			title: 'Never Meant',
+			description:
+				'One of the most iconic riffs of all time, and another one of my favorite songs of all time. I think everyone deserves to hear this riff atleast once in their life.',
+			date: '7/14/2026',
+			image: 'never-meant',
+			audioFile: '/audio/never-meant.mp3'
+		},
+		{
 			title: 'Heaven Go Easy on Me',
 			description:
 				'Beautiful song on one of my favorite albums of all time. I love the repeated lyrics at the end.',
@@ -62,6 +70,21 @@
 				'The inverse of "Ungeneration". From the perspective of the AI. The collage of photos represents human things.',
 			date: '7/14/2026',
 			image: 'experienced'
+		},
+		{
+			title: 'California Stars',
+			description:
+				'Simple design, not really much to it. This album "Mermaid Avenue" has some great songs.',
+			date: '7/14/2026',
+			image: 'california-stars',
+			audioFile: '/audio/california-stars.mp3'
+		},
+		{
+			title: 'Carry You Over',
+			description: 'Found a gem in Tigers Jaw through this song. ',
+			date: '7/14/2026',
+			image: 'carry-you-over',
+			audioFile: '/audio/carry-you-over.mp3'
 		},
 		{
 			title: 'Ungeneration',
@@ -198,9 +221,9 @@
 	let audioFade: ReturnType<typeof setInterval> | undefined;
 	let audioPlaybackId = 0;
 	let audioSuspended = false;
-	const DESIGN_AUDIO_VOLUME = 0.1;
-	const DESIGN_AUDIO_DELAY = 120;
-	const DESIGN_AUDIO_FADE_IN = 1500;
+	const DESIGN_AUDIO_VOLUME = 0.2;
+	const DESIGN_AUDIO_DELAY = 150;
+	const DESIGN_AUDIO_FADE_IN = 1200;
 
 	$effect(() => {
 		if (!activeDesign) return;

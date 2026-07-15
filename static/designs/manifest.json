@@ -33,6 +33,30 @@
         "full": "/designs/americanfootball-full.webp"
       }
     },
+    "california-stars": {
+      "source": "california-stars.png",
+      "sourceSize": [
+        2480,
+        3332
+      ],
+      "outputs": {
+        "480": "/designs/california-stars-480.webp",
+        "960": "/designs/california-stars-960.webp",
+        "full": "/designs/california-stars-full.webp"
+      }
+    },
+    "carry-you-over": {
+      "source": "carry-you-over.png",
+      "sourceSize": [
+        1804,
+        2551
+      ],
+      "outputs": {
+        "480": "/designs/carry-you-over-480.webp",
+        "960": "/designs/carry-you-over-960.webp",
+        "full": "/designs/carry-you-over-full.webp"
+      }
+    },
     "chateau": {
       "source": "chateau.png",
       "sourceSize": [
@@ -175,6 +199,18 @@
         "480": "/designs/need-480.webp",
         "960": "/designs/need-960.webp",
         "full": "/designs/need-full.webp"
+      }
+    },
+    "never-meant": {
+      "source": "never-meant.png",
+      "sourceSize": [
+        1533,
+        2168
+      ],
+      "outputs": {
+        "480": "/designs/never-meant-480.webp",
+        "960": "/designs/never-meant-960.webp",
+        "full": "/designs/never-meant-full.webp"
       }
     },
     "openai": {
