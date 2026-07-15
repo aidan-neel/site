@@ -69,6 +69,18 @@
         "full": "/designs/eagles-full.webp"
       }
     },
+    "experienced": {
+      "source": "experienced.png",
+      "sourceSize": [
+        1682,
+        2379
+      ],
+      "outputs": {
+        "480": "/designs/experienced-480.webp",
+        "960": "/designs/experienced-960.webp",
+        "full": "/designs/experienced-full.webp"
+      }
+    },
     "figma": {
       "source": "figma.png",
       "sourceSize": [

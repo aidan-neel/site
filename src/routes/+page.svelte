@@ -48,6 +48,13 @@
 	// Add a songUrl to any design to show its View Song link.
 	const designs: Design[] = [
 		{
+			title: 'Unexperience',
+			description:
+				'The inverse of "Ungeneration". From the perspective of the AI. The collage of photos represents human things.',
+			date: '7/14/2026',
+			image: 'experienced'
+		},
+		{
 			title: 'Ungeneration',
 			description:
 				'"Unoriginal generation". I am not an anti-AI person, just thought it was an interesting concept.',
