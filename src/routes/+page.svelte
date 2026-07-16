@@ -34,6 +34,8 @@
 		date: string;
 		image: string;
 		songUrl?: string;
+		songTitle?: string;
+		artist?: string;
 		audioFile?: string;
 		audioStart?: number;
 	};
@@ -45,15 +47,29 @@
 		`/designs/${image}-480.webp 480w, /designs/${image}-960.webp 960w`;
 	const fullImage = (image: string) => `/designs/${image}-full.webp`;
 
-	// Add a songUrl to any design to show its View Song link.
+	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
+		{
+			title: 'The Way Back',
+			description:
+				'My old man had a pontiac firebird, although I am yet to see proof. I really like the picture this song builds: "Baseball in the fall with a warm glove" is my favorite part. Never liked baseball but even I can just feel that when hearing it.',
+			date: '7/16/2026',
+			image: 'the-way-back',
+			audioFile: '/audio/the-way-back.mp3',
+			songTitle: 'The Way Back',
+			artist: 'Zach Bryan',
+			songUrl: 'https://open.spotify.com/track/6aPY5G8JEQJtgpaIMyElNX?si=3966782ed78f4f89'
+		},
 		{
 			title: 'Never Meant',
 			description:
 				'One of the most iconic riffs of all time, and another one of my favorite songs of all time. I think everyone deserves to hear this riff atleast once in their life.',
 			date: '7/14/2026',
 			image: 'never-meant',
-			audioFile: '/audio/never-meant.mp3'
+			audioFile: '/audio/never-meant.mp3',
+			songTitle: 'Never Meant',
+			artist: 'American Football',
+			songUrl: 'https://open.spotify.com/track/6kZqCqD1r08sJAQ1TjuEpM?si=49ea30a0b80341d6'
 		},
 		{
 			title: 'Heaven Go Easy on Me',
@@ -62,6 +78,8 @@
 			date: '7/14/2026',
 			image: 'heaven',
 			songUrl: 'https://open.spotify.com/track/22NnQwt4lNiky5m2l1u9EC?si=afbb01372677451c',
+			songTitle: 'Heaven Go Easy on Me',
+			artist: 'The Head and the Heart',
 			audioFile: '/audio/heaven.mp3'
 		},
 		{
@@ -77,6 +95,9 @@
 				'Simple design, not really much to it. This album "Mermaid Avenue" has some great songs.',
 			date: '7/14/2026',
 			image: 'california-stars',
+			songUrl: 'https://open.spotify.com/track/5B2mJIk8yso3ugyvfHR62A?si=45b26f44a4cf4a12',
+			songTitle: 'California Stars',
+			artist: 'Billy Bragg, Wilco',
 			audioFile: '/audio/california-stars.mp3'
 		},
 		{
@@ -84,6 +105,9 @@
 			description: 'Found a gem in Tigers Jaw through this song. ',
 			date: '7/14/2026',
 			image: 'carry-you-over',
+			songUrl: 'https://open.spotify.com/track/6mcGLKit6HPer9tu2B5Srw?si=69acf2aa9b454b9e',
+			songTitle: 'Carry You Over',
+			artist: 'Tigers Jaw',
 			audioFile: '/audio/carry-you-over.mp3'
 		},
 		{
@@ -99,6 +123,8 @@
 			date: '7/11/2026',
 			image: 'safe-in-your-skin',
 			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
+			songTitle: 'Safe In Your Skin',
+			artist: 'Tigers Jaw',
 			audioFile: '/audio/safe-in-your-skin.mp3'
 		},
 		{
@@ -107,6 +133,8 @@
 			date: '7/12/2026',
 			image: 'growing-dying',
 			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
+			songTitle: 'Growing / Dying',
+			artist: 'The Backseat Lovers',
 			audioFile: '/audio/growing-dying.mp3'
 		},
 		{
@@ -115,6 +143,8 @@
 			date: '7/13/2026',
 			image: 'growing-dying-alt',
 			songUrl: 'https://open.spotify.com/track/5zMxLq47V3Gr0LlFvxiFXS?si=f9f50a57dcdf4540',
+			songTitle: 'Growing / Dying',
+			artist: 'The Backseat Lovers',
 			audioFile: '/audio/growing-dying.mp3'
 		},
 		{
@@ -123,6 +153,8 @@
 			date: '7/12/2026',
 			image: 'all-my-friends',
 			songUrl: 'https://open.spotify.com/track/2Ud3deeqLAG988pfW0Kwcl?si=1e574fa6d8484db8',
+			songTitle: 'All My Friends',
+			artist: 'LCD Soundsystem',
 			audioFile: '/audio/all-my-friends.mp3'
 		},
 		{
@@ -144,6 +176,8 @@
 			date: '7/11/2026',
 			image: 'need',
 			songUrl: 'https://open.spotify.com/track/1AIyEFW7aET5gFB0tjRxP9?si=b1dee484ae464d5a',
+			songTitle: 'Need',
+			artist: 'Pinegrove',
 			audioFile: '/audio/need.mp3'
 		},
 		{
@@ -184,6 +218,8 @@
 			date: '7/11/2026',
 			image: 'reconstruction',
 			songUrl: 'https://open.spotify.com/track/29H6lyOfySXBLw5HAJpDFB?si=4ae97f7fef3b4cd1',
+			songTitle: 'Reconstruction Site',
+			artist: 'The Weakerthans',
 			audioFile: '/audio/reconstruction-site.mp3',
 			audioStart: 71
 		},
@@ -424,21 +460,46 @@
 	}
 
 	function reveal(node: HTMLElement) {
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (entry.isIntersecting) {
-					node.classList.add('in');
-					observer.disconnect();
-				}
-			},
-			{ threshold: 0.14 }
-		);
+		let revealed = false;
+		let observer: IntersectionObserver | undefined;
+		const revealNode = () => {
+			if (revealed) return;
+			revealed = true;
+			node.classList.add('in');
+			observer?.disconnect();
+		};
 
-		observer.observe(node);
+		if ('IntersectionObserver' in window) {
+			observer = new IntersectionObserver(
+				([entry]) => {
+					if (entry.isIntersecting) revealNode();
+				},
+				{ threshold: 0.14 }
+			);
+			observer.observe(node);
+		} else {
+			revealNode();
+		}
+
+		const checkInitialPosition = () => {
+			// Scroll restoration can happen after hydration. Reveal everything on a
+			// restored deep link so content cannot remain hidden above the viewport.
+			if (window.scrollY > 0) {
+				revealNode();
+				return;
+			}
+
+			const { top, bottom } = node.getBoundingClientRect();
+			if (top < window.innerHeight && bottom > 0) revealNode();
+		};
+		const initialFrame = requestAnimationFrame(checkInitialPosition);
+		const initialFallback = window.setTimeout(checkInitialPosition, 500);
 
 		return {
 			destroy() {
-				observer.disconnect();
+				cancelAnimationFrame(initialFrame);
+				window.clearTimeout(initialFallback);
+				observer?.disconnect();
 			}
 		};
 	}
@@ -543,11 +604,17 @@
 						<h3><ZoomText text={design.title} /></h3>
 						<p>{design.description}</p>
 						<time><ZoomText text={design.date} /></time>
-						{#if design.songUrl}
-							<a class="song-link" href={design.songUrl} target="_blank" rel="noreferrer">
-								<ZoomText text="View Song" />
-								<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
-							</a>
+						{#if design.songTitle && design.artist}
+							{#if design.songUrl}
+								<a class="song-link" href={design.songUrl} target="_blank" rel="noreferrer">
+									<ZoomText text={`${design.songTitle} by ${design.artist}`} />
+									<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
+								</a>
+							{:else}
+								<span class="song-link">
+									<ZoomText text={`${design.songTitle} by ${design.artist}`} />
+								</span>
+							{/if}
 						{/if}
 					</div>
 				</article>

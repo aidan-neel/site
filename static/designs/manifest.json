@@ -261,6 +261,18 @@
         "full": "/designs/t1-full.webp"
       }
     },
+    "the-way-back": {
+      "source": "the-way-back.png",
+      "sourceSize": [
+        1492,
+        2110
+      ],
+      "outputs": {
+        "480": "/designs/the-way-back-480.webp",
+        "960": "/designs/the-way-back-960.webp",
+        "full": "/designs/the-way-back-full.webp"
+      }
+    },
     "ungeneration": {
       "source": "ungeneration.png",
       "sourceSize": [
