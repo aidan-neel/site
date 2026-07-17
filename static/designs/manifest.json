@@ -69,6 +69,18 @@
         "full": "/designs/chateau-full.webp"
       }
     },
+    "chest-pain": {
+      "source": "chest-pain.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/chest-pain-480.webp",
+        "960": "/designs/chest-pain-960.webp",
+        "full": "/designs/chest-pain-full.webp"
+      }
+    },
     "dothatagain": {
       "source": "dothatagain.png",
       "sourceSize": [
@@ -151,6 +163,18 @@
         "480": "/designs/heaven-480.webp",
         "960": "/designs/heaven-960.webp",
         "full": "/designs/heaven-full.webp"
+      }
+    },
+    "little-joy": {
+      "source": "little-joy.png",
+      "sourceSize": [
+        1575,
+        2227
+      ],
+      "outputs": {
+        "480": "/designs/little-joy-480.webp",
+        "960": "/designs/little-joy-960.webp",
+        "full": "/designs/little-joy-full.webp"
       }
     },
     "marietta": {
@@ -249,6 +273,18 @@
         "full": "/designs/safe-in-your-skin-full.webp"
       }
     },
+    "slow-it-down": {
+      "source": "slow-it-down.png",
+      "sourceSize": [
+        1585,
+        2242
+      ],
+      "outputs": {
+        "480": "/designs/slow-it-down-480.webp",
+        "960": "/designs/slow-it-down-960.webp",
+        "full": "/designs/slow-it-down-full.webp"
+      }
+    },
     "t1": {
       "source": "t1.png",
       "sourceSize": [
@@ -273,6 +309,18 @@
         "full": "/designs/the-way-back-full.webp"
       }
     },
+    "this-must-be-the-place": {
+      "source": "this-must-be-the-place.png",
+      "sourceSize": [
+        1591,
+        2250
+      ],
+      "outputs": {
+        "480": "/designs/this-must-be-the-place-480.webp",
+        "960": "/designs/this-must-be-the-place-960.webp",
+        "full": "/designs/this-must-be-the-place-full.webp"
+      }
+    },
     "ungeneration": {
       "source": "ungeneration.png",
       "sourceSize": [
@@ -283,6 +331,18 @@
         "480": "/designs/ungeneration-480.webp",
         "960": "/designs/ungeneration-960.webp",
         "full": "/designs/ungeneration-full.webp"
+      }
+    },
+    "where-am-i": {
+      "source": "where-am-i.png",
+      "sourceSize": [
+        1754,
+        2482
+      ],
+      "outputs": {
+        "480": "/designs/where-am-i-480.webp",
+        "960": "/designs/where-am-i-960.webp",
+        "full": "/designs/where-am-i-full.webp"
       }
     }
   }

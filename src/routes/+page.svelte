@@ -50,9 +50,56 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
-			title: 'The Way Back',
+			title: 'Where Am I?',
+			description: 'A different piece of the same song',
+			date: '7/17/2026',
+			image: 'where-am-i',
+			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
+			songTitle: 'Safe In Your Skin / Where Am I?',
+			artist: 'Tigers Jaw',
+			audioFile: '/audio/where-am-i.mp3'
+		},
+		{
+			title: 'Slow It Down',
+			description: 'Another Lumineers song.',
+			date: '7/17/2026',
+			image: 'slow-it-down',
+			songUrl: 'https://open.spotify.com/track/5OFcjrC1OiRSBylQgF5HDD',
+			songTitle: 'Slow It Down',
+			artist: 'The Lumineers',
+			audioFile: '/audio/slow-it-down.mp3'
+		},
+		{
+			title: 'Chest Pain',
+			description: 'Simple piece, was just testing out this new font.',
+			date: '7/17/2026',
+			image: 'chest-pain',
+			songUrl: 'https://open.spotify.com/track/2XUx8PCXGpP1XhZJMGiUol',
+			songTitle: 'Chest Pain (I Love)',
+			artist: 'Malcolm Todd',
+			audioFile: '/audio/chest-pain.mp3'
+		},
+		{
+			title: "Joy's Got Somewhere to Be",
+			description: 'Look at this little guy go!',
+			date: '7/17/2026',
+			image: 'little-joy'
+		},
+
+		{
+			title: 'This Must Be the Place',
 			description:
-				'My old man had a pontiac firebird, although I am yet to see proof. I really like the picture this song builds: "Baseball in the fall with a warm glove" is my favorite part. Never liked baseball but even I can just feel that when hearing it.',
+				'Great song. My mom used to play The Lumineers a ton when we lived in England. This one specifically is a cover of The Talking Heads.',
+			date: '7/17/2026',
+			image: 'this-must-be-the-place',
+			songUrl: 'https://open.spotify.com/track/4tBYvaAQcdJhPnPLxD6QB7?si=5b9d3a0a99fa4ee0',
+			songTitle: 'This Must Be the Place (Naive Melody)',
+			artist: 'The Lumineers',
+			audioFile: '/audio/this-must-be-the-place.mp3'
+		},
+		{
+			title: 'The Way Back',
+			description: 'The leaves might change but the roots stuck.',
 			date: '7/16/2026',
 			image: 'the-way-back',
 			audioFile: '/audio/the-way-back.mp3',
@@ -123,7 +170,7 @@
 			date: '7/11/2026',
 			image: 'safe-in-your-skin',
 			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=91bd6160191a49ba',
-			songTitle: 'Safe In Your Skin',
+			songTitle: 'Safe In Your Skin / Where Am I?',
 			artist: 'Tigers Jaw',
 			audioFile: '/audio/safe-in-your-skin.mp3'
 		},
