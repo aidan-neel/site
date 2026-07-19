@@ -50,6 +50,57 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'Rivers and Roads',
+			description: 'If you think about it, nothing really is as it has been.',
+			date: '7/19/2026',
+			image: 'rivers-and-roads',
+			songTitle: 'Rivers and Roads',
+			artist: 'The Head and the Heart',
+			songUrl: 'https://open.spotify.com/track/5uXacxdjE3cNAzXmtO79o9',
+			audioFile: '/audio/rivers-and-roads.mp3'
+		},
+		{
+			title: 'Brains',
+			description: 'Creepy. Hear the lyrics to understand.',
+			date: '7/19/2026',
+			image: 'brains',
+			songTitle: 'Brains',
+			artist: 'Marietta',
+			songUrl: 'https://open.spotify.com/track/7DHaaPaOwQI8mXdNyd1Uq3?si=40d8d5b093a44202',
+			audioFile: '/audio/brains.mp3'
+		},
+		{
+			title: 'Down in the Valley',
+			description: 'Another 10/10 album.',
+			date: '7/19/2026',
+			image: 'california',
+			songTitle: 'Down in the Valley',
+			artist: 'The Head and the Heart',
+			songUrl: 'https://open.spotify.com/track/6soFQo67vXsBPU5hRVnYLt',
+			audioFile: '/audio/california.mp3'
+		},
+		{
+			title: 'The Outer Wilds',
+			description: 'Inspired by the game "The Outer Wilds" and its soundtrack.',
+			date: '7/19/2026',
+			image: 'traveler',
+			songTitle: 'Travelers',
+			artist: 'Andrew Prahlow',
+			songUrl: 'https://open.spotify.com/track/607Rub0edH75AmHEIsuw8N',
+			audioFile: '/audio/travelers.mp3'
+		},
+		{
+			title: 'VCR',
+			description:
+				'"Waiting to Spill" is one of my favorite albums of all time. Every song (besides Silhouette) is perfect.',
+			date: '7/19/2026',
+			image: 'vcr',
+			songTitle: 'Morning in the Aves',
+			artist: 'The Backseat Lovers',
+			songUrl: 'https://open.spotify.com/track/6mWlah5Cxz8qTcW17pbj7h',
+			audioFile: '/audio/vcr.mp3'
+		},
+		{
 			title: 'Where Am I?',
 			description: 'A different piece of the same song',
 			date: '7/17/2026',
@@ -146,16 +197,6 @@
 			songTitle: 'California Stars',
 			artist: 'Billy Bragg, Wilco',
 			audioFile: '/audio/california-stars.mp3'
-		},
-		{
-			title: 'Carry You Over',
-			description: 'Found a gem in Tigers Jaw through this song. ',
-			date: '7/14/2026',
-			image: 'carry-you-over',
-			songUrl: 'https://open.spotify.com/track/6mcGLKit6HPer9tu2B5Srw?si=69acf2aa9b454b9e',
-			songTitle: 'Carry You Over',
-			artist: 'Tigers Jaw',
-			audioFile: '/audio/carry-you-over.mp3'
 		},
 		{
 			title: 'Ungeneration',
@@ -307,6 +348,7 @@
 	const DESIGN_AUDIO_VOLUME = 0.2;
 	const DESIGN_AUDIO_DELAY = 150;
 	const DESIGN_AUDIO_FADE_IN = 1200;
+	const DESIGN_AUDIO_FADE_OUT = 350;
 
 	$effect(() => {
 		if (!activeDesign) return;
@@ -355,7 +397,7 @@
 
 	function closeLightbox() {
 		activeDesign = null;
-		stopDesignAudio();
+		stopDesignAudio(true);
 	}
 
 	function fadeAudio(audio: HTMLAudioElement, target: number, duration = 180) {
@@ -450,14 +492,24 @@
 		}
 	}
 
-	function stopDesignAudio() {
+	function stopDesignAudio(fadeOut = false) {
 		audioPlaybackId += 1;
 		audioSuspended = false;
 		clearAudioFade();
 
 		const audio = designAudio;
-		designAudio = null;
 		if (!audio) return;
+		if (fadeOut && !audio.paused && audio.volume > 0) {
+			fadeAudio(audio, 0, DESIGN_AUDIO_FADE_OUT);
+			window.setTimeout(() => {
+				if (designAudio === audio) {
+					designAudio = null;
+					disposeAudio(audio);
+				}
+			}, DESIGN_AUDIO_FADE_OUT);
+			return;
+		}
+		designAudio = null;
 		disposeAudio(audio);
 	}
 

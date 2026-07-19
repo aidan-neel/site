@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Add Design Song'
+  short_description: 'Add designs with music and audio'
+  default_prompt: 'Use $add-design-song to add new gallery designs, songs, assets, and audio behavior.'

@@ -33,6 +33,18 @@
         "full": "/designs/americanfootball-full.webp"
       }
     },
+    "brains": {
+      "source": "brains.png",
+      "sourceSize": [
+        1577,
+        2231
+      ],
+      "outputs": {
+        "480": "/designs/brains-480.webp",
+        "960": "/designs/brains-960.webp",
+        "full": "/designs/brains-full.webp"
+      }
+    },
     "california-stars": {
       "source": "california-stars.png",
       "sourceSize": [
@@ -43,6 +55,18 @@
         "480": "/designs/california-stars-480.webp",
         "960": "/designs/california-stars-960.webp",
         "full": "/designs/california-stars-full.webp"
+      }
+    },
+    "california": {
+      "source": "california.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/california-480.webp",
+        "960": "/designs/california-960.webp",
+        "full": "/designs/california-full.webp"
       }
     },
     "carry-you-over": {
@@ -261,6 +285,18 @@
         "full": "/designs/reconstruction-full.webp"
       }
     },
+    "rivers-and-roads": {
+      "source": "rivers-and-roads.png",
+      "sourceSize": [
+        1613,
+        2282
+      ],
+      "outputs": {
+        "480": "/designs/rivers-and-roads-480.webp",
+        "960": "/designs/rivers-and-roads-960.webp",
+        "full": "/designs/rivers-and-roads-full.webp"
+      }
+    },
     "safe-in-your-skin": {
       "source": "safe-in-your-skin.png",
       "sourceSize": [
@@ -321,6 +357,18 @@
         "full": "/designs/this-must-be-the-place-full.webp"
       }
     },
+    "traveler": {
+      "source": "traveler.png",
+      "sourceSize": [
+        1768,
+        2502
+      ],
+      "outputs": {
+        "480": "/designs/traveler-480.webp",
+        "960": "/designs/traveler-960.webp",
+        "full": "/designs/traveler-full.webp"
+      }
+    },
     "ungeneration": {
       "source": "ungeneration.png",
       "sourceSize": [
@@ -331,6 +379,18 @@
         "480": "/designs/ungeneration-480.webp",
         "960": "/designs/ungeneration-960.webp",
         "full": "/designs/ungeneration-full.webp"
+      }
+    },
+    "vcr": {
+      "source": "vcr.png",
+      "sourceSize": [
+        1264,
+        1788
+      ],
+      "outputs": {
+        "480": "/designs/vcr-480.webp",
+        "960": "/designs/vcr-960.webp",
+        "full": "/designs/vcr-full.webp"
       }
     },
     "where-am-i": {
