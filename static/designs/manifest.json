@@ -4,9 +4,9 @@
       480,
       960
     ],
-    "fullMaxWidth": 1800,
-    "cardQuality": 80,
-    "fullQuality": 86
+    "fullMaxWidth": 2400,
+    "cardQuality": 82,
+    "fullQuality": 92
   },
   "designs": {
     "all-my-friends": {
@@ -105,6 +105,30 @@
         "full": "/designs/chest-pain-full.webp"
       }
     },
+    "cup": {
+      "source": "cup.png",
+      "sourceSize": [
+        1898,
+        2685
+      ],
+      "outputs": {
+        "480": "/designs/cup-480.webp",
+        "960": "/designs/cup-960.webp",
+        "full": "/designs/cup-full.webp"
+      }
+    },
+    "dart": {
+      "source": "dart.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/dart-480.webp",
+        "960": "/designs/dart-960.webp",
+        "full": "/designs/dart-full.webp"
+      }
+    },
     "dothatagain": {
       "source": "dothatagain.png",
       "sourceSize": [
@@ -139,6 +163,18 @@
         "480": "/designs/experienced-480.webp",
         "960": "/designs/experienced-960.webp",
         "full": "/designs/experienced-full.webp"
+      }
+    },
+    "feeling": {
+      "source": "feeling.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/feeling-480.webp",
+        "960": "/designs/feeling-960.webp",
+        "full": "/designs/feeling-full.webp"
       }
     },
     "figma": {
@@ -199,6 +235,18 @@
         "480": "/designs/little-joy-480.webp",
         "960": "/designs/little-joy-960.webp",
         "full": "/designs/little-joy-full.webp"
+      }
+    },
+    "lorem-ipsum": {
+      "source": "lorem-ipsum.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/lorem-ipsum-480.webp",
+        "960": "/designs/lorem-ipsum-960.webp",
+        "full": "/designs/lorem-ipsum-full.webp"
       }
     },
     "marietta": {

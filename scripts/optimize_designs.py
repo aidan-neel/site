@@ -28,9 +28,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIR = ROOT / "src/lib/assets/designs"
 OUTPUT_DIR = ROOT / "static/designs"
 CARD_WIDTHS = (480, 960)
-FULL_MAX_WIDTH = 1800
-CARD_QUALITY = 80
-FULL_QUALITY = 86
+FULL_MAX_WIDTH = 2400
+CARD_QUALITY = 82
+FULL_QUALITY = 92
 CONFIG = {
 	"cardWidths": CARD_WIDTHS,
 	"fullMaxWidth": FULL_MAX_WIDTH,
@@ -58,7 +58,7 @@ def save_webp(image: Image.Image, output: Path, quality: int) -> None:
 	temporary = output.with_suffix(".tmp.webp")
 	# Method 4 keeps the full gallery run comfortably fast while retaining most
 	# of WebP's compression benefit. The source PNGs are often very large.
-	clean.save(temporary, "WEBP", quality=quality, method=4, optimize=True)
+	clean.save(temporary, "WEBP", quality=quality, method=6, optimize=True)
 	temporary.replace(output)
 
 

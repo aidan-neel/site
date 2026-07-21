@@ -1,16 +1,141 @@
 @import './fonts.generated.css';
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
 @theme {
-	--font-sans: 'Geist', Arial, sans-serif;
+	--font-sans: 'Instrument Sans', Arial, sans-serif;
+}
+
+:root {
+	--bg: #ffffff;
+	--fg: #0a0a0a;
+	--fg-muted: #6b6b6b;
+	--fg-subtle: #9a9a9a;
+	--border: rgb(0 0 0 / 0.08);
+	--surface: #f4f4f4;
+	--surface-hover: #ebebeb;
+	--card: #f4f4f4;
+	--preview: #0a0a0a;
+	--preview-fg: #f5f5f5;
+	--overlay: rgb(0 0 0 / 0.82);
+	--status-active-fg: #157f3d;
+	--status-active-bg: rgb(21 127 61 / 0.09);
+	--status-wip-fg: #a16207;
+	--status-wip-bg: rgb(161 98 7 / 0.1);
+	--status-offline-fg: #6b6b6b;
+	--status-offline-bg: rgb(0 0 0 / 0.05);
+}
+
+[data-theme='dark'] {
+	--bg: #000000;
+	--fg: #f5f5f5;
+	--fg-muted: #a0a0a0;
+	--fg-subtle: #6b6b6b;
+	--border: rgb(255 255 255 / 0.1);
+	--surface: #161616;
+	--surface-hover: #1f1f1f;
+	--card: #161616;
+	--preview: #111111;
+	--preview-fg: #f5f5f5;
+	--overlay: rgb(0 0 0 / 0.86);
+	--status-active-fg: #4ade80;
+	--status-active-bg: rgb(74 222 128 / 0.12);
+	--status-wip-fg: #fbbf24;
+	--status-wip-bg: rgb(251 191 36 / 0.12);
+	--status-offline-fg: #a0a0a0;
+	--status-offline-bg: rgb(255 255 255 / 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--bg: #000000;
+		--fg: #f5f5f5;
+		--fg-muted: #a0a0a0;
+		--fg-subtle: #6b6b6b;
+		--border: rgb(255 255 255 / 0.1);
+		--surface: #161616;
+		--surface-hover: #1f1f1f;
+		--card: #161616;
+		--preview: #111111;
+		--preview-fg: #f5f5f5;
+		--overlay: rgb(0 0 0 / 0.86);
+		--status-active-fg: #4ade80;
+		--status-active-bg: rgb(74 222 128 / 0.12);
+		--status-wip-fg: #fbbf24;
+		--status-wip-bg: rgb(251 191 36 / 0.12);
+		--status-offline-fg: #a0a0a0;
+		--status-offline-bg: rgb(255 255 255 / 0.08);
+	}
 }
 
 html {
 	font-family: 'Geist', Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background: var(--bg);
+	color: var(--fg);
+	color-scheme: light dark;
+}
+
+[data-theme='light'] {
+	color-scheme: light;
+}
+
+[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+::selection {
+	background: #0a0a0a;
+	color: #f5f5f5;
+}
+
+[data-theme='dark'] ::selection {
+	background: #f5f5f5;
+	color: #0a0a0a;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) ::selection {
+		background: #f5f5f5;
+		color: #0a0a0a;
+	}
+}
+
+/* Enabled on first toggle so the initial theme resolve never animates. */
+html.theme-animated,
+html.theme-animated body {
+	transition:
+		background-color 340ms ease,
+		color 340ms ease;
 }
 
 * {
 	@apply text-pretty;
+}
+
+.reveal-pending {
+	opacity: 0;
+}
+
+.reveal {
+	animation: reveal-enter 640ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes reveal-enter {
+	from {
+		opacity: 0;
+		transform: translateY(var(--reveal-y, 12px));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal-pending {
+		opacity: 1;
+	}
+
+	.reveal {
+		animation: none;
+	}
 }

@@ -1,32 +1,36 @@
 <script lang="ts">
-	import { cubicOut } from 'svelte/easing';
+	import { onMount } from 'svelte';
+	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
-	import { ArrowUpRight } from 'lucide-svelte';
-	import ZoomText from '$lib/components/ZoomText.svelte';
+	import { ArrowUpRight, Moon, Music, Sun, Volume2, VolumeX } from 'lucide-svelte';
+	import { reveal } from '$lib/reveal';
 	import './+page.css';
 
 	const projects = [
 		{
 			title: 'Sivir UI',
 			description: 'A reusable component library for SvelteKit.',
-			status: 'Work in progress'
+			status: 'Work in progress',
+			tone: 'wip',
+			url: 'https://github.com/aidan-neel/sivir-ui'
 		},
 		{
 			title: 'Project ORION',
 			description: 'Hackathon-winning radar web application.',
-			status: 'Site offline'
+			status: 'Site offline',
+			tone: 'offline',
+			url: 'https://orion.harville.dev/'
 		},
 		{
 			title: 'Killm',
 			description: 'Disables mainstream LLM APIs and apps to reduce AI dependencies.',
-			status: 'Project'
+			status: 'Project',
+			tone: 'active',
+			url: 'https://github.com/aidan-neel/killm'
 		}
 	];
 
-	const HERO_STEP = 0.04;
-	const heroLine1 =
-		'Committed to continuous learning in the ever evolving field of technology.'.split(' ');
-	const heroLine2 = ''.split(' ');
+	const heroText = 'Committed to continuous learning in the ever evolving field of technology.';
 
 	type Design = {
 		title: string;
@@ -41,7 +45,7 @@
 	};
 
 	const CARD_IMAGE_SIZES =
-		'(max-width: 850px) calc(100vw - 40px), (max-width: 1924px) calc((100vw - 124px) / 3), 600px';
+		'(max-width: 700px) 50vw, (max-width: 1100px) 33vw, (max-width: 1600px) 25vw, 360px';
 	const cardImage = (image: string) => `/designs/${image}-480.webp`;
 	const cardImageSet = (image: string) =>
 		`/designs/${image}-480.webp 480w, /designs/${image}-960.webp 960w`;
@@ -49,6 +53,31 @@
 
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
+		{
+			title: 'Feeling',
+			description: '',
+			date: '7/21/2026',
+			image: 'feeling',
+			audioFile: '/audio/feeling.mp3'
+		},
+		{
+			title: 'Lorem Ipsum',
+			description: '',
+			date: '7/20/2026',
+			image: 'lorem-ipsum'
+		},
+		{
+			title: 'Cup',
+			description: '',
+			date: '7/20/2026',
+			image: 'cup'
+		},
+		{
+			title: 'Dart',
+			description: '',
+			date: '7/20/2026',
+			image: 'dart'
+		},
 		{
 			title: 'Rivers and Roads',
 			description: 'If you think about it, nothing really is as it has been.',
@@ -341,14 +370,80 @@
 	let panStartY = 0;
 	let panOriginX = 0;
 	let panOriginY = 0;
+	let theme = $state<'light' | 'dark'>('light');
+	let musicVolume = $state(20);
+	let volumeOpen = $state(false);
+	let loadedDesigns = $state(new Set<string>());
+	let lightboxImageLoaded = $state(false);
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
 	let audioPlaybackId = 0;
-	let audioSuspended = false;
-	const DESIGN_AUDIO_VOLUME = 0.2;
 	const DESIGN_AUDIO_DELAY = 150;
 	const DESIGN_AUDIO_FADE_IN = 1200;
 	const DESIGN_AUDIO_FADE_OUT = 350;
+	const musicMuted = $derived(musicVolume <= 0);
+	const playbackVolume = $derived(Math.min(1, Math.max(0, musicVolume / 100)));
+
+	function resolveTheme(): 'light' | 'dark' {
+		const stored = localStorage.getItem('theme');
+		if (stored === 'light' || stored === 'dark') return stored;
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	}
+
+	function applyTheme(next: 'light' | 'dark') {
+		theme = next;
+		document.documentElement.setAttribute('data-theme', next);
+		localStorage.setItem('theme', next);
+	}
+
+	function toggleTheme() {
+		document.documentElement.classList.add('theme-animated');
+		applyTheme(theme === 'dark' ? 'light' : 'dark');
+	}
+
+	function setMusicVolume(next: number) {
+		const value = Math.min(100, Math.max(0, Math.round(next)));
+		const wasMuted = musicVolume <= 0;
+		const nextPlayback = value / 100;
+		musicVolume = value;
+		localStorage.setItem('music-volume', String(value));
+		localStorage.removeItem('music-enabled');
+
+		if (designAudio) {
+			clearAudioFade();
+			designAudio.volume = nextPlayback;
+			if (value <= 0) {
+				designAudio.pause();
+			} else if (designAudio.paused && activeDesign?.audioFile) {
+				void designAudio.play().catch(() => {});
+			}
+		} else if (wasMuted && value > 0 && activeDesign?.audioFile) {
+			void playDesignAudio(activeDesign);
+		}
+	}
+
+	function toggleVolumeOpen() {
+		volumeOpen = !volumeOpen;
+	}
+
+	onMount(() => {
+		applyTheme(resolveTheme());
+		const storedVolume = localStorage.getItem('music-volume');
+		if (storedVolume !== null) {
+			const parsed = Number(storedVolume);
+			if (Number.isFinite(parsed)) musicVolume = Math.min(100, Math.max(0, parsed));
+		} else if (localStorage.getItem('music-enabled') === '0') {
+			musicVolume = 0;
+		}
+
+		const closeVolume = (event: PointerEvent) => {
+			const target = event.target as Node | null;
+			const root = document.querySelector('.volume-control');
+			if (root && target && !root.contains(target)) volumeOpen = false;
+		};
+		window.addEventListener('pointerdown', closeVolume);
+		return () => window.removeEventListener('pointerdown', closeVolume);
+	});
 
 	$effect(() => {
 		if (!activeDesign) return;
@@ -365,32 +460,40 @@
 	});
 
 	$effect(() => {
-		const handleVisibilityChange = () => {
-			if (document.hidden) suspendDesignAudio();
-			else void resumeDesignAudio();
-		};
-		const handleBlur = () => suspendDesignAudio();
-		const handleFocus = () => void resumeDesignAudio();
+		// Music keeps playing through tab switches and alt-tabbing;
+		// it only stops when the page is actually closed or navigated away from.
 		const stopForPageExit = () => stopDesignAudio();
-
-		document.addEventListener('visibilitychange', handleVisibilityChange);
-		window.addEventListener('blur', handleBlur);
-		window.addEventListener('focus', handleFocus);
 		window.addEventListener('pagehide', stopForPageExit);
 
 		return () => {
-			document.removeEventListener('visibilitychange', handleVisibilityChange);
-			window.removeEventListener('blur', handleBlur);
-			window.removeEventListener('focus', handleFocus);
 			window.removeEventListener('pagehide', stopForPageExit);
 			stopDesignAudio();
 		};
 	});
 
+	function markDesignLoaded(image: string) {
+		if (loadedDesigns.has(image)) return;
+		loadedDesigns = new Set(loadedDesigns).add(image);
+	}
+
+	function bindDesignImage(node: HTMLImageElement, image: string) {
+		const markIfReady = () => {
+			if (node.complete && node.naturalWidth > 0) markDesignLoaded(image);
+		};
+		markIfReady();
+		return {
+			update(nextImage: string) {
+				image = nextImage;
+				markIfReady();
+			}
+		};
+	}
+
 	function openLightbox(design: (typeof designs)[number]) {
 		zoom = 1;
 		panX = 0;
 		panY = 0;
+		lightboxImageLoaded = false;
 		activeDesign = design;
 		void playDesignAudio(design);
 	}
@@ -416,12 +519,12 @@
 
 	async function playDesignAudio(design: (typeof designs)[number]) {
 		stopDesignAudio();
-		if (!design.audioFile || document.hidden) return;
+		if (musicVolume <= 0 || !design.audioFile) return;
 
 		const audio = new Audio(design.audioFile);
 		const playbackId = audioPlaybackId;
+		const targetVolume = playbackVolume;
 		designAudio = audio;
-		audioSuspended = false;
 		audio.loop = true;
 		audio.volume = 0;
 		audio.currentTime = design.audioStart ?? 0;
@@ -431,17 +534,12 @@
 				disposeAudio(audio);
 				return;
 			}
-			if (document.hidden || audioSuspended) return;
 			await audio.play();
 			if (playbackId !== audioPlaybackId || designAudio !== audio) {
 				disposeAudio(audio);
 				return;
 			}
-			if (document.hidden || audioSuspended) {
-				suspendDesignAudio();
-				return;
-			}
-			fadeAudio(audio, DESIGN_AUDIO_VOLUME, DESIGN_AUDIO_FADE_IN);
+			fadeAudio(audio, targetVolume, DESIGN_AUDIO_FADE_IN);
 		} catch {
 			disposeAudio(audio);
 		}
@@ -450,7 +548,6 @@
 	function disposeAudio(audio: HTMLAudioElement) {
 		if (designAudio === audio) {
 			designAudio = null;
-			audioSuspended = false;
 		}
 		audio.pause();
 		audio.removeAttribute('src');
@@ -463,38 +560,8 @@
 		audioFade = undefined;
 	}
 
-	function suspendDesignAudio() {
-		if (!designAudio) return;
-		audioSuspended = true;
-		clearAudioFade();
-		designAudio.pause();
-	}
-
-	async function resumeDesignAudio() {
-		const audio = designAudio;
-		if (!audio || !activeDesign || !audioSuspended || document.hidden) return;
-
-		const playbackId = audioPlaybackId;
-		audioSuspended = false;
-		try {
-			await audio.play();
-			if (playbackId !== audioPlaybackId || designAudio !== audio) {
-				disposeAudio(audio);
-				return;
-			}
-			if (document.hidden || audioSuspended) {
-				suspendDesignAudio();
-				return;
-			}
-			fadeAudio(audio, DESIGN_AUDIO_VOLUME, 300);
-		} catch {
-			if (designAudio === audio) audioSuspended = true;
-		}
-	}
-
 	function stopDesignAudio(fadeOut = false) {
 		audioPlaybackId += 1;
-		audioSuspended = false;
 		clearAudioFade();
 
 		const audio = designAudio;
@@ -528,6 +595,7 @@
 
 	function beginPan(event: PointerEvent) {
 		if (zoom === 1) return;
+		event.preventDefault();
 		panning = true;
 		panStartX = event.clientX;
 		panStartY = event.clientY;
@@ -551,56 +619,17 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape' && activeDesign) closeLightbox();
+		if (event.key === 'Escape') {
+			if (volumeOpen) {
+				volumeOpen = false;
+				return;
+			}
+			if (activeDesign) closeLightbox();
+		}
 	}
 
 	function handleLightboxClick(event: MouseEvent) {
 		if (event.target === event.currentTarget) closeLightbox();
-	}
-
-	function reveal(node: HTMLElement) {
-		let revealed = false;
-		let observer: IntersectionObserver | undefined;
-		const revealNode = () => {
-			if (revealed) return;
-			revealed = true;
-			node.classList.add('in');
-			observer?.disconnect();
-		};
-
-		if ('IntersectionObserver' in window) {
-			observer = new IntersectionObserver(
-				([entry]) => {
-					if (entry.isIntersecting) revealNode();
-				},
-				{ threshold: 0.14 }
-			);
-			observer.observe(node);
-		} else {
-			revealNode();
-		}
-
-		const checkInitialPosition = () => {
-			// Scroll restoration can happen after hydration. Reveal everything on a
-			// restored deep link so content cannot remain hidden above the viewport.
-			if (window.scrollY > 0) {
-				revealNode();
-				return;
-			}
-
-			const { top, bottom } = node.getBoundingClientRect();
-			if (top < window.innerHeight && bottom > 0) revealNode();
-		};
-		const initialFrame = requestAnimationFrame(checkInitialPosition);
-		const initialFallback = window.setTimeout(checkInitialPosition, 500);
-
-		return {
-			destroy() {
-				cancelAnimationFrame(initialFrame);
-				window.clearTimeout(initialFallback);
-				observer?.disconnect();
-			}
-		};
 	}
 </script>
 
@@ -614,109 +643,140 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
+<div class="site-controls" use:reveal={{ immediate: true, delay: 220, y: -8 }}>
+	<div class="volume-control" class:is-open={volumeOpen}>
+		<button
+			type="button"
+			class="control-btn volume-toggle"
+			onclick={toggleVolumeOpen}
+			aria-label={volumeOpen ? 'Close volume' : 'Open volume'}
+			aria-expanded={volumeOpen}
+			aria-controls="volume-slider"
+		>
+			{#if musicMuted}
+				<VolumeX size={16} strokeWidth={1.75} aria-hidden="true" />
+			{:else}
+				<Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+			{/if}
+		</button>
+		<div class="volume-slider-shell">
+			<input
+				id="volume-slider"
+				class="volume-slider"
+				type="range"
+				min="0"
+				max="100"
+				step="1"
+				value={musicVolume}
+				aria-label="Music volume"
+				tabindex={volumeOpen ? 0 : -1}
+				onpointerdown={(event) => event.stopPropagation()}
+				oninput={(event) => setMusicVolume(Number(event.currentTarget.value))}
+			/>
+		</div>
+	</div>
+	<button
+		type="button"
+		class="control-btn theme-toggle"
+		onclick={toggleTheme}
+		aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+	>
+		<span class="theme-icon" class:active={theme === 'dark'} aria-hidden="true">
+			<Sun size={16} strokeWidth={1.75} />
+		</span>
+		<span class="theme-icon" class:active={theme === 'light'} aria-hidden="true">
+			<Moon size={16} strokeWidth={1.75} />
+		</span>
+	</button>
+</div>
+
 <div class="portfolio">
-	<section class="hero" aria-labelledby="intro-title">
-		<header class="identity landing-enter" style="--d: 0.05s">
-			<p class="name"><ZoomText text="Aidan Neel" /></p>
-			<p class="role"><ZoomText text="Software Developer" /></p>
-		</header>
+	<div class="portfolio-inner">
+		<section class="hero" aria-labelledby="intro-title">
+			<header class="identity">
+				<p class="name" use:reveal={{ immediate: true }}>Aidan Neel</p>
+				<p class="role" use:reveal={{ immediate: true, delay: 80 }}>Software Developer</p>
+			</header>
 
-		<div class="intro">
-			<p class="eyebrow landing-enter" style="--d: 0.14s"><ZoomText text="[ABOUT ME]" /></p>
-			<h1 id="intro-title">
-				<span class="hero-line">
-					{#each heroLine1 as word, index}
-						{#if index > 0}{' '}{/if}<span class="reveal-mask-inline"
-							><span class="reveal-line" style={`--d: ${0.14 + index * HERO_STEP}s`}
-								><ZoomText text={word} /></span
-							></span
-						>
-					{/each}
-				</span>
-				<span class="hero-line hero-line-muted">
-					{#each heroLine2 as word, index}
-						{#if index > 0}{' '}{/if}<span class="reveal-mask-inline"
-							><span
-								class="reveal-line"
-								style={`--d: ${0.14 + (heroLine1.length + index) * HERO_STEP}s`}
-								><ZoomText text={word} /></span
-							></span
-						>
-					{/each}
-				</span>
-			</h1>
-		</div>
-	</section>
+			<div class="intro" use:reveal={{ immediate: true, delay: 180 }}>
+				<p class="eyebrow">About</p>
+				<h1 id="intro-title">
+					<span class="hero-line">{heroText}</span>
+				</h1>
+			</div>
+		</section>
 
-	<section class="archive-section" aria-labelledby="projects-title">
-		<div class="section-heading landing-reveal" use:reveal>
-			<p class="eyebrow"><ZoomText text="[SOFTWARE]" /></p>
-			<h2 id="projects-title"><ZoomText text="Projects" /></h2>
-		</div>
+		<section class="archive-section" aria-labelledby="projects-title">
+			<div class="section-heading" use:reveal>
+				<p class="eyebrow">Software</p>
+				<h2 id="projects-title">Projects</h2>
+			</div>
 
-		<div class="archive-grid projects">
-			{#each projects as project, index}
-				<article
-					class="project-entry landing-reveal"
-					style={`--delay: ${index * 120}ms`}
-					use:reveal
-				>
-					<h3><ZoomText text={project.title} /></h3>
-					<p>{project.description}</p>
-					<span class="project-status"><ZoomText text={project.status} /></span>
-				</article>
-			{/each}
-		</div>
-	</section>
+			<div class="project-list">
+				{#each projects as project, i}
+					<a
+						class="project-row"
+						href={project.url}
+						target="_blank"
+						rel="noreferrer"
+						use:reveal={{ delay: 80 + i * 70 }}
+					>
+						<div class="project-line">
+							<h3>
+								{project.title}
+								<ArrowUpRight
+									size={14}
+									strokeWidth={1.75}
+									class="project-arrow"
+									aria-hidden="true"
+								/>
+							</h3>
+							<p class="project-status" data-tone={project.tone}>
+								<span class="status-dot" aria-hidden="true"></span>
+								{project.status}
+							</p>
+						</div>
+						<p class="project-description">{project.description}</p>
+					</a>
+				{/each}
+			</div>
+		</section>
+	</div>
 
 	<section class="archive-section designs-section" aria-labelledby="designs-title">
-		<div class="section-heading landing-reveal" use:reveal>
-			<p class="eyebrow"><ZoomText text="[VISUAL]" /></p>
-			<h2 id="designs-title"><ZoomText text="Designs" /></h2>
+		<div class="section-heading" use:reveal>
+			<p class="eyebrow">Visual</p>
+			<h2 id="designs-title">Designs</h2>
 			<p class="section-description">
-				<ZoomText
-					text="A growing set of posters and experiments as I find my way back to designing. Typically inspired by music."
-				/>
+				A growing set of posters and experiments as I find my way back to designing. Typically
+				inspired by music.
 			</p>
 		</div>
 
-		<div class="archive-grid designs-grid">
-			{#each designs as design, index}
-				<article
-					class="design-entry landing-reveal"
-					style={`--delay: ${(index % 3) * 120}ms`}
-					use:reveal
+		<div class="moodboard">
+			{#each designs as design, i}
+				<button
+					type="button"
+					class="design-tile"
+					class:is-loaded={loadedDesigns.has(design.image)}
+					onclick={() => openLightbox(design)}
+					aria-label={`View ${design.title}`}
+					aria-busy={!loadedDesigns.has(design.image)}
+					use:reveal={{ delay: (i % 4) * 55, y: 10 }}
 				>
-					<button type="button" class="design-preview" onclick={() => openLightbox(design)}>
-						<img
-							src={cardImage(design.image)}
-							srcset={cardImageSet(design.image)}
-							sizes={CARD_IMAGE_SIZES}
-							alt={`${design.title} design`}
-							loading="lazy"
-							decoding="async"
-							fetchpriority="low"
-						/>
-						<span class="view-label"><ZoomText text="View" /></span>
-					</button>
-					<div class="design-meta">
-						<h3><ZoomText text={design.title} /></h3>
-						<p>{design.description}</p>
-						<time><ZoomText text={design.date} /></time>
-						{#if design.songTitle && design.artist}
-							{#if design.songUrl}
-								<a class="song-link" href={design.songUrl} target="_blank" rel="noreferrer">
-									<ZoomText text={`${design.songTitle} by ${design.artist}`} />
-									<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
-								</a>
-							{:else}
-								<span class="song-link">
-									<ZoomText text={`${design.songTitle} by ${design.artist}`} />
-								</span>
-							{/if}
-						{/if}
-					</div>
-				</article>
+					<span class="design-tile-skeleton" aria-hidden="true"></span>
+					<img
+						src={cardImage(design.image)}
+						srcset={cardImageSet(design.image)}
+						sizes={CARD_IMAGE_SIZES}
+						alt=""
+						loading="lazy"
+						decoding="async"
+						fetchpriority="low"
+						onload={() => markDesignLoaded(design.image)}
+						use:bindDesignImage={design.image}
+					/>
+				</button>
 			{/each}
 		</div>
 	</section>
@@ -727,7 +787,8 @@
 		class="lightbox"
 		role="presentation"
 		onclick={handleLightboxClick}
-		transition:fade={{ duration: 350, easing: cubicOut }}
+		in:fade={{ duration: 240 }}
+		out:fade={{ duration: 170 }}
 	>
 		<div
 			class="lightbox-content"
@@ -735,14 +796,17 @@
 			aria-modal="true"
 			aria-labelledby="lightbox-title"
 			tabindex="-1"
-			transition:fly={{ y: 18, duration: 350, easing: cubicOut }}
+			in:fly={{ y: 16, duration: 360, easing: expoOut }}
+			out:fly={{ y: 8, duration: 180, easing: cubicOut }}
 		>
 			<div
 				class:zoomed={zoom > 1}
 				class:panning
+				class:is-loaded={lightboxImageLoaded}
 				class="lightbox-image-stage"
 				role="group"
 				aria-label="Zoomable image. Scroll to zoom and drag to pan."
+				aria-busy={!lightboxImageLoaded}
 				onwheel={handleImageWheel}
 				onpointerdown={beginPan}
 				onpointermove={panImage}
@@ -750,17 +814,37 @@
 				onpointercancel={endPan}
 				ondblclick={toggleZoom}
 			>
+				<span class="lightbox-skeleton" aria-hidden="true"></span>
 				<img
 					src={fullImage(activeDesign.image)}
 					alt={`${activeDesign.title} design`}
+					draggable="false"
 					decoding="async"
 					fetchpriority="high"
+					onload={() => (lightboxImageLoaded = true)}
 					style:transform={`translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`}
 				/>
 			</div>
-			<div class="lightbox-caption">
-				<p id="lightbox-title"><ZoomText text={activeDesign.title} /></p>
-				<p>{activeDesign.description}</p>
+			<div class="lightbox-meta">
+				<div class="lightbox-meta-head">
+					<p id="lightbox-title">{activeDesign.title}</p>
+					<p class="lightbox-date">{activeDesign.date}</p>
+				</div>
+				<p class="lightbox-description">{activeDesign.description}</p>
+				{#if activeDesign.songTitle && activeDesign.artist}
+					{#if activeDesign.songUrl}
+						<a class="song-link" href={activeDesign.songUrl} target="_blank" rel="noreferrer">
+							<Music size={13} strokeWidth={1.75} aria-hidden="true" />
+							{activeDesign.songTitle} by {activeDesign.artist}
+							<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
+						</a>
+					{:else}
+						<span class="song-link">
+							<Music size={13} strokeWidth={1.75} aria-hidden="true" />
+							{activeDesign.songTitle} by {activeDesign.artist}
+						</span>
+					{/if}
+				{/if}
 			</div>
 		</div>
 	</div>
