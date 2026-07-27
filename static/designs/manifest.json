@@ -9,6 +9,18 @@
     "fullQuality": 92
   },
   "designs": {
+    "14-minutes": {
+      "source": "14-minutes.png",
+      "sourceSize": [
+        1502,
+        2124
+      ],
+      "outputs": {
+        "480": "/designs/14-minutes-480.webp",
+        "960": "/designs/14-minutes-960.webp",
+        "full": "/designs/14-minutes-full.webp"
+      }
+    },
     "all-my-friends": {
       "source": "all-my-friends.png",
       "sourceSize": [
@@ -31,6 +43,18 @@
         "480": "/designs/americanfootball-480.webp",
         "960": "/designs/americanfootball-960.webp",
         "full": "/designs/americanfootball-full.webp"
+      }
+    },
+    "awake-my-soul": {
+      "source": "awake-my-soul.png",
+      "sourceSize": [
+        1839,
+        2601
+      ],
+      "outputs": {
+        "480": "/designs/awake-my-soul-480.webp",
+        "960": "/designs/awake-my-soul-960.webp",
+        "full": "/designs/awake-my-soul-full.webp"
       }
     },
     "brains": {
@@ -67,6 +91,18 @@
         "480": "/designs/california-480.webp",
         "960": "/designs/california-960.webp",
         "full": "/designs/california-full.webp"
+      }
+    },
+    "cant-hide": {
+      "source": "cant-hide.png",
+      "sourceSize": [
+        1489,
+        2106
+      ],
+      "outputs": {
+        "480": "/designs/cant-hide-480.webp",
+        "960": "/designs/cant-hide-960.webp",
+        "full": "/designs/cant-hide-full.webp"
       }
     },
     "carry-you-over": {
@@ -141,6 +177,18 @@
         "full": "/designs/dothatagain-full.webp"
       }
     },
+    "drowning": {
+      "source": "drowning.png",
+      "sourceSize": [
+        1696,
+        2400
+      ],
+      "outputs": {
+        "480": "/designs/drowning-480.webp",
+        "960": "/designs/drowning-960.webp",
+        "full": "/designs/drowning-full.webp"
+      }
+    },
     "eagles": {
       "source": "eagles.png",
       "sourceSize": [
@@ -189,6 +237,18 @@
         "full": "/designs/figma-full.webp"
       }
     },
+    "forget-the-flowers": {
+      "source": "forget-the-flowers.png",
+      "sourceSize": [
+        1799,
+        2545
+      ],
+      "outputs": {
+        "480": "/designs/forget-the-flowers-480.webp",
+        "960": "/designs/forget-the-flowers-960.webp",
+        "full": "/designs/forget-the-flowers-full.webp"
+      }
+    },
     "growing-dying-alt": {
       "source": "growing-dying-alt.png",
       "sourceSize": [
@@ -211,6 +271,18 @@
         "480": "/designs/growing-dying-480.webp",
         "960": "/designs/growing-dying-960.webp",
         "full": "/designs/growing-dying-full.webp"
+      }
+    },
+    "hatful-of-hollow": {
+      "source": "hatful-of-hollow.png",
+      "sourceSize": [
+        1370,
+        1938
+      ],
+      "outputs": {
+        "480": "/designs/hatful-of-hollow-480.webp",
+        "960": "/designs/hatful-of-hollow-960.webp",
+        "full": "/designs/hatful-of-hollow-full.webp"
       }
     },
     "heaven": {
@@ -403,6 +475,18 @@
         "480": "/designs/this-must-be-the-place-480.webp",
         "960": "/designs/this-must-be-the-place-960.webp",
         "full": "/designs/this-must-be-the-place-full.webp"
+      }
+    },
+    "touch-grass": {
+      "source": "touch-grass.png",
+      "sourceSize": [
+        1481,
+        2095
+      ],
+      "outputs": {
+        "480": "/designs/touch-grass-480.webp",
+        "960": "/designs/touch-grass-960.webp",
+        "full": "/designs/touch-grass-full.webp"
       }
     },
     "traveler": {

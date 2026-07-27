@@ -54,6 +54,56 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: '14 Minutes',
+			description: '',
+			date: '7/26/2026',
+			image: '14-minutes'
+		},
+		{
+			title: 'Hatful of Hollow',
+			description: '',
+			date: '7/26/2026',
+			image: 'hatful-of-hollow'
+		},
+		{
+			title: 'Can’t Hide',
+			description: '',
+			date: '7/26/2026',
+			image: 'cant-hide'
+		},
+		{
+			title: 'Drowning',
+			description: '',
+			date: '7/26/2026',
+			image: 'drowning'
+		},
+		{
+			title: 'Touch Grass',
+			description: '',
+			date: '7/26/2026',
+			image: 'touch-grass'
+		},
+		{
+			title: 'Forget the Flowers',
+			description: '',
+			date: '7/26/2026',
+			image: 'forget-the-flowers',
+			songTitle: 'Forget the Flowers',
+			artist: 'Wilco',
+			songUrl: 'https://open.spotify.com/track/5xpsqQJz7pI6huO0Pd7QZW',
+			audioFile: '/audio/forget-the-flowers.mp3'
+		},
+		{
+			title: 'Awake My Soul',
+			description: '',
+			date: '7/26/2026',
+			image: 'awake-my-soul',
+			songTitle: 'Awake My Soul',
+			artist: 'Mumford & Sons',
+			songUrl: 'https://open.spotify.com/track/3khbaRkdMXpwxd6Ege88gj',
+			audioFile: '/audio/awake-my-soul.mp3'
+		},
+		{
 			title: 'Feeling',
 			description: '',
 			date: '7/21/2026',
