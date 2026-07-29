@@ -21,10 +21,48 @@ const MAX_VIDEO_CLIP_SECONDS = 5 * 60;
 
 // Resolve the yt-dlp binary explicitly so Vercel's file tracer includes it in
 // the function bundle. The binary is fetched by the package's postinstall,
-// which pnpm only runs because it is listed in onlyBuiltDependencies.
+// which pnpm only runs because it is listed in onlyBuiltDependencies, and then
+// swapped for the standalone (no-Python) build by scripts/fetch-yt-dlp.mjs
+// during `pnpm build` — Vercel's Node runtime has no python3.
 const require = createRequire(import.meta.url);
 const youtubeDl = youtubeDlExec.create(require.resolve('youtube-dl-exec/bin/yt-dlp'));
 const ffmpeg = process.env.FFMPEG_PATH || ffmpegPath || 'ffmpeg';
+
+/**
+ * Turns a yt-dlp/ffmpeg failure into something a visitor can act on. Without
+ * this every failure read as "check that the video is public", which hid a
+ * server-side misconfiguration behind a user-error message for weeks.
+ */
+function describeFailure(cause: unknown) {
+	const detail = [
+		typeof (cause as { stderr?: unknown })?.stderr === 'string'
+			? (cause as { stderr: string }).stderr
+			: '',
+		cause instanceof Error ? cause.message : ''
+	]
+		.join('\n')
+		.toLowerCase();
+
+	if (detail.includes('python') || detail.includes('enoent') || detail.includes('eacces')) {
+		return 'The clip service is misconfigured right now. This one is on me, not the video.';
+	}
+	if (detail.includes('sign in to confirm') || detail.includes('not a bot')) {
+		return 'YouTube is currently blocking downloads from this server. Try again later.';
+	}
+	if (detail.includes('private video') || detail.includes('members-only')) {
+		return 'That video is private, so it cannot be clipped.';
+	}
+	if (detail.includes('age') && detail.includes('confirm')) {
+		return 'That video is age-restricted, so it cannot be clipped.';
+	}
+	if (detail.includes('video unavailable') || detail.includes('is not available')) {
+		return 'That video is unavailable. Check the link and try again.';
+	}
+	if (detail.includes('file is larger than max-filesize')) {
+		return 'That video is too large to clip. Try a shorter one.';
+	}
+	return 'The clip could not be exported. Try again, or try a different video.';
+}
 
 function run(command: string, args: string[]) {
 	return new Promise<void>((resolve, reject) => {
@@ -127,8 +165,6 @@ export const POST: RequestHandler = async ({ request }) => {
 	} catch (cause) {
 		await rm(directory, { recursive: true, force: true });
 		console.error('Clip generation failed', cause);
-		throw error(503, {
-			message: 'The clip could not be exported. Check that the video is public, then try again.'
-		});
+		throw error(503, { message: describeFailure(cause) });
 	}
 };

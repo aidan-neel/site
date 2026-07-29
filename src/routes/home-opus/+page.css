@@ -1,0 +1,1094 @@
+/* ---------------------------------------------------------------------------
+   /home-opus — editorial redesign of the portfolio index.
+   Everything is scoped under .opus-home so it can never leak into the
+   original routes, which ship their own unscoped page CSS.
+--------------------------------------------------------------------------- */
+
+.opus-home {
+	--e-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--e-io: cubic-bezier(0.77, 0, 0.175, 1);
+	--e-q: cubic-bezier(0.2, 0, 0, 1);
+	--hair: color-mix(in srgb, var(--fg) 11%, transparent);
+	--hair-strong: color-mix(in srgb, var(--fg) 20%, transparent);
+	--serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+	--shell: min(100% - 48px, 940px);
+	--bar-h: 64px;
+
+	position: relative;
+	min-height: 100vh;
+	padding-bottom: 140px;
+	background: var(--bg);
+	color: var(--fg);
+}
+
+.opus-home .opus-shell {
+	width: var(--shell);
+	margin: 0 auto;
+}
+
+/* --- Masthead ------------------------------------------------------------ */
+
+.opus-home .opus-bar {
+	position: sticky;
+	z-index: 20;
+	top: 0;
+	background: color-mix(in srgb, var(--bg) 76%, transparent);
+	backdrop-filter: blur(14px) saturate(1.4);
+	-webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+
+.opus-home .opus-bar::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 1px;
+	background: var(--hair);
+	opacity: 0;
+	transition: opacity 260ms var(--e-q);
+}
+
+.opus-home .opus-bar.is-stuck::after {
+	opacity: 1;
+}
+
+.opus-home .opus-bar-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	width: var(--shell);
+	height: var(--bar-h);
+	margin: 0 auto;
+}
+
+.opus-home .opus-bar-name {
+	font-family: var(--serif);
+	font-size: 19px;
+	letter-spacing: -0.005em;
+	line-height: 1;
+	opacity: 0;
+	transform: translateY(6px);
+	transition:
+		opacity 300ms var(--e-out),
+		transform 300ms var(--e-out);
+	pointer-events: none;
+}
+
+.opus-home .opus-bar.is-stuck .opus-bar-name {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.opus-home .opus-bar-controls {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-left: auto;
+}
+
+.opus-home .opus-icon-btn {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	color: var(--fg-muted);
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	border-radius: 999px;
+	transition:
+		color 160ms var(--e-q),
+		background-color 160ms var(--e-q),
+		transform 160ms var(--e-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.opus-home .opus-icon-btn:hover {
+		color: var(--fg);
+		background: var(--surface);
+	}
+}
+
+.opus-home .opus-icon-btn:active {
+	transform: scale(0.94);
+}
+
+.opus-home .opus-volume {
+	display: flex;
+	align-items: center;
+	height: 36px;
+	overflow: hidden;
+	border-radius: 999px;
+	transition: background-color 200ms var(--e-q);
+}
+
+.opus-home .opus-volume.is-open {
+	background: var(--surface);
+}
+
+.opus-home .opus-volume.is-open .opus-volume-toggle {
+	color: var(--fg);
+	background: transparent;
+}
+
+.opus-home .opus-volume-shell {
+	display: grid;
+	align-items: center;
+	width: 0;
+	opacity: 0;
+	overflow: hidden;
+	transform: translateX(6px);
+	transition:
+		width 300ms var(--e-out),
+		padding 300ms var(--e-out),
+		opacity 200ms var(--e-q),
+		transform 300ms var(--e-out);
+	pointer-events: none;
+}
+
+.opus-home .opus-volume.is-open .opus-volume-shell {
+	width: 104px;
+	padding-right: 14px;
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+
+.opus-home .opus-volume-slider {
+	width: 100%;
+	height: 18px;
+	margin: 0;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.opus-home .opus-volume-slider:focus-visible {
+	outline: none;
+}
+
+.opus-home .opus-volume-slider::-webkit-slider-runnable-track {
+	height: 3px;
+	background: var(--hair-strong);
+	border-radius: 999px;
+}
+
+.opus-home .opus-volume-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 11px;
+	height: 11px;
+	margin-top: -4px;
+	background: var(--fg);
+	border: 0;
+	border-radius: 999px;
+	transition: transform 140ms var(--e-out);
+}
+
+.opus-home .opus-volume-slider:active::-webkit-slider-thumb {
+	transform: scale(1.14);
+}
+
+.opus-home .opus-volume-slider::-moz-range-track {
+	height: 3px;
+	background: var(--hair-strong);
+	border: 0;
+	border-radius: 999px;
+}
+
+.opus-home .opus-volume-slider::-moz-range-progress {
+	height: 3px;
+	background: color-mix(in srgb, var(--fg) 55%, transparent);
+	border: 0;
+	border-radius: 999px;
+}
+
+.opus-home .opus-volume-slider::-moz-range-thumb {
+	width: 11px;
+	height: 11px;
+	background: var(--fg);
+	border: 0;
+	border-radius: 999px;
+}
+
+.opus-home .opus-theme-icon {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	opacity: 0;
+	transform: scale(0.3);
+	filter: blur(4px);
+	transition:
+		opacity 220ms var(--e-q),
+		transform 220ms var(--e-out),
+		filter 220ms var(--e-q);
+}
+
+.opus-home .opus-theme-icon.active {
+	opacity: 1;
+	transform: scale(1);
+	filter: blur(0);
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+
+.opus-home .opus-hero {
+	padding: clamp(64px, 13vh, 132px) 0 clamp(40px, 6vh, 64px);
+}
+
+.opus-home .opus-display {
+	margin: 0;
+	font-family: var(--serif);
+	font-size: clamp(3.4rem, 11vw, 6.75rem);
+	font-weight: 400;
+	letter-spacing: -0.022em;
+	line-height: 0.92;
+}
+
+.opus-home .opus-mask {
+	display: block;
+	padding-bottom: 0.08em;
+	margin-bottom: -0.08em;
+	overflow: hidden;
+}
+
+.opus-home .opus-mask-inner {
+	display: block;
+	animation: opus-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes opus-rise {
+	from {
+		transform: translateY(105%);
+	}
+}
+
+.opus-home .opus-hero-rule {
+	display: block;
+	height: 1px;
+	margin: clamp(24px, 3.5vw, 40px) 0 clamp(20px, 3vw, 30px);
+	background: var(--hair);
+	transform-origin: left;
+	animation: opus-rule 900ms cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
+}
+
+@keyframes opus-rule {
+	from {
+		transform: scaleX(0);
+	}
+}
+
+.opus-home .opus-hero-grid {
+	display: grid;
+	grid-template-columns: 172px minmax(0, 1fr);
+	gap: 8px 24px;
+	align-items: start;
+}
+
+.opus-home .opus-label {
+	margin: 0;
+	color: var(--fg-subtle);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.13em;
+	line-height: 1.7;
+	text-transform: uppercase;
+}
+
+.opus-home .opus-statement {
+	max-width: 34ch;
+	margin: 0;
+	color: var(--fg-muted);
+	font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+	font-weight: 400;
+	letter-spacing: -0.015em;
+	line-height: 1.5;
+	text-wrap: balance;
+}
+
+/* --- Sections ------------------------------------------------------------ */
+
+.opus-home .opus-section {
+	padding-top: clamp(48px, 6vw, 80px);
+}
+
+.opus-home .opus-rail {
+	display: grid;
+	grid-template-columns: 172px minmax(0, 1fr);
+	gap: 24px;
+	align-items: start;
+}
+
+.opus-home .opus-rail > .opus-label {
+	position: sticky;
+	top: calc(var(--bar-h) + 20px);
+	padding-top: 0.5em;
+}
+
+.opus-home .opus-rail-body {
+	min-width: 0;
+}
+
+.opus-home .opus-heading {
+	margin: 0;
+	font-family: var(--serif);
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	font-weight: 400;
+	letter-spacing: -0.015em;
+	line-height: 1.05;
+}
+
+.opus-home .opus-section-desc {
+	max-width: 48ch;
+	margin: 14px 0 0;
+	color: var(--fg-muted);
+	font-size: 15px;
+	line-height: 1.65;
+	text-wrap: pretty;
+}
+
+.opus-home .opus-meta-line {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 18px 0 0;
+	color: var(--fg-subtle);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.01em;
+}
+
+.opus-home .opus-dot {
+	width: 3px;
+	height: 3px;
+	background: currentcolor;
+	border-radius: 999px;
+	opacity: 0.6;
+}
+
+/* --- Projects ------------------------------------------------------------ */
+
+.opus-home .opus-projects {
+	margin-top: 26px;
+	border-top: 1px solid var(--hair);
+}
+
+.opus-home .opus-project {
+	position: relative;
+	display: block;
+	padding: 20px 14px 22px;
+	margin: 0 -14px;
+	color: inherit;
+	text-decoration: none;
+	border-radius: 10px;
+	transition:
+		background-color 200ms var(--e-q),
+		transform 200ms var(--e-out);
+}
+
+/* Hairline lives on a pseudo-element so the hover wash can stay rounded
+   while the rule itself runs square, edge to edge. */
+.opus-home .opus-project::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0;
+	height: 1px;
+	background: var(--hair);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.opus-home .opus-project:hover {
+		background: color-mix(in srgb, var(--surface) 70%, transparent);
+	}
+
+	.opus-home .opus-project:hover .opus-project-arrow {
+		color: var(--fg);
+		transform: translate(2px, -2px);
+	}
+}
+
+.opus-home .opus-project:active {
+	transform: scale(0.997);
+}
+
+.opus-home .opus-project-top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 6px 16px;
+}
+
+.opus-home .opus-project-title {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: -0.015em;
+	line-height: 1.3;
+}
+
+.opus-home .opus-project-arrow {
+	flex-shrink: 0;
+	color: var(--fg-subtle);
+	transition:
+		color 180ms var(--e-q),
+		transform 180ms var(--e-out);
+}
+
+.opus-home .opus-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+	padding: 3px 10px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.4;
+	white-space: nowrap;
+	border-radius: 999px;
+}
+
+.opus-home .opus-status-dot {
+	width: 5px;
+	height: 5px;
+	flex-shrink: 0;
+	background: currentcolor;
+	border-radius: 999px;
+}
+
+.opus-home .opus-status[data-tone='active'] {
+	color: var(--status-active-fg);
+	background: var(--status-active-bg);
+}
+
+.opus-home .opus-status[data-tone='wip'] {
+	color: var(--status-wip-fg);
+	background: var(--status-wip-bg);
+}
+
+.opus-home .opus-status[data-tone='offline'] {
+	color: var(--status-offline-fg);
+	background: var(--status-offline-bg);
+}
+
+.opus-home .opus-status[data-tone='wip'] .opus-status-dot {
+	animation: opus-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes opus-pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.3;
+	}
+}
+
+.opus-home .opus-project-desc {
+	display: block;
+	max-width: 58ch;
+	margin-top: 5px;
+	color: var(--fg-subtle);
+	font-size: 14px;
+	line-height: 1.55;
+	text-wrap: pretty;
+}
+
+/* --- Design wall --------------------------------------------------------- */
+
+.opus-home .opus-wall {
+	width: min(100% - 32px, 1560px);
+	margin: clamp(40px, 6vw, 64px) auto 0;
+}
+
+.opus-home .opus-moodboard {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.opus-home .opus-tile {
+	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 4;
+	padding: 0;
+	overflow: hidden;
+	cursor: pointer;
+	background: var(--surface);
+	border: 0;
+	border-radius: 8px;
+	outline-offset: 3px;
+	content-visibility: auto;
+	contain-intrinsic-size: auto 420px;
+	transition: transform 220ms var(--e-out);
+}
+
+/* Hairline keeps light posters from bleeding into a light page. */
+.opus-home .opus-tile::after {
+	content: '';
+	position: absolute;
+	z-index: 3;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 8%, transparent);
+	pointer-events: none;
+}
+
+.opus-home .opus-tile-skeleton {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 48%, transparent 64%),
+		var(--surface);
+	background-size:
+		200% 100%,
+		100% 100%;
+	animation: opus-shine 1.4s ease-in-out infinite;
+}
+
+[data-theme='dark'] .opus-home .opus-tile-skeleton {
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.06) 48%, transparent 64%),
+		var(--surface);
+	background-size:
+		200% 100%,
+		100% 100%;
+}
+
+.opus-home .opus-tile.is-loaded .opus-tile-skeleton {
+	opacity: 0;
+	animation: none;
+	transition: opacity 240ms var(--e-q);
+	pointer-events: none;
+}
+
+@keyframes opus-shine {
+	0% {
+		background-position:
+			120% 0,
+			0 0;
+	}
+
+	100% {
+		background-position:
+			-80% 0,
+			0 0;
+	}
+}
+
+.opus-home .opus-tile img {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0;
+	transition:
+		opacity 320ms var(--e-q),
+		transform 620ms var(--e-out);
+}
+
+.opus-home .opus-tile.is-loaded img {
+	opacity: 1;
+}
+
+.opus-home .opus-tile-caption {
+	position: absolute;
+	z-index: 2;
+	inset: auto 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 46px 12px 11px;
+	text-align: left;
+	background: linear-gradient(
+		to top,
+		rgb(0 0 0 / 0.88) 0%,
+		rgb(0 0 0 / 0.72) 32%,
+		rgb(0 0 0 / 0.34) 66%,
+		transparent 100%
+	);
+	opacity: 0;
+	transform: translateY(6px);
+	transition:
+		opacity 220ms var(--e-q),
+		transform 260ms var(--e-out);
+	pointer-events: none;
+}
+
+.opus-home .opus-tile-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.opus-home .opus-tile-title {
+	overflow: hidden;
+	color: #fff;
+	font-size: 12.5px;
+	font-weight: 500;
+	letter-spacing: -0.01em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.opus-home .opus-tile-date {
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.55);
+	font-size: 10.5px;
+	font-variant-numeric: tabular-nums;
+}
+
+.opus-home .opus-tile-song {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	overflow: hidden;
+	color: rgb(255 255 255 / 0.68);
+	font-size: 11px;
+	line-height: 1.35;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.opus-home .opus-tile-song svg {
+	flex-shrink: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.opus-home .opus-tile:hover img {
+		transform: scale(1.045);
+	}
+
+	.opus-home .opus-tile:hover .opus-tile-caption {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.opus-home .opus-moodboard .opus-tile:focus-visible {
+	z-index: 4;
+	outline: 2px solid var(--fg);
+}
+
+.opus-home .opus-tile:focus-visible .opus-tile-caption {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.opus-home .opus-tile:active {
+	transform: scale(0.985);
+}
+
+/* --- Lightbox ------------------------------------------------------------ */
+
+.opus-home .opus-lightbox {
+	position: fixed;
+	z-index: 30;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: clamp(18px, 3.5vw, 44px);
+	background: var(--overlay);
+	backdrop-filter: blur(8px) saturate(1.1);
+	-webkit-backdrop-filter: blur(8px) saturate(1.1);
+}
+
+.opus-home .opus-close {
+	position: absolute;
+	z-index: 2;
+	top: clamp(14px, 2.4vw, 26px);
+	right: clamp(14px, 2.4vw, 26px);
+	display: grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	color: rgb(255 255 255 / 0.72);
+	cursor: pointer;
+	background: rgb(255 255 255 / 0.08);
+	border: 0;
+	border-radius: 999px;
+	transition:
+		color 160ms var(--e-q),
+		background-color 160ms var(--e-q),
+		transform 160ms var(--e-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.opus-home .opus-close:hover {
+		color: #fff;
+		background: rgb(255 255 255 / 0.16);
+	}
+}
+
+.opus-home .opus-close:active {
+	transform: scale(0.92);
+}
+
+.opus-home .opus-sleeve {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 288px;
+	gap: clamp(24px, 3vw, 44px);
+	align-items: center;
+	max-width: min(100%, 1160px);
+	max-height: 100%;
+}
+
+.opus-home .opus-stage {
+	position: relative;
+	display: grid;
+	place-items: center;
+	max-width: 100%;
+	max-height: calc(100vh - 88px);
+	overflow: hidden;
+	cursor: zoom-in;
+	touch-action: none;
+	border-radius: 10px;
+}
+
+.opus-home .opus-stage.zoomed {
+	cursor: grab;
+}
+
+.opus-home .opus-stage.panning {
+	cursor: grabbing;
+}
+
+.opus-home .opus-stage img {
+	display: block;
+	max-width: 100%;
+	max-height: calc(100vh - 88px);
+	border-radius: 10px;
+	outline: 1px solid rgb(255 255 255 / 0.1);
+	outline-offset: -1px;
+	transform-origin: center;
+	transition: transform 180ms var(--e-out);
+}
+
+.opus-home .opus-stage.panning img {
+	transition-duration: 0ms;
+}
+
+.opus-home .opus-stage-skeleton {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.07) 48%, transparent 64%),
+		rgb(255 255 255 / 0.04);
+	background-size:
+		200% 100%,
+		100% 100%;
+	border-radius: 10px;
+	animation: opus-shine 1.4s ease-in-out infinite;
+}
+
+.opus-home .opus-stage.is-loaded .opus-stage-skeleton {
+	opacity: 0;
+	animation: none;
+	transition: opacity 260ms var(--e-q);
+}
+
+.opus-home .opus-zoom-chip {
+	position: absolute;
+	bottom: 12px;
+	left: 12px;
+	padding: 4px 9px;
+	color: rgb(255 255 255 / 0.9);
+	font-size: 11px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	background: rgb(0 0 0 / 0.55);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	border-radius: 999px;
+	opacity: 0;
+	transform: translateY(4px) scale(0.96);
+	transition:
+		opacity 180ms var(--e-q),
+		transform 200ms var(--e-out);
+	pointer-events: none;
+}
+
+.opus-home .opus-zoom-chip.is-visible {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+/* Liner notes */
+
+.opus-home .opus-notes {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	color: #f5f5f5;
+}
+
+.opus-home .opus-notes-date {
+	margin: 0 0 10px;
+	color: rgb(255 255 255 / 0.45);
+	font-size: 11px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+}
+
+.opus-home .opus-notes-title {
+	margin: 0;
+	font-family: var(--serif);
+	font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+	font-weight: 400;
+	letter-spacing: -0.012em;
+	line-height: 1.08;
+	text-wrap: balance;
+}
+
+.opus-home .opus-notes-desc {
+	max-width: 42ch;
+	margin: 14px 0 0;
+	color: rgb(255 255 255 / 0.68);
+	font-size: 13.5px;
+	line-height: 1.62;
+	text-wrap: pretty;
+}
+
+.opus-home .opus-notes-rule {
+	display: block;
+	height: 1px;
+	margin: 22px 0 18px;
+	background: rgb(255 255 255 / 0.14);
+}
+
+.opus-home .opus-song {
+	display: inline-flex;
+	align-items: center;
+	align-self: flex-start;
+	gap: 10px;
+	max-width: 100%;
+	padding: 9px 12px 9px 10px;
+	color: rgb(255 255 255 / 0.85);
+	text-decoration: none;
+	background: rgb(255 255 255 / 0.07);
+	border-radius: 12px;
+	transition:
+		background-color 180ms var(--e-q),
+		transform 160ms var(--e-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.opus-home .opus-song:not(.is-static):hover {
+		background: rgb(255 255 255 / 0.14);
+	}
+}
+
+.opus-home .opus-song:not(.is-static):active {
+	transform: scale(0.975);
+}
+
+.opus-home .opus-song-glyph {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.85);
+	background: rgb(255 255 255 / 0.1);
+	border-radius: 8px;
+}
+
+.opus-home .opus-song-text {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+}
+
+.opus-home .opus-song-title {
+	overflow: hidden;
+	font-size: 12.5px;
+	font-weight: 500;
+	letter-spacing: -0.005em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.opus-home .opus-song-artist {
+	overflow: hidden;
+	color: rgb(255 255 255 / 0.5);
+	font-size: 11.5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.opus-home .opus-song > svg:last-child {
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.45);
+}
+
+/* Playing indicator: the glyph becomes a live meter while audio runs. */
+.opus-home .opus-eq {
+	display: flex;
+	align-items: flex-end;
+	gap: 2px;
+	height: 11px;
+}
+
+.opus-home .opus-eq i {
+	width: 2px;
+	height: 100%;
+	background: currentcolor;
+	border-radius: 1px;
+	transform-origin: bottom;
+	animation: opus-eq 900ms ease-in-out infinite alternate;
+}
+
+.opus-home .opus-eq i:nth-child(1) {
+	animation-duration: 760ms;
+}
+
+.opus-home .opus-eq i:nth-child(2) {
+	animation-duration: 1040ms;
+	animation-delay: -320ms;
+}
+
+.opus-home .opus-eq i:nth-child(3) {
+	animation-duration: 880ms;
+	animation-delay: -560ms;
+}
+
+@keyframes opus-eq {
+	from {
+		transform: scaleY(0.28);
+	}
+
+	to {
+		transform: scaleY(1);
+	}
+}
+
+.opus-home .opus-notes-hint {
+	margin: 22px 0 0;
+	color: rgb(255 255 255 / 0.32);
+	font-size: 11px;
+	letter-spacing: 0.02em;
+}
+
+/* --- Focus --------------------------------------------------------------- */
+
+.opus-home :is(a, button, input):focus-visible {
+	outline: 2px solid var(--fg);
+	outline-offset: 3px;
+}
+
+.opus-home .opus-lightbox :is(a, button):focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 3px;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1500px) {
+	.opus-home .opus-moodboard {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 1100px) {
+	.opus-home .opus-moodboard {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 900px) {
+	.opus-home .opus-sleeve {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 20px;
+		align-content: center;
+		max-width: 560px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+
+	.opus-home .opus-stage,
+	.opus-home .opus-stage img {
+		max-height: min(58vh, 520px);
+	}
+
+	.opus-home .opus-notes-title {
+		font-size: 1.5rem;
+	}
+
+	.opus-home .opus-notes-hint {
+		display: none;
+	}
+}
+
+@media (max-width: 760px) {
+	.opus-home {
+		--shell: min(100% - 32px, 640px);
+		--bar-h: 56px;
+
+		padding-bottom: 96px;
+	}
+
+	.opus-home .opus-hero-grid,
+	.opus-home .opus-rail {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.opus-home .opus-rail > .opus-label {
+		position: static;
+		padding-top: 0;
+		margin-bottom: 2px;
+	}
+
+	.opus-home .opus-hero {
+		padding-top: 56px;
+	}
+
+	.opus-home .opus-statement {
+		max-width: none;
+	}
+
+	.opus-home .opus-wall {
+		width: min(100% - 20px, 1560px);
+	}
+
+	.opus-home .opus-moodboard {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 6px;
+	}
+}
+
+/* --- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+	.opus-home .opus-mask-inner,
+	.opus-home .opus-hero-rule,
+	.opus-home .opus-tile-skeleton,
+	.opus-home .opus-stage-skeleton,
+	.opus-home .opus-status[data-tone='wip'] .opus-status-dot,
+	.opus-home .opus-eq i {
+		animation: none;
+	}
+
+	.opus-home .opus-theme-icon,
+	.opus-home .opus-tile,
+	.opus-home .opus-tile img,
+	.opus-home .opus-tile-caption {
+		transition-duration: 1ms;
+	}
+}

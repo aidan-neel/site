@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.png';
+	import { initChromaticAberration } from '$lib/chromatic-aberration';
 
 	let { children } = $props();
+
+	onMount(() => initChromaticAberration());
 </script>
 
 <svelte:head>

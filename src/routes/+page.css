@@ -235,8 +235,7 @@ body {
 .eyebrow,
 .project-line h3,
 .project-status,
-.project-description,
-.lightbox-meta p {
+.project-description {
 	margin: 0;
 	font-size: 14px;
 	line-height: 1.45;
@@ -456,6 +455,25 @@ h2 {
 	margin-bottom: 40px;
 }
 
+.designs-meta {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin: 6px 0 0;
+	color: var(--fg-subtle);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+.designs-meta-dot {
+	width: 3px;
+	height: 3px;
+	background: currentcolor;
+	border-radius: 999px;
+	opacity: 0.6;
+}
+
 .moodboard {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -472,12 +490,22 @@ h2 {
 	cursor: pointer;
 	background: var(--surface);
 	border: 0;
-	border-radius: 4px;
+	border-radius: 8px;
 	content-visibility: auto;
 	contain-intrinsic-size: auto 420px;
-	transition-property: opacity, transform;
-	transition-duration: 180ms;
+	transition-property: transform;
+	transition-duration: 220ms;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.design-tile::after {
+	content: '';
+	position: absolute;
+	z-index: 3;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 8%, transparent);
+	pointer-events: none;
 }
 
 .design-tile-skeleton {
@@ -505,7 +533,7 @@ h2 {
 	opacity: 0;
 	animation: none;
 	transition-property: opacity;
-	transition-duration: 220ms;
+	transition-duration: 240ms;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 	pointer-events: none;
 }
@@ -519,12 +547,76 @@ h2 {
 	object-fit: cover;
 	opacity: 0;
 	transition-property: opacity, transform;
-	transition-duration: 280ms, 520ms;
+	transition-duration: 320ms, 620ms;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
 
 .design-tile.is-loaded img {
 	opacity: 1;
+}
+
+.design-tile-caption {
+	position: absolute;
+	z-index: 2;
+	inset: auto 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 46px 12px 11px;
+	text-align: left;
+	background: linear-gradient(
+		to top,
+		rgb(0 0 0 / 0.88) 0%,
+		rgb(0 0 0 / 0.72) 32%,
+		rgb(0 0 0 / 0.34) 66%,
+		transparent 100%
+	);
+	opacity: 0;
+	transform: translateY(6px);
+	transition-property: opacity, transform;
+	transition-duration: 220ms, 260ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	pointer-events: none;
+}
+
+.design-tile-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.design-tile-title {
+	overflow: hidden;
+	color: #fff;
+	font-size: 12.5px;
+	font-weight: 500;
+	letter-spacing: -0.01em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.design-tile-date {
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.55);
+	font-size: 10.5px;
+	font-variant-numeric: tabular-nums;
+}
+
+.design-tile-song {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	overflow: hidden;
+	color: rgb(255 255 255 / 0.68);
+	font-size: 11px;
+	line-height: 1.35;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.design-tile-song svg {
+	flex-shrink: 0;
 }
 
 @keyframes design-skeleton-shine {
@@ -541,16 +633,14 @@ h2 {
 	}
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.design-tile-skeleton,
-	.lightbox-skeleton {
-		animation: none;
-	}
-}
-
 @media (hover: hover) and (pointer: fine) {
-	.design-tile.is-loaded:hover img {
-		transform: scale(1.04);
+	.design-tile:hover img {
+		transform: scale(1.045);
+	}
+
+	.design-tile:hover .design-tile-caption {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
@@ -559,54 +649,98 @@ h2 {
 }
 
 .design-tile:focus-visible {
+	z-index: 4;
 	outline: 2px solid var(--fg);
 	outline-offset: 3px;
-	z-index: 2;
+}
+
+.design-tile:focus-visible .design-tile-caption {
+	opacity: 1;
+	transform: translateY(0);
 }
 
 .lightbox {
 	position: fixed;
-	z-index: 10;
+	z-index: 30;
 	inset: 0;
 	display: grid;
 	place-items: center;
-	padding: 32px;
+	padding: clamp(16px, 2.5vw, 36px);
 	background: var(--overlay);
-	backdrop-filter: blur(3px);
-	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(8px) saturate(1.1);
+	-webkit-backdrop-filter: blur(8px) saturate(1.1);
 }
 
-.lightbox-content {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	gap: 18px;
-	max-width: min(100%, 920px);
-	max-height: 100%;
-}
-
-.lightbox-content img {
-	display: block;
-	max-width: 100%;
-	max-height: calc(100vh - 200px);
-	margin: auto;
-	border-radius: 10px;
-	outline: 1px solid var(--border);
-	outline-offset: -1px;
-	transform-origin: center;
-	transition-property: transform;
+.lightbox-close {
+	position: absolute;
+	z-index: 4;
+	top: clamp(14px, 2.4vw, 26px);
+	right: clamp(14px, 2.4vw, 26px);
+	display: grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	color: rgb(255 255 255 / 0.72);
+	cursor: pointer;
+	background: rgb(255 255 255 / 0.08);
+	border: 0;
+	border-radius: 999px;
+	transition-property: color, background-color, transform;
 	transition-duration: 160ms;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
 
-.lightbox-image-stage {
-	display: grid;
+@media (hover: hover) and (pointer: fine) {
+	.lightbox-close:hover {
+		color: #fff;
+		background: rgb(255 255 255 / 0.16);
+	}
+}
+
+.lightbox-close:active {
+	transform: scale(0.92);
+}
+
+.lightbox-shell {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	/* Hug the poster so the meta below matches its width */
+	align-items: stretch;
+	width: fit-content;
 	max-width: 100%;
-	max-height: calc(100vh - 200px);
+	max-height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	pointer-events: none;
+	transform-origin: center center;
+}
+
+.lightbox-shell > * {
+	pointer-events: auto;
+}
+
+/* Stage hugs the image — no padded frame once loaded. */
+.lightbox-image-stage {
+	position: relative;
+	display: block;
+	width: fit-content;
+	max-width: 100%;
+	max-height: min(72vh, calc(100dvh - 200px));
 	overflow: hidden;
 	cursor: zoom-in;
 	touch-action: none;
-	border-radius: 10px;
+	border-radius: 0;
+	flex: 0 0 auto;
+	line-height: 0;
+}
+
+/* Soft reserve only while the full poster loads (prevents jump, no visible frame after). */
+.lightbox-image-stage:not(.is-loaded) {
+	width: min(72vw, 320px);
+	aspect-ratio: 2 / 3;
 }
 
 .lightbox-image-stage.zoomed {
@@ -617,46 +751,119 @@ h2 {
 	cursor: grabbing;
 }
 
+.lightbox-image-stage img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-width: min(100vw - 36px, 640px);
+	max-height: min(72vh, calc(100dvh - 200px));
+	border-radius: 0;
+	outline: 1px solid rgb(255 255 255 / 0.1);
+	outline-offset: -1px;
+	opacity: 0;
+	transform-origin: center center;
+	transition-property: transform, opacity;
+	transition-duration: 200ms, 280ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.lightbox-image-stage.is-loaded img {
+	opacity: 1;
+}
+
 .lightbox-image-stage.panning img {
-	transition-duration: 0ms;
+	transition-duration: 0ms, 280ms;
+}
+
+.lightbox-skeleton {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.07) 48%, transparent 64%),
+		rgb(255 255 255 / 0.04);
+	background-size:
+		200% 100%,
+		100% 100%;
+	border-radius: 0;
+	animation: design-skeleton-shine 1.4s ease-in-out infinite;
+}
+
+.lightbox-image-stage.is-loaded .lightbox-skeleton {
+	opacity: 0;
+	animation: none;
+	transition-property: opacity;
+	transition-duration: 260ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	pointer-events: none;
+}
+
+.lightbox-zoom-chip {
+	position: absolute;
+	bottom: 12px;
+	left: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 24px;
+	padding: 0 9px;
+	color: rgb(255 255 255 / 0.9);
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+	background: rgb(0 0 0 / 0.55);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+	border-radius: 999px;
+	opacity: 0;
+	transform: translateY(4px) scale(0.96);
+	transition-property: opacity, transform;
+	transition-duration: 180ms, 200ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	pointer-events: none;
+}
+
+.lightbox-zoom-chip.is-visible {
+	opacity: 1;
+	transform: translateY(0) scale(1);
 }
 
 .lightbox-meta {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	width: 0;
-	min-width: 100%;
-	padding: 0 2px;
+	align-items: flex-start;
+	gap: 0;
+	/* Matches poster width via the fit-content shell */
+	width: 100%;
+	max-width: 100%;
+	padding: 2px 2px 0;
 	color: #f5f5f5;
-}
-
-.lightbox-meta-head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 4px 16px;
+	box-sizing: border-box;
 }
 
 #lightbox-title {
-	font-size: 16px;
+	margin: 0;
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
 	font-weight: 500;
 	letter-spacing: -0.02em;
+	line-height: 1.2;
 	color: #f5f5f5;
+	text-wrap: balance;
 }
 
 .lightbox-date {
-	flex-shrink: 0;
+	margin: 8px 0 0;
 	color: rgb(255 255 255 / 0.5);
-	font-size: 13px;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
 }
 
 .lightbox-description {
-	max-width: 64ch;
-	color: rgb(255 255 255 / 0.78);
-	font-size: 14px;
-	line-height: 1.6;
+	max-width: 42ch;
+	margin: 14px 0 0;
+	color: rgb(255 255 255 / 0.68);
+	font-size: 13.5px;
+	line-height: 1.62;
 	text-wrap: pretty;
 }
 
@@ -664,36 +871,239 @@ h2 {
 	display: inline-flex;
 	align-items: center;
 	align-self: flex-start;
-	gap: 6px;
-	margin-top: 6px;
-	padding: 7px 12px 7px 11px;
-	color: rgb(255 255 255 / 0.78);
-	font-size: 12px;
-	font-weight: 500;
-	line-height: 1.3;
+	gap: 10px;
+	max-width: 100%;
+	margin-top: 16px;
+	padding: 9px 12px 9px 10px;
+	color: rgb(255 255 255 / 0.85);
 	text-decoration: none;
-	background: rgb(255 255 255 / 0.1);
+	background: rgb(255 255 255 / 0.07);
 	border: 0;
-	border-radius: 999px;
-	transition-property: color, background-color, transform;
-	transition-duration: 160ms;
+	border-radius: 12px;
+	transition-property: background-color, transform;
+	transition-duration: 180ms, 160ms;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.song-link:hover {
-		color: #fff;
-		background: rgb(255 255 255 / 0.16);
+	.song-link:not(.is-static):hover {
+		background: rgb(255 255 255 / 0.14);
 	}
 }
 
-.song-link:active {
-	transform: scale(0.96);
+.song-link:not(.is-static):active {
+	transform: scale(0.975);
+}
+
+.song-glyph {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.85);
+	background: rgb(255 255 255 / 0.1);
+	border-radius: 8px;
+}
+
+.song-text {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+}
+
+.song-title {
+	overflow: hidden;
+	font-size: 12.5px;
+	font-weight: 500;
+	letter-spacing: -0.005em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.song-artist {
+	overflow: hidden;
+	color: rgb(255 255 255 / 0.5);
+	font-size: 11.5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.song-link > svg:last-child {
+	flex-shrink: 0;
+	color: rgb(255 255 255 / 0.45);
+}
+
+.song-eq {
+	display: flex;
+	align-items: flex-end;
+	gap: 2px;
+	height: 11px;
+}
+
+.song-eq i {
+	width: 2px;
+	height: 100%;
+	background: currentcolor;
+	border-radius: 1px;
+	transform-origin: bottom;
+	animation: song-eq 900ms ease-in-out infinite alternate;
+}
+
+.song-eq i:nth-child(1) {
+	animation-duration: 760ms;
+}
+
+.song-eq i:nth-child(2) {
+	animation-duration: 1040ms;
+	animation-delay: -320ms;
+}
+
+.song-eq i:nth-child(3) {
+	animation-duration: 880ms;
+	animation-delay: -560ms;
+}
+
+@keyframes song-eq {
+	from {
+		transform: scaleY(0.28);
+	}
+
+	to {
+		transform: scaleY(1);
+	}
+}
+
+.lightbox :is(a, button):focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 3px;
+}
+
+/* Wider posters on large viewports, still stacked (meta under image). */
+@media (min-width: 901px) {
+	.lightbox-image-stage {
+		max-width: none;
+		max-height: none;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(72vw, calc(100vw - 80px), 820px);
+		max-height: min(82vh, calc(100dvh - 200px));
+	}
+}
+
+/* Mid desktop: two-pane — meta left rail, poster in the remaining space. */
+@media (min-width: 1200px) and (max-width: 1599px) and (hover: hover) and (pointer: fine) {
+	.lightbox-shell {
+		display: grid;
+		grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr);
+		align-items: start;
+		column-gap: clamp(24px, 3vw, 48px);
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		overflow: visible;
+		padding: clamp(16px, 2vh, 28px) clamp(16px, 2vw, 28px);
+		box-sizing: border-box;
+	}
+
+	.lightbox-meta {
+		grid-column: 1;
+		grid-row: 1;
+		position: static;
+		width: 100%;
+		max-width: none;
+		padding: 4px 0 0;
+	}
+
+	.lightbox-image-stage {
+		grid-column: 2;
+		grid-row: 1;
+		align-self: center;
+		justify-self: center;
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(100%, calc(100vw - 380px), 860px);
+		max-height: min(90vh, calc(100dvh - 56px));
+	}
+}
+
+/* Wide desktop: poster truly centered; meta sits top-left in the free margin. */
+@media (min-width: 1600px) and (hover: hover) and (pointer: fine) {
+	.lightbox-shell {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		overflow: visible;
+		padding: 0;
+	}
+
+	.lightbox-image-stage {
+		max-width: none;
+		max-height: none;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(70vw, 920px);
+		max-height: min(90vh, calc(100dvh - 48px));
+	}
+
+	.lightbox-meta {
+		position: absolute;
+		z-index: 3;
+		top: clamp(16px, 2.2vh, 28px);
+		left: clamp(16px, 2vw, 28px);
+		width: min(300px, calc((100vw - 920px) / 2 - 40px));
+		max-width: 300px;
+		padding: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.design-tile-skeleton,
+	.lightbox-skeleton,
+	.song-eq i {
+		animation: none;
+	}
+
+	.design-tile,
+	.design-tile img,
+	.design-tile-caption {
+		transition: none;
+	}
 }
 
 @media (max-width: 1100px) {
 	.moodboard {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 900px) {
+	.lightbox-shell {
+		gap: 24px;
+	}
+
+	.lightbox-image-stage {
+		max-height: min(78vh, calc(100dvh - 180px));
+	}
+
+	.lightbox-image-stage img {
+		max-width: calc(100vw - 36px);
+		max-height: min(78vh, calc(100dvh - 180px));
+	}
+
+	#lightbox-title {
+		font-size: 1.2rem;
 	}
 }
 
@@ -746,13 +1156,5 @@ h2 {
 
 	.lightbox {
 		padding: 18px;
-	}
-
-	.lightbox-content {
-		gap: 14px;
-	}
-
-	.lightbox-content img {
-		max-height: calc(100vh - 180px);
 	}
 }

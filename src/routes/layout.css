@@ -24,6 +24,8 @@
 	--status-wip-bg: rgb(161 98 7 / 0.1);
 	--status-offline-fg: #6b6b6b;
 	--status-offline-bg: rgb(0 0 0 / 0.05);
+	--ca-x: 0px;
+	--ca-y: 0px;
 }
 
 [data-theme='dark'] {
@@ -130,6 +132,21 @@ html.theme-animated body {
 	}
 }
 
+/* Scroll chromatic aberration — channel split via inherited text-shadow + media drop-shadows.
+   Applied to leaves (not ancestors) so position:fixed chrome stays viewport-fixed. */
+html.ca-active body {
+	text-shadow:
+		calc(var(--ca-x) * -1) calc(var(--ca-y) * -1) 0 rgb(255 45 75 / 0.28),
+		var(--ca-x) var(--ca-y) 0 rgb(0 195 255 / 0.28);
+}
+
+html.ca-active img,
+html.ca-active video {
+	filter:
+		drop-shadow(calc(var(--ca-x) * -1) calc(var(--ca-y) * -1) 0 rgb(255 45 75 / 0.32))
+		drop-shadow(var(--ca-x) var(--ca-y) 0 rgb(0 195 255 / 0.32));
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.reveal-pending {
 		opacity: 1;
@@ -137,5 +154,14 @@ html.theme-animated body {
 
 	.reveal {
 		animation: none;
+	}
+
+	html.ca-active body {
+		text-shadow: none;
+	}
+
+	html.ca-active img,
+	html.ca-active video {
+		filter: none;
 	}
 }

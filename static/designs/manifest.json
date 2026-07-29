@@ -381,6 +381,18 @@
         "full": "/designs/never-meant-full.webp"
       }
     },
+    "old-house": {
+      "source": "old-house.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/old-house-480.webp",
+        "960": "/designs/old-house-960.webp",
+        "full": "/designs/old-house-full.webp"
+      }
+    },
     "openai": {
       "source": "openai.png",
       "sourceSize": [
@@ -391,6 +403,18 @@
         "480": "/designs/openai-480.webp",
         "960": "/designs/openai-960.webp",
         "full": "/designs/openai-full.webp"
+      }
+    },
+    "pain-sweet-pain": {
+      "source": "pain-sweet-pain.png",
+      "sourceSize": [
+        1506,
+        2130
+      ],
+      "outputs": {
+        "480": "/designs/pain-sweet-pain-480.webp",
+        "960": "/designs/pain-sweet-pain-960.webp",
+        "full": "/designs/pain-sweet-pain-full.webp"
       }
     },
     "reconstruction": {
@@ -429,6 +453,18 @@
         "full": "/designs/safe-in-your-skin-full.webp"
       }
     },
+    "size-of-the-moon": {
+      "source": "size-of-the-moon.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/size-of-the-moon-480.webp",
+        "960": "/designs/size-of-the-moon-960.webp",
+        "full": "/designs/size-of-the-moon-full.webp"
+      }
+    },
     "slow-it-down": {
       "source": "slow-it-down.png",
       "sourceSize": [
@@ -451,6 +487,30 @@
         "480": "/designs/t1-480.webp",
         "960": "/designs/t1-960.webp",
         "full": "/designs/t1-full.webp"
+      }
+    },
+    "telescope": {
+      "source": "telescope.png",
+      "sourceSize": [
+        2480,
+        3508
+      ],
+      "outputs": {
+        "480": "/designs/telescope-480.webp",
+        "960": "/designs/telescope-960.webp",
+        "full": "/designs/telescope-full.webp"
+      }
+    },
+    "the-water": {
+      "source": "the-water.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/the-water-480.webp",
+        "960": "/designs/the-water-960.webp",
+        "full": "/designs/the-water-full.webp"
       }
     },
     "the-way-back": {

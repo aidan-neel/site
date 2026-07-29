@@ -1,40 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	import { ArrowUpRight, Moon, Music, Sun, Volume2, VolumeX, X } from 'lucide-svelte';
 	import { reveal } from '$lib/reveal';
 	import './+page.css';
-
-	function lightboxIn(
-		node: Element,
-		{ duration = 360, easing = expoOut }: { duration?: number; easing?: (t: number) => number } = {}
-	) {
-		return {
-			duration,
-			easing,
-			css: (t: number) => {
-				const y = (1 - t) * 16;
-				const s = 0.98 + t * 0.02;
-				return `opacity:${t}; transform: translate3d(0, ${y}px, 0) scale(${s});`;
-			}
-		};
-	}
-
-	function lightboxOut(
-		node: Element,
-		{ duration = 180, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}
-	) {
-		return {
-			duration,
-			easing,
-			css: (t: number) => {
-				const y = (1 - t) * 8;
-				const s = 0.98 + t * 0.02;
-				return `opacity:${t}; transform: translate3d(0, ${y}px, 0) scale(${s});`;
-			}
-		};
-	}
 
 	const projects = [
 		{
@@ -75,7 +45,7 @@
 	};
 
 	const CARD_IMAGE_SIZES =
-		'(max-width: 700px) 50vw, (max-width: 1100px) 33vw, (max-width: 1600px) 25vw, 360px';
+		'(max-width: 700px) 50vw, (max-width: 1100px) 33vw, (max-width: 1500px) 25vw, 320px';
 	const cardImage = (image: string) => `/designs/${image}-480.webp`;
 	const cardImageSet = (image: string) =>
 		`/designs/${image}-480.webp 480w, /designs/${image}-960.webp 960w`;
@@ -84,115 +54,17 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
-			title: 'Size of the Moon',
-			description: '',
-			date: '7/29/2026',
-			image: 'size-of-the-moon',
-			songTitle: 'Size of the Moon',
-			artist: 'Pinegrove',
-			songUrl: 'https://open.spotify.com/track/1yKHCKA82sI4IB5Xpo2sba',
-			audioFile: '/audio/size-of-the-moon.mp3'
-		},
-		{
-			title: 'Old House',
-			description: '',
-			date: '7/29/2026',
-			image: 'old-house',
-			songTitle: 'Back to the Old House',
-			artist: 'The Smiths',
-			songUrl: 'https://open.spotify.com/track/6LUGvXEAK8WxIBYK43uoTb',
-			audioFile: '/audio/old-house.mp3'
-		},
-		{
-			title: 'Telescope',
-			description: '',
-			date: '7/29/2026',
-			image: 'telescope',
-			songTitle: 'Telescope',
-			artist: 'Cage the Elephant',
-			songUrl: 'https://open.spotify.com/track/0tkBOcK7oRVXQJY97zzSvr',
-			audioFile: '/audio/telescope.mp3'
-		},
-		{
-			title: 'The Water',
-			description: '',
-			date: '7/29/2026',
-			image: 'the-water',
-			songTitle: 'God Bless Eric Taylor (Acoustic)',
-			artist: 'Marietta',
-			songUrl:
-				'https://open.spotify.com/search/God%20Bless%20Eric%20Taylor%20Acoustic%20artist%3AMarietta',
-			audioFile: '/audio/the-water.mp3'
-		},
-		{
-			title: 'Pain, Sweet, Pain',
-			description: '',
-			date: '7/29/2026',
-			image: 'pain-sweet-pain',
-			songTitle: 'Pain, Sweet, Pain',
-			artist: 'Zach Bryan',
-			songUrl: 'https://open.spotify.com/search/Pain%2C%20Sweet%2C%20Pain%20artist%3AZach%20Bryan',
-			audioFile: '/audio/pain-sweet-pain.mp3'
-		},
-		{
-			title: '14 Minutes',
-			description: '',
-			date: '7/26/2026',
-			image: '14-minutes'
-		},
-		{
-			title: 'Hatful of Hollow',
-			description: '',
-			date: '7/26/2026',
-			image: 'hatful-of-hollow'
-		},
-		{
-			title: 'Can’t Hide',
-			description: '',
-			date: '7/26/2026',
-			image: 'cant-hide'
-		},
-		{
-			title: 'Drowning',
-			description: '',
-			date: '7/26/2026',
-			image: 'drowning'
-		},
-		{
-			title: 'Touch Grass',
-			description: '',
-			date: '7/26/2026',
-			image: 'touch-grass'
-		},
-		{
-			title: 'Forget the Flowers',
-			description: '',
-			date: '7/26/2026',
-			image: 'forget-the-flowers',
-			songTitle: 'Forget the Flowers',
-			artist: 'Wilco',
-			songUrl: 'https://open.spotify.com/track/5xpsqQJz7pI6huO0Pd7QZW',
-			audioFile: '/audio/forget-the-flowers.mp3'
-		},
-		{
-			title: 'Awake My Soul',
-			description: '',
-			date: '7/26/2026',
-			image: 'awake-my-soul',
-			songTitle: 'Awake My Soul',
-			artist: 'Mumford & Sons',
-			songUrl: 'https://open.spotify.com/track/3khbaRkdMXpwxd6Ege88gj',
-			audioFile: '/audio/awake-my-soul.mp3'
-		},
-		{
 			title: 'Feeling',
 			description: '',
 			date: '7/21/2026',
 			image: 'feeling',
-			songTitle: 'Safe In Your Skin / Where Am I?',
-			artist: 'Tigers Jaw',
-			songUrl: 'https://open.spotify.com/track/09itu2ev1hcIzDBwgC6vjx?si=f4dde17d214441ad',
 			audioFile: '/audio/feeling.mp3'
+		},
+		{
+			title: 'Lorem Ipsum',
+			description: '',
+			date: '7/20/2026',
+			image: 'lorem-ipsum'
 		},
 		{
 			title: 'Cup',
@@ -201,8 +73,14 @@
 			image: 'cup'
 		},
 		{
-			title: 'Rivers and Roads',
+			title: 'Dart',
 			description: '',
+			date: '7/20/2026',
+			image: 'dart'
+		},
+		{
+			title: 'Rivers and Roads',
+			description: 'If you think about it, nothing really is as it has been.',
 			date: '7/19/2026',
 			image: 'rivers-and-roads',
 			songTitle: 'Rivers and Roads',
@@ -219,6 +97,26 @@
 			artist: 'Marietta',
 			songUrl: 'https://open.spotify.com/track/7DHaaPaOwQI8mXdNyd1Uq3?si=40d8d5b093a44202',
 			audioFile: '/audio/brains.mp3'
+		},
+		{
+			title: 'Down in the Valley',
+			description: 'Another 10/10 album.',
+			date: '7/19/2026',
+			image: 'california',
+			songTitle: 'Down in the Valley',
+			artist: 'The Head and the Heart',
+			songUrl: 'https://open.spotify.com/track/6soFQo67vXsBPU5hRVnYLt',
+			audioFile: '/audio/california.mp3'
+		},
+		{
+			title: 'The Outer Wilds',
+			description: 'Inspired by the game "The Outer Wilds" and its soundtrack.',
+			date: '7/19/2026',
+			image: 'traveler',
+			songTitle: 'Travelers',
+			artist: 'Andrew Prahlow',
+			songUrl: 'https://open.spotify.com/track/607Rub0edH75AmHEIsuw8N',
+			audioFile: '/audio/travelers.mp3'
 		},
 		{
 			title: 'VCR',
@@ -480,6 +378,8 @@
 	let loadedDesigns = $state(new Set<string>());
 	let lightboxImageLoaded = $state(false);
 	let songPlaying = $state(false);
+	let heroNameEl = $state<HTMLElement | null>(null);
+	let heroPassed = $state(false);
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
 	let audioPlaybackId = 0;
@@ -547,11 +447,23 @@
 
 		const closeVolume = (event: PointerEvent) => {
 			const target = event.target as Node | null;
-			const root = document.querySelector('.volume-control');
+			const root = document.querySelector('.opus-volume');
 			if (root && target && !root.contains(target)) volumeOpen = false;
 		};
 		window.addEventListener('pointerdown', closeVolume);
 		return () => window.removeEventListener('pointerdown', closeVolume);
+	});
+
+	// Swaps the masthead in once the display name has scrolled under the bar.
+	$effect(() => {
+		const node = heroNameEl;
+		if (!node) return;
+		const observer = new IntersectionObserver(([entry]) => (heroPassed = !entry.isIntersecting), {
+			rootMargin: '-64px 0px 0px 0px',
+			threshold: 0
+		});
+		observer.observe(node);
+		return () => observer.disconnect();
 	});
 
 	$effect(() => {
@@ -694,30 +606,17 @@
 		disposeAudio(audio);
 	}
 
-	function setZoomAt(nextZoom: number, originX: number, originY: number) {
-		const clamped = Math.min(Math.max(nextZoom, 1), 4);
-		if (clamped === zoom) return;
-
-		if (clamped === 1) {
-			zoom = 1;
+	function setZoom(nextZoom: number) {
+		zoom = Math.min(Math.max(nextZoom, 1), 4);
+		if (zoom === 1) {
 			panX = 0;
 			panY = 0;
-			return;
 		}
-
-		const scale = clamped / zoom;
-		panX = originX - (originX - panX) * scale;
-		panY = originY - (originY - panY) * scale;
-		zoom = clamped;
 	}
 
 	function handleImageWheel(event: WheelEvent) {
 		event.preventDefault();
-		const stage = event.currentTarget as HTMLElement;
-		const rect = stage.getBoundingClientRect();
-		const originX = event.clientX - rect.left - rect.width / 2;
-		const originY = event.clientY - rect.top - rect.height / 2;
-		setZoomAt(zoom + (event.deltaY < 0 ? 0.25 : -0.25), originX, originY);
+		setZoom(zoom + (event.deltaY < 0 ? 0.25 : -0.25));
 	}
 
 	function beginPan(event: PointerEvent) {
@@ -741,12 +640,8 @@
 		panning = false;
 	}
 
-	function toggleZoom(event: MouseEvent) {
-		const stage = event.currentTarget as HTMLElement;
-		const rect = stage.getBoundingClientRect();
-		const originX = event.clientX - rect.left - rect.width / 2;
-		const originY = event.clientY - rect.top - rect.height / 2;
-		setZoomAt(zoom === 1 ? 2 : 1, originX, originY);
+	function toggleZoom() {
+		setZoom(zoom === 1 ? 2 : 1);
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -774,133 +669,148 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<div class="site-controls" use:reveal={{ immediate: true, delay: 220, y: -8 }}>
-	<div class="volume-control" class:is-open={volumeOpen}>
-		<button
-			type="button"
-			class="control-btn volume-toggle"
-			onclick={toggleVolumeOpen}
-			aria-label={volumeOpen ? 'Close volume' : 'Open volume'}
-			aria-expanded={volumeOpen}
-			aria-controls="volume-slider"
-		>
-			{#if musicMuted}
-				<VolumeX size={16} strokeWidth={1.75} aria-hidden="true" />
-			{:else}
-				<Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
-			{/if}
-		</button>
-		<div class="volume-slider-shell">
-			<input
-				id="volume-slider"
-				class="volume-slider"
-				type="range"
-				min="0"
-				max="100"
-				step="1"
-				value={musicVolume}
-				aria-label="Music volume"
-				tabindex={volumeOpen ? 0 : -1}
-				onpointerdown={(event) => event.stopPropagation()}
-				oninput={(event) => setMusicVolume(Number(event.currentTarget.value))}
-			/>
-		</div>
-	</div>
-	<button
-		type="button"
-		class="control-btn theme-toggle"
-		onclick={toggleTheme}
-		aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-	>
-		<span class="theme-icon" class:active={theme === 'dark'} aria-hidden="true">
-			<Sun size={16} strokeWidth={1.75} />
-		</span>
-		<span class="theme-icon" class:active={theme === 'light'} aria-hidden="true">
-			<Moon size={16} strokeWidth={1.75} />
-		</span>
-	</button>
-</div>
-
-<div class="portfolio">
-	<div class="portfolio-inner">
-		<section class="hero" aria-labelledby="intro-title">
-			<header class="identity">
-				<p class="name" use:reveal={{ immediate: true }}>Aidan Neel</p>
-				<p class="role" use:reveal={{ immediate: true, delay: 80 }}>Software Developer</p>
-			</header>
-
-			<div class="intro" use:reveal={{ immediate: true, delay: 180 }}>
-				<p class="eyebrow">About</p>
-				<h1 id="intro-title">
-					<span class="hero-line">{heroText}</span>
-				</h1>
-			</div>
-		</section>
-
-		<section class="archive-section" aria-labelledby="projects-title">
-			<div class="section-heading" use:reveal>
-				<p class="eyebrow">Software</p>
-				<h2 id="projects-title">Projects</h2>
-			</div>
-
-			<div class="project-list">
-				{#each projects as project, i}
-					<a
-						class="project-row"
-						href={project.url}
-						target="_blank"
-						rel="noreferrer"
-						use:reveal={{ delay: 80 + i * 70 }}
+<div class="opus-home">
+	<header class="opus-bar" class:is-stuck={heroPassed}>
+		<div class="opus-bar-inner">
+			<span class="opus-bar-name" aria-hidden={!heroPassed}>Aidan Neel</span>
+			<div class="opus-bar-controls">
+				<div class="opus-volume" class:is-open={volumeOpen}>
+					<button
+						type="button"
+						class="opus-icon-btn opus-volume-toggle"
+						onclick={toggleVolumeOpen}
+						aria-label={volumeOpen ? 'Close volume' : 'Open volume'}
+						aria-expanded={volumeOpen}
+						aria-controls="opus-volume-slider"
 					>
-						<div class="project-line">
-							<h3>
-								{project.title}
-								<ArrowUpRight
-									size={14}
-									strokeWidth={1.75}
-									class="project-arrow"
-									aria-hidden="true"
-								/>
-							</h3>
-							<p class="project-status" data-tone={project.tone}>
-								<span class="status-dot" aria-hidden="true"></span>
-								{project.status}
-							</p>
-						</div>
-						<p class="project-description">{project.description}</p>
-					</a>
-				{/each}
+						{#if musicMuted}
+							<VolumeX size={16} strokeWidth={1.75} aria-hidden="true" />
+						{:else}
+							<Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+						{/if}
+					</button>
+					<div class="opus-volume-shell">
+						<input
+							id="opus-volume-slider"
+							class="opus-volume-slider"
+							type="range"
+							min="0"
+							max="100"
+							step="1"
+							value={musicVolume}
+							aria-label="Music volume"
+							tabindex={volumeOpen ? 0 : -1}
+							onpointerdown={(event) => event.stopPropagation()}
+							oninput={(event) => setMusicVolume(Number(event.currentTarget.value))}
+						/>
+					</div>
+				</div>
+				<button
+					type="button"
+					class="opus-icon-btn opus-theme-toggle"
+					onclick={toggleTheme}
+					aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+				>
+					<span class="opus-theme-icon" class:active={theme === 'dark'} aria-hidden="true">
+						<Sun size={16} strokeWidth={1.75} />
+					</span>
+					<span class="opus-theme-icon" class:active={theme === 'light'} aria-hidden="true">
+						<Moon size={16} strokeWidth={1.75} />
+					</span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<div class="opus-shell">
+		<section class="opus-hero" aria-labelledby="opus-intro-title">
+			<h1 class="opus-display" bind:this={heroNameEl}>
+				<span class="opus-mask"><span class="opus-mask-inner">Aidan Neel</span></span>
+			</h1>
+			<span class="opus-hero-rule" aria-hidden="true"></span>
+			<div class="opus-hero-grid">
+				<p class="opus-label" use:reveal={{ immediate: true, delay: 420, y: 6 }}>
+					Software Developer
+				</p>
+				<p
+					class="opus-statement"
+					id="opus-intro-title"
+					use:reveal={{ immediate: true, delay: 500 }}
+				>
+					{heroText}
+				</p>
+			</div>
+		</section>
+
+		<section class="opus-section" aria-labelledby="opus-projects-title">
+			<div class="opus-rail">
+				<p class="opus-label" use:reveal>Software</p>
+				<div class="opus-rail-body">
+					<h2 id="opus-projects-title" class="opus-heading" use:reveal={{ delay: 40 }}>Projects</h2>
+					<div class="opus-projects">
+						{#each projects as project, i (project.title)}
+							<a
+								class="opus-project"
+								href={project.url}
+								target="_blank"
+								rel="noreferrer"
+								use:reveal={{ delay: 80 + i * 70 }}
+							>
+								<span class="opus-project-top">
+									<span class="opus-project-title">
+										{project.title}
+										<ArrowUpRight
+											size={14}
+											strokeWidth={1.75}
+											class="opus-project-arrow"
+											aria-hidden="true"
+										/>
+									</span>
+									<span class="opus-status" data-tone={project.tone}>
+										<span class="opus-status-dot" aria-hidden="true"></span>
+										{project.status}
+									</span>
+								</span>
+								<span class="opus-project-desc">{project.description}</span>
+							</a>
+						{/each}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="opus-section" aria-labelledby="opus-designs-title">
+			<div class="opus-rail">
+				<p class="opus-label" use:reveal>Visual</p>
+				<div class="opus-rail-body">
+					<h2 id="opus-designs-title" class="opus-heading" use:reveal={{ delay: 40 }}>Designs</h2>
+					<p class="opus-section-desc" use:reveal={{ delay: 90 }}>
+						A growing set of posters and experiments as I find my way back to designing. Typically
+						inspired by music.
+					</p>
+					<p class="opus-meta-line" use:reveal={{ delay: 140 }}>
+						<span>{designs.length} pieces</span>
+						<span class="opus-dot" aria-hidden="true"></span>
+						<span>{withSound} play a song</span>
+					</p>
+				</div>
 			</div>
 		</section>
 	</div>
 
-	<section class="archive-section designs-section" aria-labelledby="designs-title">
-		<div class="section-heading" use:reveal>
-			<p class="eyebrow">Visual</p>
-			<h2 id="designs-title">Designs</h2>
-			<p class="section-description">
-				A growing set of posters and experiments as I find my way back to designing. Typically
-				inspired by music.
-			</p>
-			<p class="designs-meta">
-				<span>{designs.length} pieces</span>
-				<span class="designs-meta-dot" aria-hidden="true"></span>
-				<span>{withSound} play a song</span>
-			</p>
-		</div>
-
-		<div class="moodboard">
+	<section class="opus-wall" aria-label="Design archive">
+		<div class="opus-moodboard">
 			{#each designs as design, i (design.image)}
 				<button
 					type="button"
-					class="design-tile"
+					class="opus-tile"
 					class:is-loaded={loadedDesigns.has(design.image)}
 					onclick={() => openLightbox(design)}
 					aria-label={`View ${design.title}`}
 					aria-busy={!loadedDesigns.has(design.image)}
-					use:reveal={{ delay: (i % 4) * 55, y: 10 }}
+					use:reveal={{ delay: (i % 5) * 50, y: 12 }}
 				>
-					<span class="design-tile-skeleton" aria-hidden="true"></span>
+					<span class="opus-tile-skeleton" aria-hidden="true"></span>
 					<img
 						src={cardImage(design.image)}
 						srcset={cardImageSet(design.image)}
@@ -912,13 +822,13 @@
 						onload={() => markDesignLoaded(design.image)}
 						use:bindDesignImage={design.image}
 					/>
-					<span class="design-tile-caption" aria-hidden="true">
-						<span class="design-tile-head">
-							<span class="design-tile-title">{design.title}</span>
-							<span class="design-tile-date">{design.date}</span>
+					<span class="opus-tile-caption" aria-hidden="true">
+						<span class="opus-tile-head">
+							<span class="opus-tile-title">{design.title}</span>
+							<span class="opus-tile-date">{design.date}</span>
 						</span>
 						{#if design.songTitle}
-							<span class="design-tile-song">
+							<span class="opus-tile-song">
 								<Music size={11} strokeWidth={2} aria-hidden="true" />
 								{design.songTitle} — {design.artist}
 							</span>
@@ -928,104 +838,105 @@
 			{/each}
 		</div>
 	</section>
-</div>
 
-{#if activeDesign}
-	<div
-		class="lightbox"
-		role="presentation"
-		onclick={handleLightboxClick}
-		in:fade={{ duration: 240 }}
-		out:fade={{ duration: 170 }}
-	>
-		<button
-			type="button"
-			class="lightbox-close"
-			onclick={closeLightbox}
-			aria-label="Close"
-			in:fade={{ duration: 200, delay: 80 }}
-		>
-			<X size={16} strokeWidth={1.75} aria-hidden="true" />
-		</button>
-
+	{#if activeDesign}
 		<div
-			class="lightbox-shell"
-			role="dialog"
-			aria-modal="true"
-			aria-labelledby="lightbox-title"
-			tabindex="-1"
-			in:lightboxIn
-			out:lightboxOut
+			class="opus-lightbox"
+			role="presentation"
+			onclick={handleLightboxClick}
+			in:fade={{ duration: 220 }}
+			out:fade={{ duration: 160 }}
 		>
-			<div
-				class:zoomed={zoom > 1}
-				class:panning
-				class:is-loaded={lightboxImageLoaded}
-				class="lightbox-image-stage"
-				role="group"
-				aria-label="Zoomable image. Scroll to zoom and drag to pan."
-				aria-busy={!lightboxImageLoaded}
-				onwheel={handleImageWheel}
-				onpointerdown={beginPan}
-				onpointermove={panImage}
-				onpointerup={endPan}
-				onpointercancel={endPan}
-				ondblclick={toggleZoom}
+			<button
+				type="button"
+				class="opus-close"
+				onclick={closeLightbox}
+				aria-label="Close"
+				in:fade={{ duration: 200, delay: 120 }}
 			>
-				<span class="lightbox-skeleton" aria-hidden="true"></span>
-				<img
-					src={fullImage(activeDesign.image)}
-					alt={`${activeDesign.title} design`}
-					draggable="false"
-					decoding="async"
-					fetchpriority="high"
-					onload={() => (lightboxImageLoaded = true)}
-					style:transform={`translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`}
-				/>
-				<span class="lightbox-zoom-chip" class:is-visible={zoom > 1} aria-hidden="true">
-					{zoom.toFixed(1)}×
-				</span>
-			</div>
+				<X size={16} strokeWidth={1.75} aria-hidden="true" />
+			</button>
+			<div
+				class="opus-sleeve"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="opus-lightbox-title"
+				tabindex="-1"
+				in:scale={{ start: 0.97, opacity: 0, duration: 380, easing: expoOut }}
+				out:scale={{ start: 0.99, opacity: 0, duration: 160, easing: cubicOut }}
+			>
+				<div
+					class:zoomed={zoom > 1}
+					class:panning
+					class:is-loaded={lightboxImageLoaded}
+					class="opus-stage"
+					role="group"
+					aria-label="Zoomable image. Scroll to zoom and drag to pan."
+					aria-busy={!lightboxImageLoaded}
+					onwheel={handleImageWheel}
+					onpointerdown={beginPan}
+					onpointermove={panImage}
+					onpointerup={endPan}
+					onpointercancel={endPan}
+					ondblclick={toggleZoom}
+				>
+					<span class="opus-stage-skeleton" aria-hidden="true"></span>
+					<img
+						src={fullImage(activeDesign.image)}
+						alt={`${activeDesign.title} design`}
+						draggable="false"
+						decoding="async"
+						fetchpriority="high"
+						onload={() => (lightboxImageLoaded = true)}
+						style:transform={`translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`}
+					/>
+					<span class="opus-zoom-chip" class:is-visible={zoom > 1} aria-hidden="true">
+						{zoom.toFixed(1)}×
+					</span>
+				</div>
 
-			<div class="lightbox-meta">
-				<p id="lightbox-title">{activeDesign.title}</p>
-				<p class="lightbox-date">{activeDesign.date}</p>
-				{#if activeDesign.description}
-					<p class="lightbox-description">{activeDesign.description}</p>
-				{/if}
-				{#if activeDesign.songTitle && activeDesign.artist}
-					{#if activeDesign.songUrl}
-						<a class="song-link" href={activeDesign.songUrl} target="_blank" rel="noreferrer">
-							<span class="song-glyph" aria-hidden="true">
-								{#if songPlaying}
-									<span class="song-eq"><i></i><i></i><i></i></span>
-								{:else}
-									<Music size={12} strokeWidth={2} />
-								{/if}
-							</span>
-							<span class="song-text">
-								<span class="song-title">{activeDesign.songTitle}</span>
-								<span class="song-artist">{activeDesign.artist}</span>
-							</span>
-							<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
-						</a>
-					{:else}
-						<span class="song-link is-static">
-							<span class="song-glyph" aria-hidden="true">
-								{#if songPlaying}
-									<span class="song-eq"><i></i><i></i><i></i></span>
-								{:else}
-									<Music size={12} strokeWidth={2} />
-								{/if}
-							</span>
-							<span class="song-text">
-								<span class="song-title">{activeDesign.songTitle}</span>
-								<span class="song-artist">{activeDesign.artist}</span>
-							</span>
-						</span>
+				<div class="opus-notes">
+					<p class="opus-notes-date">{activeDesign.date}</p>
+					<p id="opus-lightbox-title" class="opus-notes-title">{activeDesign.title}</p>
+					{#if activeDesign.description}
+						<p class="opus-notes-desc">{activeDesign.description}</p>
 					{/if}
-				{/if}
+					{#if activeDesign.songTitle && activeDesign.artist}
+						<span class="opus-notes-rule" aria-hidden="true"></span>
+						{#if activeDesign.songUrl}
+							<a class="opus-song" href={activeDesign.songUrl} target="_blank" rel="noreferrer">
+								<span class="opus-song-glyph" aria-hidden="true">
+									{#if songPlaying}
+										<span class="opus-eq"><i></i><i></i><i></i></span>
+									{:else}
+										<Music size={12} strokeWidth={2} />
+									{/if}
+								</span>
+								<span class="opus-song-text">
+									<span class="opus-song-title">{activeDesign.songTitle}</span>
+									<span class="opus-song-artist">{activeDesign.artist}</span>
+								</span>
+								<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
+							</a>
+						{:else}
+							<span class="opus-song is-static">
+								<span class="opus-song-glyph" aria-hidden="true">
+									{#if songPlaying}
+										<span class="opus-eq"><i></i><i></i><i></i></span>
+									{:else}
+										<Music size={12} strokeWidth={2} />
+									{/if}
+								</span>
+								<span class="opus-song-text">
+									<span class="opus-song-title">{activeDesign.songTitle}</span>
+									<span class="opus-song-artist">{activeDesign.artist}</span>
+								</span>
+							</span>
+						{/if}
+					{/if}
+					<p class="opus-notes-hint">Scroll to zoom · Drag to pan · Esc to close</p>
+				</div>
 			</div>
 		</div>
-	</div>
-{/if}
+	{/if}
+</div>
