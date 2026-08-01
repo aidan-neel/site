@@ -596,6 +596,30 @@
         "960": "/designs/where-am-i-960.webp",
         "full": "/designs/where-am-i-full.webp"
       }
+    },
+    "1251": {
+      "source": "1251.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/1251-480.webp",
+        "960": "/designs/1251-960.webp",
+        "full": "/designs/1251-full.webp"
+      }
+    },
+    "lonely-in-the-future": {
+      "source": "lonely-in-the-future.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/lonely-in-the-future-480.webp",
+        "960": "/designs/lonely-in-the-future-960.webp",
+        "full": "/designs/lonely-in-the-future-full.webp"
+      }
     }
   }
 }

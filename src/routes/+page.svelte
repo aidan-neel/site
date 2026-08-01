@@ -23,7 +23,10 @@
 
 	function lightboxOut(
 		node: Element,
-		{ duration = 180, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}
+		{
+			duration = 180,
+			easing = cubicOut
+		}: { duration?: number; easing?: (t: number) => number } = {}
 	) {
 		return {
 			duration,
@@ -83,6 +86,26 @@
 
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
+		{
+			title: '12:51',
+			description: '',
+			date: '8/1/2026',
+			image: '1251',
+			songTitle: '12:51',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/3RPbswxSkQsVRtwwfy4hrD',
+			audioFile: '/audio/1251.mp3'
+		},
+		{
+			title: 'Lonely in the Future',
+			description: 'Pretty much just a diss track to the music industry (and Fantano). Based',
+			date: '8/1/2026',
+			image: 'lonely-in-the-future',
+			songTitle: 'Lonely in the Future',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/5gBMUQu2FVV1OYu92hbJjv',
+			audioFile: '/audio/lonely-in-the-future.mp3'
+		},
 		{
 			title: 'Size of the Moon',
 			description: '',
