@@ -18,8 +18,7 @@ OUTPUT_DIR = ROOT / "static/fonts"
 CSS_OUTPUT = ROOT / "src/routes/fonts.generated.css"
 FONT_CSS_URL = (
 	"https://fonts.googleapis.com/css2?"
-	"family=Geist:ital,wght@0,100..900;1,100..900&"
-	"family=Instrument+Serif:ital@0;1&display=swap"
+	"family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
 )
 USER_AGENT = (
 	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "

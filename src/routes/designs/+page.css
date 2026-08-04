@@ -1,0 +1,822 @@
+main {
+	display: block;
+	width: 100%;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+	display: none;
+}
+
+body {
+	min-width: 320px;
+	margin: 0;
+	background: var(--bg);
+	color: var(--fg);
+}
+
+/* ── Editor buffer ─────────────────────────────────────────────── */
+
+.buffer {
+	--content-pad: clamp(16px, 4vw, 48px);
+	width: 100%;
+	min-height: 100vh;
+	padding: 4rem 0 7rem;
+	font-size: 15px;
+	line-height: 1.7;
+}
+
+.ln {
+	position: relative;
+	padding: 0 var(--content-pad);
+	line-height: 1.7;
+	animation: line-enter 500ms cubic-bezier(0.2, 0, 0, 1) backwards;
+}
+
+.ln::before {
+	content: none;
+}
+
+.buffer > section > .ln:nth-child(1) {
+	animation-delay: 0ms;
+}
+
+.buffer > section > .ln:nth-child(2) {
+	animation-delay: 60ms;
+}
+
+.buffer > section > .ln:nth-child(3) {
+	animation-delay: 120ms;
+}
+
+.buffer > section > .ln:nth-child(4) {
+	animation-delay: 180ms;
+}
+
+.buffer > section > .ln:nth-child(5) {
+	animation-delay: 240ms;
+}
+
+.ln :is(h1, h2, p) {
+	margin: 0;
+	font: inherit;
+	color: inherit;
+}
+
+.dim {
+	color: var(--gutter);
+}
+
+.comment {
+	color: var(--gutter);
+}
+
+.designs-nav {
+	display: flex;
+	justify-content: space-between;
+	gap: 2ch;
+}
+
+.designs-nav a {
+	color: var(--gutter);
+	text-decoration: none;
+	transition: color 120ms linear;
+}
+
+.designs-nav a:hover,
+.designs-nav a:focus-visible {
+	color: var(--fg);
+	outline: none;
+}
+
+/* ── Designs moodboard ─────────────────────────────────────────── */
+
+.moodboard {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 32px 20px;
+	padding: 1.5rem var(--content-pad) 0;
+}
+
+.design-tile {
+	display: block;
+	width: 100%;
+	padding: 0;
+	overflow: hidden;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	background: none;
+	border: 0;
+	content-visibility: auto;
+	contain-intrinsic-size: auto 460px;
+	animation: tile-enter 520ms cubic-bezier(0.2, 0, 0, 1) backwards;
+	animation-delay: var(--enter-delay, 0ms);
+}
+
+.design-thumb {
+	position: relative;
+	display: block;
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	background: var(--highlight);
+}
+
+.design-thumb::after {
+	content: '';
+	position: absolute;
+	z-index: 2;
+	inset: 0;
+	background: var(--highlight);
+	opacity: 0;
+	transition: opacity 160ms linear;
+	pointer-events: none;
+}
+
+.design-tile-skeleton {
+	position: absolute;
+	z-index: 1;
+	inset: 0;
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(238 241 255 / 0.09) 48%, transparent 64%),
+		var(--highlight);
+	background-size:
+		200% 100%,
+		100% 100%;
+	animation: design-skeleton-shine 1.4s ease-in-out infinite;
+}
+
+.design-tile.is-loaded .design-tile-skeleton {
+	opacity: 0;
+	animation: none;
+	transition: opacity 240ms linear;
+	pointer-events: none;
+}
+
+.design-thumb img {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0;
+	transition: opacity 320ms linear;
+}
+
+.design-tile.is-loaded img {
+	opacity: 1;
+}
+
+.design-caption {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1ch;
+	padding: 3px 6px;
+	font-size: 13px;
+	transition: background-color 120ms linear;
+}
+
+.design-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.design-date {
+	flex-shrink: 0;
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.design-tile:hover .design-thumb::after {
+		opacity: 0.5;
+	}
+
+	.design-tile:hover .design-caption {
+		background: var(--highlight);
+	}
+}
+
+.design-tile:focus-visible {
+	outline: 1px solid var(--fg);
+	outline-offset: 2px;
+}
+
+.design-tile:focus-visible .design-thumb::after {
+	opacity: 0.5;
+}
+
+.design-tile:focus-visible .design-caption {
+	background: var(--highlight);
+}
+
+@keyframes design-skeleton-shine {
+	0% {
+		background-position:
+			120% 0,
+			0 0;
+	}
+
+	100% {
+		background-position:
+			-80% 0,
+			0 0;
+	}
+}
+
+@keyframes line-enter {
+	from {
+		opacity: 0;
+		filter: blur(5px);
+		transform: translateY(0.45em);
+	}
+}
+
+@keyframes tile-enter {
+	from {
+		opacity: 0;
+		filter: blur(6px);
+		transform: translateY(10px);
+	}
+}
+
+/* ── Fixed chrome: volume + credit ─────────────────────────────── */
+
+.site-controls {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	z-index: 20;
+	display: flex;
+	align-items: center;
+}
+
+.volume-control {
+	display: flex;
+	align-items: center;
+	height: 34px;
+	overflow: hidden;
+	color: var(--gutter);
+	background: transparent;
+	border: 1px solid var(--gutter);
+	transition:
+		color 120ms linear,
+		border-color 120ms linear,
+		background-color 120ms linear;
+}
+
+.volume-control:hover,
+.volume-control.is-open {
+	color: var(--fg);
+	background: var(--highlight);
+	border-color: var(--fg);
+}
+
+.control-btn {
+	display: grid;
+	place-items: center;
+	width: 34px;
+	height: 32px;
+	padding: 0;
+	color: inherit;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+}
+
+.control-btn:focus-visible {
+	outline: 1px solid var(--fg);
+	outline-offset: -3px;
+}
+
+.volume-slider-shell {
+	display: grid;
+	align-items: center;
+	width: 0;
+	opacity: 0;
+	overflow: hidden;
+	transition:
+		width 200ms cubic-bezier(0.2, 0, 0, 1),
+		opacity 200ms linear,
+		padding 200ms cubic-bezier(0.2, 0, 0, 1);
+	pointer-events: none;
+}
+
+.volume-control.is-open .volume-slider-shell {
+	width: 96px;
+	padding-right: 12px;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.volume-slider {
+	width: 100%;
+	height: 16px;
+	margin: 0;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.volume-slider:focus-visible {
+	outline: none;
+}
+
+.volume-slider::-webkit-slider-runnable-track {
+	height: 2px;
+	background: var(--gutter);
+}
+
+.volume-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 10px;
+	height: 10px;
+	margin-top: -4px;
+	background: var(--fg);
+	border: 0;
+}
+
+.volume-slider::-moz-range-track {
+	height: 2px;
+	background: var(--gutter);
+	border: 0;
+}
+
+.volume-slider::-moz-range-progress {
+	height: 2px;
+	background: var(--fg);
+	border: 0;
+}
+
+.volume-slider::-moz-range-thumb {
+	width: 10px;
+	height: 10px;
+	background: var(--fg);
+	border: 0;
+	border-radius: 0;
+}
+
+.credit {
+	position: fixed;
+	right: 16px;
+	bottom: 12px;
+	z-index: 10;
+	margin: 0;
+	color: var(--gutter);
+	font-size: 13px;
+	line-height: 1.4;
+	pointer-events: none;
+	user-select: none;
+}
+
+/* ── Lightbox ──────────────────────────────────────────────────── */
+
+.lightbox {
+	position: fixed;
+	z-index: 30;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: clamp(16px, 2.5vw, 36px);
+	background: rgb(42 58 224 / 0.94);
+}
+
+.lightbox-close {
+	position: absolute;
+	z-index: 4;
+	top: clamp(14px, 2.4vw, 26px);
+	right: clamp(14px, 2.4vw, 26px);
+	padding: 4px 0;
+	color: var(--gutter);
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+	background: none;
+	border: 0;
+	transition: color 120ms linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.lightbox-close:hover {
+		color: var(--fg);
+	}
+}
+
+.lightbox-shell {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	/* Hug the poster so the meta below matches its width */
+	align-items: stretch;
+	width: fit-content;
+	max-width: 100%;
+	max-height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	pointer-events: none;
+	transform-origin: center center;
+}
+
+.lightbox-shell > * {
+	pointer-events: auto;
+}
+
+/* Stage hugs the image — no padded frame once loaded. */
+.lightbox-image-stage {
+	position: relative;
+	display: block;
+	width: fit-content;
+	max-width: 100%;
+	max-height: min(72vh, calc(100dvh - 200px));
+	overflow: hidden;
+	cursor: zoom-in;
+	touch-action: none;
+	flex: 0 0 auto;
+	line-height: 0;
+}
+
+/* Soft reserve only while the full poster loads (prevents jump, no visible frame after). */
+.lightbox-image-stage:not(.is-loaded) {
+	width: min(72vw, 320px);
+	aspect-ratio: 2 / 3;
+}
+
+.lightbox-image-stage.zoomed {
+	cursor: grab;
+}
+
+.lightbox-image-stage.panning {
+	cursor: grabbing;
+}
+
+.lightbox-image-stage img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-width: min(100vw - 36px, 640px);
+	max-height: min(72vh, calc(100dvh - 200px));
+	outline: 1px solid var(--gutter);
+	outline-offset: -1px;
+	opacity: 0;
+	transform-origin: center center;
+	transition-property: transform, opacity;
+	transition-duration: 200ms, 280ms;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.lightbox-image-stage.is-loaded img {
+	opacity: 1;
+}
+
+.lightbox-image-stage.panning img {
+	transition-duration: 0ms, 280ms;
+}
+
+.lightbox-skeleton {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(110deg, transparent 30%, rgb(238 241 255 / 0.08) 48%, transparent 64%),
+		var(--highlight);
+	background-size:
+		200% 100%,
+		100% 100%;
+	animation: design-skeleton-shine 1.4s ease-in-out infinite;
+}
+
+.lightbox-image-stage.is-loaded .lightbox-skeleton {
+	opacity: 0;
+	animation: none;
+	transition: opacity 260ms linear;
+	pointer-events: none;
+}
+
+.lightbox-zoom-chip {
+	position: absolute;
+	bottom: 12px;
+	left: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 22px;
+	padding: 0 8px;
+	color: var(--fg);
+	font-size: 11px;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+	background: var(--highlight);
+	opacity: 0;
+	transform: translateY(4px);
+	transition:
+		opacity 180ms linear,
+		transform 200ms cubic-bezier(0.2, 0, 0, 1);
+	pointer-events: none;
+}
+
+.lightbox-zoom-chip.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.lightbox-meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0;
+	/* Matches poster width via the fit-content shell */
+	width: 100%;
+	max-width: 100%;
+	padding: 2px 2px 0;
+	color: var(--fg);
+	box-sizing: border-box;
+}
+
+#lightbox-title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.5;
+	color: var(--fg);
+}
+
+.lightbox-date {
+	margin: 4px 0 0;
+	color: var(--gutter);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+
+.lightbox-description {
+	max-width: 52ch;
+	margin: 12px 0 0;
+	color: var(--gutter);
+	font-size: 13px;
+	line-height: 1.7;
+	text-wrap: pretty;
+}
+
+.song-link {
+	display: inline-flex;
+	align-items: center;
+	align-self: flex-start;
+	gap: 10px;
+	max-width: 100%;
+	margin-top: 14px;
+	padding: 8px 12px;
+	color: var(--fg);
+	font-size: 13px;
+	text-decoration: none;
+	background: transparent;
+	border: 1px solid var(--gutter);
+	transition:
+		background-color 120ms linear,
+		border-color 120ms linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.song-link:not(.is-static):hover {
+		background: var(--highlight);
+		border-color: var(--fg);
+	}
+}
+
+.song-glyph {
+	display: grid;
+	place-items: center;
+	width: 22px;
+	height: 22px;
+	flex-shrink: 0;
+	color: var(--gutter);
+}
+
+.song-text {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+}
+
+.song-title {
+	overflow: hidden;
+	font-size: 12.5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.song-artist {
+	overflow: hidden;
+	color: var(--gutter);
+	font-size: 11.5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.song-link > svg:last-child {
+	flex-shrink: 0;
+	color: var(--gutter);
+}
+
+.song-eq {
+	display: flex;
+	align-items: flex-end;
+	gap: 2px;
+	height: 11px;
+}
+
+.song-eq i {
+	width: 2px;
+	height: 100%;
+	background: currentcolor;
+	transform-origin: bottom;
+	animation: song-eq 900ms ease-in-out infinite alternate;
+}
+
+.song-eq i:nth-child(1) {
+	animation-duration: 760ms;
+}
+
+.song-eq i:nth-child(2) {
+	animation-duration: 1040ms;
+	animation-delay: -320ms;
+}
+
+.song-eq i:nth-child(3) {
+	animation-duration: 880ms;
+	animation-delay: -560ms;
+}
+
+@keyframes song-eq {
+	from {
+		transform: scaleY(0.28);
+	}
+
+	to {
+		transform: scaleY(1);
+	}
+}
+
+.lightbox :is(a, button):focus-visible {
+	outline: 1px solid var(--fg);
+	outline-offset: 3px;
+}
+
+/* Wider posters on large viewports, still stacked (meta under image). */
+@media (min-width: 901px) {
+	.lightbox-image-stage {
+		max-width: none;
+		max-height: none;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(72vw, calc(100vw - 80px), 820px);
+		max-height: min(82vh, calc(100dvh - 200px));
+	}
+}
+
+/* Mid desktop: two-pane — meta left rail, poster in the remaining space. */
+@media (min-width: 1200px) and (max-width: 1599px) and (hover: hover) and (pointer: fine) {
+	.lightbox-shell {
+		display: grid;
+		grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr);
+		align-items: start;
+		column-gap: clamp(24px, 3vw, 48px);
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		overflow: visible;
+		padding: clamp(16px, 2vh, 28px) clamp(16px, 2vw, 28px);
+		box-sizing: border-box;
+	}
+
+	.lightbox-meta {
+		grid-column: 1;
+		grid-row: 1;
+		position: static;
+		width: 100%;
+		max-width: none;
+		padding: 4px 0 0;
+	}
+
+	.lightbox-image-stage {
+		grid-column: 2;
+		grid-row: 1;
+		align-self: center;
+		justify-self: center;
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(100%, calc(100vw - 380px), 860px);
+		max-height: min(90vh, calc(100dvh - 56px));
+	}
+}
+
+/* Wide desktop: poster truly centered; meta sits top-left in the free margin. */
+@media (min-width: 1600px) and (hover: hover) and (pointer: fine) {
+	.lightbox-shell {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		overflow: visible;
+		padding: 0;
+	}
+
+	.lightbox-image-stage {
+		max-width: none;
+		max-height: none;
+	}
+
+	.lightbox-image-stage img {
+		max-width: min(70vw, 920px);
+		max-height: min(90vh, calc(100dvh - 48px));
+	}
+
+	.lightbox-meta {
+		position: absolute;
+		z-index: 3;
+		top: clamp(16px, 2.2vh, 28px);
+		left: clamp(16px, 2vw, 28px);
+		width: min(300px, calc((100vw - 920px) / 2 - 40px));
+		max-width: 300px;
+		padding: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ln,
+	.design-tile,
+	.design-tile-skeleton,
+	.lightbox-skeleton,
+	.song-eq i {
+		animation: none;
+	}
+
+	.design-thumb img,
+	.design-thumb::after,
+	.design-caption,
+	a.ln {
+		transition: none;
+	}
+}
+
+@media (max-width: 900px) {
+	.lightbox-shell {
+		gap: 24px;
+	}
+
+	.lightbox-image-stage {
+		max-height: min(78vh, calc(100dvh - 180px));
+	}
+
+	.lightbox-image-stage img {
+		max-width: calc(100vw - 36px);
+		max-height: min(78vh, calc(100dvh - 180px));
+	}
+}
+
+@media (max-width: 700px) {
+	.buffer {
+		--gutter-w: 3ch;
+		--content-pad: 14px;
+		padding: 3rem 0 6rem;
+		font-size: 14px;
+	}
+
+	.moodboard {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 24px 12px;
+	}
+
+	.site-controls {
+		top: 12px;
+		right: 12px;
+	}
+
+	.credit {
+		right: 12px;
+		bottom: 10px;
+		font-size: 12px;
+	}
+
+	.lightbox {
+		padding: 18px;
+	}
+}
