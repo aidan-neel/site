@@ -9,6 +9,18 @@
     "fullQuality": 92
   },
   "designs": {
+    "1251": {
+      "source": "1251.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/1251-480.webp",
+        "960": "/designs/1251-960.webp",
+        "full": "/designs/1251-full.webp"
+      }
+    },
     "14-minutes": {
       "source": "14-minutes.png",
       "sourceSize": [
@@ -309,6 +321,18 @@
         "full": "/designs/little-joy-full.webp"
       }
     },
+    "lonely-in-the-future": {
+      "source": "lonely-in-the-future.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/lonely-in-the-future-480.webp",
+        "960": "/designs/lonely-in-the-future-960.webp",
+        "full": "/designs/lonely-in-the-future-full.webp"
+      }
+    },
     "lorem-ipsum": {
       "source": "lorem-ipsum.png",
       "sourceSize": [
@@ -417,6 +441,18 @@
         "full": "/designs/pain-sweet-pain-full.webp"
       }
     },
+    "paradise": {
+      "source": "paradise.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/paradise-480.webp",
+        "960": "/designs/paradise-960.webp",
+        "full": "/designs/paradise-full.webp"
+      }
+    },
     "reconstruction": {
       "source": "reconstruction.png",
       "sourceSize": [
@@ -451,6 +487,18 @@
         "480": "/designs/safe-in-your-skin-480.webp",
         "960": "/designs/safe-in-your-skin-960.webp",
         "full": "/designs/safe-in-your-skin-full.webp"
+      }
+    },
+    "silhouette": {
+      "source": "silhouette.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/silhouette-480.webp",
+        "960": "/designs/silhouette-960.webp",
+        "full": "/designs/silhouette-full.webp"
       }
     },
     "size-of-the-moon": {
@@ -585,6 +633,18 @@
         "full": "/designs/vcr-full.webp"
       }
     },
+    "what-ever-happened": {
+      "source": "what-ever-happened.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/what-ever-happened-480.webp",
+        "960": "/designs/what-ever-happened-960.webp",
+        "full": "/designs/what-ever-happened-full.webp"
+      }
+    },
     "where-am-i": {
       "source": "where-am-i.png",
       "sourceSize": [
@@ -597,28 +657,16 @@
         "full": "/designs/where-am-i-full.webp"
       }
     },
-    "1251": {
-      "source": "1251.png",
+    "you-talk-way-too-much": {
+      "source": "you-talk-way-too-much.png",
       "sourceSize": [
         2000,
         3000
       ],
       "outputs": {
-        "480": "/designs/1251-480.webp",
-        "960": "/designs/1251-960.webp",
-        "full": "/designs/1251-full.webp"
-      }
-    },
-    "lonely-in-the-future": {
-      "source": "lonely-in-the-future.png",
-      "sourceSize": [
-        2000,
-        3000
-      ],
-      "outputs": {
-        "480": "/designs/lonely-in-the-future-480.webp",
-        "960": "/designs/lonely-in-the-future-960.webp",
-        "full": "/designs/lonely-in-the-future-full.webp"
+        "480": "/designs/you-talk-way-too-much-480.webp",
+        "960": "/designs/you-talk-way-too-much-960.webp",
+        "full": "/designs/you-talk-way-too-much-full.webp"
       }
     }
   }

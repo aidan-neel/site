@@ -62,6 +62,42 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'What Ever Happened?',
+			description: '',
+			date: '8/4/2026',
+			image: 'what-ever-happened',
+			songTitle: 'What Ever Happened?',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/78Gzxi27GuNHTfkn2BylG4?si=fbc574523e8448bb',
+			audioFile: '/audio/what-ever-happened.mp3'
+		},
+		{
+			title: 'Silhouette',
+			description: '',
+			date: '8/4/2026',
+			image: 'silhouette',
+			songTitle: 'Silhouette',
+			artist: 'The Backseat Lovers',
+			songUrl: 'https://open.spotify.com/track/4GIHwigKlA5TweoUppHRxk?si=2d66b1f45a264468',
+			audioFile: '/audio/silhouette.mp3'
+		},
+		{
+			title: 'You Talk Way Too Much',
+			description: '',
+			date: '8/4/2026',
+			image: 'you-talk-way-too-much',
+			songTitle: 'You Talk Way Too Much',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/6lnnaGN20kl0jEYJSxCgU9?si=67cd467ce4b943eb',
+			audioFile: '/audio/you-talk-way-too-much.mp3'
+		},
+		{
+			title: 'Paradise',
+			description: '',
+			date: '8/4/2026',
+			image: 'paradise'
+		},
+		{
 			title: '12:51',
 			description: '',
 			date: '8/1/2026',
