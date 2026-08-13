@@ -1,6 +1,6 @@
 html,
 body {
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 .page-shell {
@@ -10,8 +10,7 @@ body {
 	--code-line-height: 1.7em;
 	display: flex;
 	flex-direction: column;
-	block-size: 100dvh;
-	overflow: hidden;
+	min-block-size: 100dvh;
 	padding: var(--page-top) 0;
 	font-size: 15px;
 	line-height: 1.7;
