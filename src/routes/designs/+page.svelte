@@ -62,34 +62,34 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
-			title: 'What Ever Happened?',
+			title: 'The Adults Are Talking',
 			description: '',
-			date: '8/4/2026',
-			image: 'what-ever-happened',
-			songTitle: 'What Ever Happened?',
+			date: '8/13/2026',
+			image: 'the-adults-are-talking',
+			songTitle: 'The Adults Are Talking',
 			artist: 'The Strokes',
-			songUrl: 'https://open.spotify.com/track/78Gzxi27GuNHTfkn2BylG4?si=fbc574523e8448bb',
-			audioFile: '/audio/what-ever-happened.mp3'
+			songUrl: '',
+			audioFile: '/audio/the-adults-are-talking.mp3'
 		},
 		{
-			title: 'Silhouette',
+			title: 'Hard to Explain',
 			description: '',
-			date: '8/4/2026',
-			image: 'silhouette',
-			songTitle: 'Silhouette',
-			artist: 'The Backseat Lovers',
-			songUrl: 'https://open.spotify.com/track/4GIHwigKlA5TweoUppHRxk?si=2d66b1f45a264468',
-			audioFile: '/audio/silhouette.mp3'
+			date: '8/13/2026',
+			image: 'hard-to-explain',
+			songTitle: 'Hard to Explain',
+			artist: 'The Strokes',
+			songUrl: '',
+			audioFile: '/audio/hard-to-explain.mp3'
 		},
 		{
-			title: 'You Talk Way Too Much',
+			title: 'For Sure',
 			description: '',
-			date: '8/4/2026',
-			image: 'you-talk-way-too-much',
-			songTitle: 'You Talk Way Too Much',
-			artist: 'The Strokes',
-			songUrl: 'https://open.spotify.com/track/6lnnaGN20kl0jEYJSxCgU9?si=67cd467ce4b943eb',
-			audioFile: '/audio/you-talk-way-too-much.mp3'
+			date: '8/13/2026',
+			image: 'for-sure',
+			songTitle: 'For Sure',
+			artist: 'American Football',
+			songUrl: '',
+			audioFile: '/audio/for-sure.mp3'
 		},
 		{
 			title: 'Paradise',

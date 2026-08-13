@@ -249,6 +249,18 @@
         "full": "/designs/figma-full.webp"
       }
     },
+    "for-sure": {
+      "source": "for-sure.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/for-sure-480.webp",
+        "960": "/designs/for-sure-960.webp",
+        "full": "/designs/for-sure-full.webp"
+      }
+    },
     "forget-the-flowers": {
       "source": "forget-the-flowers.png",
       "sourceSize": [
@@ -283,6 +295,18 @@
         "480": "/designs/growing-dying-480.webp",
         "960": "/designs/growing-dying-960.webp",
         "full": "/designs/growing-dying-full.webp"
+      }
+    },
+    "hard-to-explain": {
+      "source": "hard-to-explain.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/hard-to-explain-480.webp",
+        "960": "/designs/hard-to-explain-960.webp",
+        "full": "/designs/hard-to-explain-full.webp"
       }
     },
     "hatful-of-hollow": {
@@ -547,6 +571,18 @@
         "480": "/designs/telescope-480.webp",
         "960": "/designs/telescope-960.webp",
         "full": "/designs/telescope-full.webp"
+      }
+    },
+    "the-adults-are-talking": {
+      "source": "the-adults-are-talking.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/the-adults-are-talking-480.webp",
+        "960": "/designs/the-adults-are-talking-960.webp",
+        "full": "/designs/the-adults-are-talking-full.webp"
       }
     },
     "the-water": {
