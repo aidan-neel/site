@@ -45,6 +45,18 @@
         "full": "/designs/all-my-friends-full.webp"
       }
     },
+    "amen": {
+      "source": "amen.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/amen-480.webp",
+        "960": "/designs/amen-960.webp",
+        "full": "/designs/amen-full.webp"
+      }
+    },
     "americanfootball": {
       "source": "americanfootball.png",
       "sourceSize": [

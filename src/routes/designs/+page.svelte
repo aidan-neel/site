@@ -62,6 +62,12 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'Amen',
+			description: '',
+			date: '8/13/2026',
+			image: 'amen'
+		},
+		{
 			title: 'The Adults Are Talking',
 			description: '',
 			date: '8/13/2026',
