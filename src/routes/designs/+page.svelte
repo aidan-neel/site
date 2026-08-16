@@ -62,6 +62,26 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: "That's Life",
+			description: '',
+			date: '',
+			image: 'thats-life',
+			songTitle: 'Stay Home',
+			artist: 'American Football',
+			songUrl: '',
+			audioFile: '/audio/thats-life.mp3'
+		},
+		{
+			title: 'Old Friends',
+			description: '',
+			date: '',
+			image: 'old-friends',
+			songTitle: 'Ode to the Mets',
+			artist: 'The Strokes',
+			songUrl: '',
+			audioFile: '/audio/old-friends.mp3'
+		},
+		{
 			title: 'The Summer Ends',
 			description: '',
 			date: '',

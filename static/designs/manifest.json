@@ -489,6 +489,18 @@
         "full": "/designs/never-meant-full.webp"
       }
     },
+    "old-friends": {
+      "source": "old-friends.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/old-friends-480.webp",
+        "960": "/designs/old-friends-960.webp",
+        "full": "/designs/old-friends-full.webp"
+      }
+    },
     "old-house": {
       "source": "old-house.png",
       "sourceSize": [
@@ -631,6 +643,18 @@
         "480": "/designs/telescope-480.webp",
         "960": "/designs/telescope-960.webp",
         "full": "/designs/telescope-full.webp"
+      }
+    },
+    "thats-life": {
+      "source": "thats-life.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/thats-life-480.webp",
+        "960": "/designs/thats-life-960.webp",
+        "full": "/designs/thats-life-full.webp"
       }
     },
     "the-adults-are-talking": {
