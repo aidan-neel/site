@@ -8,6 +8,7 @@ body {
 	--page-padding: clamp(16px, 4vw, 48px);
 	--page-top: 24px;
 	--code-line-height: 1.7em;
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-block-size: 100dvh;
@@ -23,7 +24,7 @@ body {
 }
 
 .line-rail {
-	position: fixed;
+	position: absolute;
 	z-index: 1;
 	top: 0;
 	bottom: 0;

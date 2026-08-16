@@ -62,6 +62,38 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'The Summer Ends',
+			description: '',
+			date: '',
+			image: 'the-summer-ends',
+			songTitle: 'The Summer Ends',
+			artist: 'American Football',
+			songUrl: '',
+			audioFile: '/audio/the-summer-ends.mp3'
+		},
+		{
+			title: "I'll Call This One...",
+			description: '',
+			date: '',
+			image: 'empathy-takes-energy'
+		},
+		{
+			title: 'Jigsaw Falling into Place',
+			description: '',
+			date: '',
+			image: 'jigsaw-falling-into-place',
+			songTitle: 'Jigsaw Falling into Place',
+			artist: 'Radiohead',
+			songUrl: '',
+			audioFile: '/audio/jigsaw-falling-into-place.mp3'
+		},
+		{
+			title: 'Making Bad Decisions',
+			description: '',
+			date: '',
+			image: 'making-bad-decisions'
+		},
+		{
 			title: 'Amen',
 			description: '',
 			date: '8/13/2026',

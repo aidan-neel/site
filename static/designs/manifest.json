@@ -225,6 +225,18 @@
         "full": "/designs/eagles-full.webp"
       }
     },
+    "empathy-takes-energy": {
+      "source": "empathy-takes-energy.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/empathy-takes-energy-480.webp",
+        "960": "/designs/empathy-takes-energy-960.webp",
+        "full": "/designs/empathy-takes-energy-full.webp"
+      }
+    },
     "experienced": {
       "source": "experienced.png",
       "sourceSize": [
@@ -345,6 +357,18 @@
         "full": "/designs/heaven-full.webp"
       }
     },
+    "jigsaw-falling-into-place": {
+      "source": "jigsaw-falling-into-place.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/jigsaw-falling-into-place-480.webp",
+        "960": "/designs/jigsaw-falling-into-place-960.webp",
+        "full": "/designs/jigsaw-falling-into-place-full.webp"
+      }
+    },
     "little-joy": {
       "source": "little-joy.png",
       "sourceSize": [
@@ -369,6 +393,18 @@
         "full": "/designs/lonely-in-the-future-full.webp"
       }
     },
+    "long-forgotten": {
+      "source": "long-forgotten.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/long-forgotten-480.webp",
+        "960": "/designs/long-forgotten-960.webp",
+        "full": "/designs/long-forgotten-full.webp"
+      }
+    },
     "lorem-ipsum": {
       "source": "lorem-ipsum.png",
       "sourceSize": [
@@ -379,6 +415,18 @@
         "480": "/designs/lorem-ipsum-480.webp",
         "960": "/designs/lorem-ipsum-960.webp",
         "full": "/designs/lorem-ipsum-full.webp"
+      }
+    },
+    "making-bad-decisions": {
+      "source": "making-bad-decisions.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/making-bad-decisions-480.webp",
+        "960": "/designs/making-bad-decisions-960.webp",
+        "full": "/designs/making-bad-decisions-full.webp"
       }
     },
     "marietta": {
@@ -595,6 +643,18 @@
         "480": "/designs/the-adults-are-talking-480.webp",
         "960": "/designs/the-adults-are-talking-960.webp",
         "full": "/designs/the-adults-are-talking-full.webp"
+      }
+    },
+    "the-summer-ends": {
+      "source": "the-summer-ends.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/the-summer-ends-480.webp",
+        "960": "/designs/the-summer-ends-960.webp",
+        "full": "/designs/the-summer-ends-full.webp"
       }
     },
     "the-water": {
