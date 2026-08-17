@@ -62,6 +62,27 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'Call It Fate',
+			description: '',
+			date: '8/17/2026',
+			image: 'call-it-fate',
+			songTitle: 'Call It Fate, Call It Karma',
+			artist: 'The Strokes',
+			songUrl:
+				'https://open.spotify.com/search/Call%20It%20Fate%2C%20Call%20It%20Karma%20The%20Strokes',
+			audioFile: '/audio/call-it-fate.mp3'
+		},
+		{
+			title: 'A Chord',
+			description: '',
+			date: '8/17/2026',
+			image: 'a-chord',
+			songTitle: 'At the Door',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/search/At%20the%20Door%20The%20Strokes',
+			audioFile: '/audio/a-chord.mp3'
+		},
+		{
 			title: "That's Life",
 			description: '',
 			date: '',

@@ -33,6 +33,18 @@
         "full": "/designs/14-minutes-full.webp"
       }
     },
+    "a-chord": {
+      "source": "a-chord.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/a-chord-480.webp",
+        "960": "/designs/a-chord-960.webp",
+        "full": "/designs/a-chord-full.webp"
+      }
+    },
     "all-my-friends": {
       "source": "all-my-friends.png",
       "sourceSize": [
@@ -115,6 +127,18 @@
         "480": "/designs/california-480.webp",
         "960": "/designs/california-960.webp",
         "full": "/designs/california-full.webp"
+      }
+    },
+    "call-it-fate": {
+      "source": "call-it-fate.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/call-it-fate-480.webp",
+        "960": "/designs/call-it-fate-960.webp",
+        "full": "/designs/call-it-fate-full.webp"
       }
     },
     "cant-hide": {
