@@ -2,43 +2,9 @@
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { cubicOut, expoOut } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
 	import { ArrowUpRight, Music, Volume2, VolumeX } from 'lucide-svelte';
+	import Lightbox from '$lib/components/Lightbox.svelte';
 	import './+page.css';
-
-	function lightboxIn(
-		node: Element,
-		{ duration = 360, easing = expoOut }: { duration?: number; easing?: (t: number) => number } = {}
-	) {
-		return {
-			duration,
-			easing,
-			css: (t: number) => {
-				const y = (1 - t) * 16;
-				const s = 0.98 + t * 0.02;
-				return `opacity:${t}; transform: translate3d(0, ${y}px, 0) scale(${s});`;
-			}
-		};
-	}
-
-	function lightboxOut(
-		node: Element,
-		{
-			duration = 180,
-			easing = cubicOut
-		}: { duration?: number; easing?: (t: number) => number } = {}
-	) {
-		return {
-			duration,
-			easing,
-			css: (t: number) => {
-				const y = (1 - t) * 8;
-				const s = 0.98 + t * 0.02;
-				return `opacity:${t}; transform: translate3d(0, ${y}px, 0) scale(${s});`;
-			}
-		};
-	}
 
 	type Design = {
 		title: string;
@@ -61,6 +27,36 @@
 
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
+		{
+			title: 'Green Call Her Sims',
+			description: 'i was listening to green call her sims when i made this',
+			date: '9/13/2026',
+			image: 'sims',
+			songTitle: 'Green Call Her Sims',
+			artist: 'Marietta',
+			songUrl: '',
+			audioFile: '/audio/green-call-her-sims.mp3'
+		},
+		{
+			title: 'Minimum Soft',
+			description: '',
+			date: '9/10/2026',
+			image: 'minimum-soft',
+			songTitle: "Dine N'Dash",
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/22a006OJm48zH87SkPpSVx',
+			audioFile: '/audio/minimum-soft.mp3'
+		},
+		{
+			title: 'Selfless',
+			description: '',
+			date: '9/10/2026',
+			image: 'selfless',
+			songTitle: 'Selfless',
+			artist: 'The Strokes',
+			songUrl: 'https://open.spotify.com/track/2t0wwvR15fc3K1ey8OiOaN',
+			audioFile: '/audio/selfless.mp3'
+		},
 		{
 			title: 'Call It Fate',
 			description: '',
@@ -111,28 +107,6 @@
 			artist: 'American Football',
 			songUrl: '',
 			audioFile: '/audio/the-summer-ends.mp3'
-		},
-		{
-			title: "I'll Call This One...",
-			description: '',
-			date: '',
-			image: 'empathy-takes-energy'
-		},
-		{
-			title: 'Jigsaw Falling into Place',
-			description: '',
-			date: '',
-			image: 'jigsaw-falling-into-place',
-			songTitle: 'Jigsaw Falling into Place',
-			artist: 'Radiohead',
-			songUrl: '',
-			audioFile: '/audio/jigsaw-falling-into-place.mp3'
-		},
-		{
-			title: 'Making Bad Decisions',
-			description: '',
-			date: '',
-			image: 'making-bad-decisions'
 		},
 		{
 			title: 'Amen',
@@ -215,16 +189,6 @@
 			artist: 'The Smiths',
 			songUrl: 'https://open.spotify.com/track/6LUGvXEAK8WxIBYK43uoTb',
 			audioFile: '/audio/old-house.mp3'
-		},
-		{
-			title: 'Telescope',
-			description: '',
-			date: '7/29/2026',
-			image: 'telescope',
-			songTitle: 'Telescope',
-			artist: 'Cage the Elephant',
-			songUrl: 'https://open.spotify.com/track/0tkBOcK7oRVXQJY97zzSvr',
-			audioFile: '/audio/telescope.mp3'
 		},
 		{
 			title: 'The Water',
@@ -579,18 +543,9 @@
 	const withSound = designs.filter((design) => design.audioFile).length;
 
 	let activeDesign = $state<(typeof designs)[number] | null>(null);
-	let zoom = $state(1);
-	let panX = $state(0);
-	let panY = $state(0);
-	let panning = $state(false);
-	let panStartX = 0;
-	let panStartY = 0;
-	let panOriginX = 0;
-	let panOriginY = 0;
 	let musicVolume = $state(20);
 	let volumeOpen = $state(false);
 	let loadedDesigns = new SvelteSet<string>();
-	let lightboxImageLoaded = $state(false);
 	let songPlaying = $state(false);
 	let designAudio: HTMLAudioElement | null = null;
 	let audioFade: ReturnType<typeof setInterval> | undefined;
@@ -693,10 +648,6 @@
 	}
 
 	function openLightbox(design: (typeof designs)[number]) {
-		zoom = 1;
-		panX = 0;
-		panY = 0;
-		lightboxImageLoaded = false;
 		activeDesign = design;
 		void playDesignAudio(design);
 	}
@@ -788,61 +739,6 @@
 		disposeAudio(audio);
 	}
 
-	function setZoomAt(nextZoom: number, originX: number, originY: number) {
-		const clamped = Math.min(Math.max(nextZoom, 1), 4);
-		if (clamped === zoom) return;
-
-		if (clamped === 1) {
-			zoom = 1;
-			panX = 0;
-			panY = 0;
-			return;
-		}
-
-		const scale = clamped / zoom;
-		panX = originX - (originX - panX) * scale;
-		panY = originY - (originY - panY) * scale;
-		zoom = clamped;
-	}
-
-	function handleImageWheel(event: WheelEvent) {
-		event.preventDefault();
-		const stage = event.currentTarget as HTMLElement;
-		const rect = stage.getBoundingClientRect();
-		const originX = event.clientX - rect.left - rect.width / 2;
-		const originY = event.clientY - rect.top - rect.height / 2;
-		setZoomAt(zoom + (event.deltaY < 0 ? 0.25 : -0.25), originX, originY);
-	}
-
-	function beginPan(event: PointerEvent) {
-		if (zoom === 1) return;
-		event.preventDefault();
-		panning = true;
-		panStartX = event.clientX;
-		panStartY = event.clientY;
-		panOriginX = panX;
-		panOriginY = panY;
-		(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
-	}
-
-	function panImage(event: PointerEvent) {
-		if (!panning) return;
-		panX = panOriginX + event.clientX - panStartX;
-		panY = panOriginY + event.clientY - panStartY;
-	}
-
-	function endPan() {
-		panning = false;
-	}
-
-	function toggleZoom(event: MouseEvent) {
-		const stage = event.currentTarget as HTMLElement;
-		const rect = stage.getBoundingClientRect();
-		const originX = event.clientX - rect.left - rect.width / 2;
-		const originY = event.clientY - rect.top - rect.height / 2;
-		setZoomAt(zoom === 1 ? 2 : 1, originX, originY);
-	}
-
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
 			if (volumeOpen) {
@@ -851,10 +747,6 @@
 			}
 			if (activeDesign) closeLightbox();
 		}
-	}
-
-	function handleLightboxClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) closeLightbox();
 	}
 </script>
 
@@ -965,102 +857,46 @@
 <p class="credit" aria-hidden="true">Aidan Neel</p>
 
 {#if activeDesign}
-	<div
-		class="lightbox"
-		role="presentation"
-		onclick={handleLightboxClick}
-		in:fade={{ duration: 240 }}
-		out:fade={{ duration: 170 }}
+	<Lightbox
+		title={activeDesign.title}
+		subtitle={activeDesign.date}
+		description={activeDesign.description}
+		image={fullImage(activeDesign.image)}
+		imageAlt={`${activeDesign.title} design`}
+		onclose={closeLightbox}
 	>
-		<button
-			type="button"
-			class="lightbox-close"
-			onclick={closeLightbox}
-			aria-label="Close"
-			in:fade={{ duration: 200, delay: 80 }}
-		>
-			[x] close
-		</button>
-
-		<div
-			class="lightbox-shell"
-			role="dialog"
-			aria-modal="true"
-			aria-labelledby="lightbox-title"
-			tabindex="-1"
-			in:lightboxIn
-			out:lightboxOut
-		>
-			<div
-				class:zoomed={zoom > 1}
-				class:panning
-				class:is-loaded={lightboxImageLoaded}
-				class="lightbox-image-stage"
-				role="group"
-				aria-label="Zoomable image. Scroll to zoom and drag to pan."
-				aria-busy={!lightboxImageLoaded}
-				onwheel={handleImageWheel}
-				onpointerdown={beginPan}
-				onpointermove={panImage}
-				onpointerup={endPan}
-				onpointercancel={endPan}
-				ondblclick={toggleZoom}
-			>
-				<span class="lightbox-skeleton" aria-hidden="true"></span>
-				<img
-					src={fullImage(activeDesign.image)}
-					alt={`${activeDesign.title} design`}
-					draggable="false"
-					decoding="async"
-					fetchpriority="high"
-					onload={() => (lightboxImageLoaded = true)}
-					style:transform={`translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`}
-				/>
-				<span class="lightbox-zoom-chip" class:is-visible={zoom > 1} aria-hidden="true">
-					{zoom.toFixed(1)}×
+		{#if activeDesign.songTitle && activeDesign.artist}
+			{#if activeDesign.songUrl}
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+				<a class="song-link" href={activeDesign.songUrl} target="_blank" rel="noreferrer">
+					<span class="song-glyph" aria-hidden="true">
+						{#if songPlaying}
+							<span class="song-eq"><i></i><i></i><i></i></span>
+						{:else}
+							<Music size={12} strokeWidth={2} />
+						{/if}
+					</span>
+					<span class="song-text">
+						<span class="song-title">{activeDesign.songTitle}</span>
+						<span class="song-artist">{activeDesign.artist}</span>
+					</span>
+					<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
+				</a>
+			{:else}
+				<span class="song-link is-static">
+					<span class="song-glyph" aria-hidden="true">
+						{#if songPlaying}
+							<span class="song-eq"><i></i><i></i><i></i></span>
+						{:else}
+							<Music size={12} strokeWidth={2} />
+						{/if}
+					</span>
+					<span class="song-text">
+						<span class="song-title">{activeDesign.songTitle}</span>
+						<span class="song-artist">{activeDesign.artist}</span>
+					</span>
 				</span>
-			</div>
-
-			<div class="lightbox-meta">
-				<p id="lightbox-title">{activeDesign.title}</p>
-				<p class="lightbox-date">{activeDesign.date}</p>
-				{#if activeDesign.description}
-					<p class="lightbox-description">{activeDesign.description}</p>
-				{/if}
-				{#if activeDesign.songTitle && activeDesign.artist}
-					{#if activeDesign.songUrl}
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-						<a class="song-link" href={activeDesign.songUrl} target="_blank" rel="noreferrer">
-							<span class="song-glyph" aria-hidden="true">
-								{#if songPlaying}
-									<span class="song-eq"><i></i><i></i><i></i></span>
-								{:else}
-									<Music size={12} strokeWidth={2} />
-								{/if}
-							</span>
-							<span class="song-text">
-								<span class="song-title">{activeDesign.songTitle}</span>
-								<span class="song-artist">{activeDesign.artist}</span>
-							</span>
-							<ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
-						</a>
-					{:else}
-						<span class="song-link is-static">
-							<span class="song-glyph" aria-hidden="true">
-								{#if songPlaying}
-									<span class="song-eq"><i></i><i></i><i></i></span>
-								{:else}
-									<Music size={12} strokeWidth={2} />
-								{/if}
-							</span>
-							<span class="song-text">
-								<span class="song-title">{activeDesign.songTitle}</span>
-								<span class="song-artist">{activeDesign.artist}</span>
-							</span>
-						</span>
-					{/if}
-				{/if}
-			</div>
-		</div>
-	</div>
+			{/if}
+		{/if}
+	</Lightbox>
 {/if}

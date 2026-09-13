@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { resolve } from '$app/paths';
 	import './+page.css';
 
@@ -40,7 +41,10 @@
 
 	<header class="site-header" aria-label="Primary navigation">
 		<div class="code-line"><a href={resolve('/')} aria-current="page">aidan-neel</a></div>
-		<a class="nav-designs" href={resolve('/designs')}>designs</a>
+		<div class="nav-links">
+			{#if dev}<a href={resolve('/moodboard')}>moodboard</a>{/if}
+			<a href={resolve('/designs')}>designs</a>
+		</div>
 	</header>
 
 	<main class="code-content">

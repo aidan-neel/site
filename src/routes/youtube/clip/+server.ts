@@ -46,6 +46,20 @@ function describeFailure(cause: unknown) {
 	if (detail.includes('python') || detail.includes('enoent') || detail.includes('eacces')) {
 		return 'The clip service is misconfigured right now. This one is on me, not the video.';
 	}
+	if (
+		detail.includes('no supported javascript runtime') ||
+		detail.includes('n challenge solving failed') ||
+		detail.includes('js challenge')
+	) {
+		return 'The clip service needs Node.js 22 or newer to talk to YouTube. This one is on me, not the video.';
+	}
+	if (
+		detail.includes('http error 403') ||
+		detail.includes('po token') ||
+		detail.includes('sabr-only')
+	) {
+		return 'YouTube is currently blocking downloads from this server. Try again later.';
+	}
 	if (detail.includes('sign in to confirm') || detail.includes('not a bot')) {
 		return 'YouTube is currently blocking downloads from this server. Try again later.';
 	}
@@ -113,6 +127,18 @@ export const POST: RequestHandler = async ({ request }) => {
 		await youtubeDl(url, {
 			noPlaylist: true,
 			maxFilesize: format === 'mp4' ? '400M' : '200M',
+			// YouTube now requires solving JS challenges to sign stream URLs, and
+			// yt-dlp needs an explicit Node 22+ runtime for that (deno is the only
+			// default). process.execPath is the Node running this server, so it is
+			// always on hand — package.json engines pins it to >= 22.
+			jsRuntimes: `node:${process.execPath}`,
+			// Most player clients either withhold formats without a PO token
+			// (ios/tv/web_safari) or hand out URLs that 403 on this network
+			// (default set, mediaconnect). android + web_embedded still serve
+			// stream URLs that download cleanly. (Spread: the Flags typings lag
+			// behind yt-dlp and omit extractorArgs; dargs serializes it to
+			// --extractor-args correctly at runtime.)
+			...{ extractorArgs: 'youtube:player_client=android,web_embedded' },
 			format:
 				format === 'mp4'
 					? 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4][height<=720]/best'

@@ -249,18 +249,6 @@
         "full": "/designs/eagles-full.webp"
       }
     },
-    "empathy-takes-energy": {
-      "source": "empathy-takes-energy.png",
-      "sourceSize": [
-        2000,
-        3000
-      ],
-      "outputs": {
-        "480": "/designs/empathy-takes-energy-480.webp",
-        "960": "/designs/empathy-takes-energy-960.webp",
-        "full": "/designs/empathy-takes-energy-full.webp"
-      }
-    },
     "experienced": {
       "source": "experienced.png",
       "sourceSize": [
@@ -381,18 +369,6 @@
         "full": "/designs/heaven-full.webp"
       }
     },
-    "jigsaw-falling-into-place": {
-      "source": "jigsaw-falling-into-place.png",
-      "sourceSize": [
-        2000,
-        3000
-      ],
-      "outputs": {
-        "480": "/designs/jigsaw-falling-into-place-480.webp",
-        "960": "/designs/jigsaw-falling-into-place-960.webp",
-        "full": "/designs/jigsaw-falling-into-place-full.webp"
-      }
-    },
     "little-joy": {
       "source": "little-joy.png",
       "sourceSize": [
@@ -441,18 +417,6 @@
         "full": "/designs/lorem-ipsum-full.webp"
       }
     },
-    "making-bad-decisions": {
-      "source": "making-bad-decisions.png",
-      "sourceSize": [
-        2000,
-        3000
-      ],
-      "outputs": {
-        "480": "/designs/making-bad-decisions-480.webp",
-        "960": "/designs/making-bad-decisions-960.webp",
-        "full": "/designs/making-bad-decisions-full.webp"
-      }
-    },
     "marietta": {
       "source": "marietta.png",
       "sourceSize": [
@@ -463,6 +427,18 @@
         "480": "/designs/marietta-480.webp",
         "960": "/designs/marietta-960.webp",
         "full": "/designs/marietta-full.webp"
+      }
+    },
+    "minimum-soft": {
+      "source": "minimum-soft.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/minimum-soft-480.webp",
+        "960": "/designs/minimum-soft-960.webp",
+        "full": "/designs/minimum-soft-full.webp"
       }
     },
     "modern": {
@@ -609,6 +585,18 @@
         "full": "/designs/safe-in-your-skin-full.webp"
       }
     },
+    "selfless": {
+      "source": "selfless.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/selfless-480.webp",
+        "960": "/designs/selfless-960.webp",
+        "full": "/designs/selfless-full.webp"
+      }
+    },
     "silhouette": {
       "source": "silhouette.png",
       "sourceSize": [
@@ -619,6 +607,18 @@
         "480": "/designs/silhouette-480.webp",
         "960": "/designs/silhouette-960.webp",
         "full": "/designs/silhouette-full.webp"
+      }
+    },
+    "sims": {
+      "source": "sims.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/sims-480.webp",
+        "960": "/designs/sims-960.webp",
+        "full": "/designs/sims-full.webp"
       }
     },
     "size-of-the-moon": {
@@ -655,18 +655,6 @@
         "480": "/designs/t1-480.webp",
         "960": "/designs/t1-960.webp",
         "full": "/designs/t1-full.webp"
-      }
-    },
-    "telescope": {
-      "source": "telescope.png",
-      "sourceSize": [
-        2480,
-        3508
-      ],
-      "outputs": {
-        "480": "/designs/telescope-480.webp",
-        "960": "/designs/telescope-960.webp",
-        "full": "/designs/telescope-full.webp"
       }
     },
     "thats-life": {
