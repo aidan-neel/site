@@ -28,6 +28,26 @@
 	// Add song metadata and a songUrl to any design to show its song link.
 	const designs: Design[] = [
 		{
+			title: 'Ceiling Fan',
+			description: '',
+			date: '9/14/2026',
+			image: 'ceiling-fan',
+			songTitle: 'Head in the Ceiling Fan',
+			artist: 'Title Fight',
+			songUrl: 'https://open.spotify.com/track/3aOPE6CMuxsBSbl88mQUmM',
+			audioFile: '/audio/ceiling-fan.mp3'
+		},
+		{
+			title: 'Couples Therapy',
+			description: '',
+			date: '9/14/2026',
+			image: 'couples-therapy',
+			songTitle: 'Hope',
+			artist: 'Modern Baseball',
+			songUrl: 'https://open.spotify.com/track/4EtAAU2KwDE7oU6Rj0wCTJ',
+			audioFile: '/audio/couples-therapy.mp3'
+		},
+		{
 			title: 'Green Call Her Sims',
 			description: 'i was listening to green call her sims when i made this',
 			date: '9/13/2026',

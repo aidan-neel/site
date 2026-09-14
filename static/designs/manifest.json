@@ -165,6 +165,18 @@
         "full": "/designs/carry-you-over-full.webp"
       }
     },
+    "ceiling-fan": {
+      "source": "ceiling-fan.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/ceiling-fan-480.webp",
+        "960": "/designs/ceiling-fan-960.webp",
+        "full": "/designs/ceiling-fan-full.webp"
+      }
+    },
     "chateau": {
       "source": "chateau.png",
       "sourceSize": [
@@ -187,6 +199,18 @@
         "480": "/designs/chest-pain-480.webp",
         "960": "/designs/chest-pain-960.webp",
         "full": "/designs/chest-pain-full.webp"
+      }
+    },
+    "couples-therapy": {
+      "source": "couples-therapy.png",
+      "sourceSize": [
+        2000,
+        3000
+      ],
+      "outputs": {
+        "480": "/designs/couples-therapy-480.webp",
+        "960": "/designs/couples-therapy-960.webp",
+        "full": "/designs/couples-therapy-full.webp"
       }
     },
     "cup": {
